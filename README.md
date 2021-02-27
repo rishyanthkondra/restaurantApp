@@ -1,2 +1,2 @@
 # CS 387 Project
-Yet to be decided
+- `./Design : ` contains details of abstract, Entity Relation Model and ERD diagram .
