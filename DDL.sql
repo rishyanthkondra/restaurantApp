@@ -4,10 +4,40 @@
 SET timezone = 'Asia/Kolkata';
 -- Dont play with timezones as only one restaurant
 -- Review the ON DELETE and ON UPDATE things
+DROP TABLE IF EXISTS Supply_Order;
+DROP TABLE IF EXISTS Ingredients_wasted;
+DROP TABLE IF EXISTS Order_has_dish ;
+DROP TABLE IF EXISTS Offline_order ;
+DROP TABLE IF EXISTS Online_order ;
+DROP TABLE IF EXISTS Delivery_Boy ;
+DROP TABLE IF EXISTS Orders ;
+DROP TABLE IF EXISTS Coupons ;
+DROP TABLE IF EXISTS Rates ;
+DROP TABLE IF EXISTS Favourites ;
+DROP TABLE IF EXISTS Cart ;
+DROP TABLE IF EXISTS Dish_has_Ingredients ;
+DROP TABLE IF EXISTS Ingredients ;
+DROP TABLE IF EXISTS Dish ;
+DROP TABLE IF EXISTS Booking_has_Tables ;
+DROP TABLE IF EXISTS Booking ;
+DROP TABLE IF EXISTS Transactions ;
+DROP TABLE IF EXISTS Tabless ;
+DROP TABLE IF EXISTS Roles_has_Permission ;
+DROP TABLE IF EXISTS Employee_Has_Shift ;
+DROP TABLE IF EXISTS Wages ;
+DROP TABLE IF EXISTS Permissions;
+DROP TABLE IF EXISTS Attendance ;
+DROP TABLE IF EXISTS Shift ;
+DROP TABLE IF EXISTS Address ;
+DROP TABLE IF EXISTS Owners ; -- remove
+DROP TABLE IF EXISTS Announcement; -- remove
+DROP TABLE IF EXISTS Employee;
+DROP TABLE IF EXISTS Roles;
+DROP TABLE IF EXISTS Customer;
+DROP TABLE IF EXISTS Details;
 -- -----------------------------------------------------
 -- Table public.Details
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS Details;
 
 CREATE TABLE IF NOT EXISTS public.Details (
   details_id serial PRIMARY KEY,
@@ -15,7 +45,7 @@ CREATE TABLE IF NOT EXISTS public.Details (
   middle_name VARCHAR(45),
   last_name VARCHAR(45) NOT NULL,
   email VARCHAR(225),
-  phone_number VARCHAR(15) NOT NULL, -- OVERKILL ? 
+  phone_number VARCHAR(15) NOT NULL,
   date_of_birth DATE,
   gender VARCHAR(10) CHECK(gender IN ('other','male','female'))
 );
@@ -23,7 +53,6 @@ CREATE TABLE IF NOT EXISTS public.Details (
 -- -----------------------------------------------------
 -- Table public.Customer : looks good,Null check done!
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS Customer;
 
 CREATE TABLE IF NOT EXISTS public.Customer (
   customer_id serial PRIMARY KEY,
@@ -46,7 +75,6 @@ CREATE TABLE IF NOT EXISTS public.Customer (
 -- -----------------------------------------------------
 -- Table public.Roles : looks good, Null check done!
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS Roles;
 
 CREATE TABLE IF NOT EXISTS public.Roles (
   role_id serial PRIMARY KEY,
@@ -64,7 +92,6 @@ CREATE TABLE IF NOT EXISTS public.Roles (
 -- -----------------------------------------------------
 -- Table public.Employee : looks good, Null check done!
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS Employee ;
 
 CREATE TABLE IF NOT EXISTS public.Employee (
   employee_id serial PRIMARY KEY,
@@ -98,7 +125,6 @@ CREATE TABLE IF NOT EXISTS public.Employee (
 -- -----------------------------------------------------
 -- Table public.Announcement : REDUNDANT? NO RELATIONS
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS Announcement ;
 
 CREATE TABLE IF NOT EXISTS public.Announcement (
   announcement_id serial PRIMARY KEY,
@@ -110,7 +136,6 @@ CREATE TABLE IF NOT EXISTS public.Announcement (
 -- -----------------------------------------------------
 -- Table public.Owner : REDUNDANT ? NO RELATIONS 
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS Owners ;
 
 CREATE TABLE IF NOT EXISTS public.Owners (
   owner_id serial PRIMARY KEY,
@@ -122,7 +147,6 @@ CREATE TABLE IF NOT EXISTS public.Owners (
 -- -----------------------------------------------------
 -- Table public.Address : SOME REDUNDANCIES, DO CHECK
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS Address ;
 
 CREATE TABLE IF NOT EXISTS public.Address (
   address_id serial PRIMARY KEY,
@@ -149,7 +173,6 @@ CREATE TABLE IF NOT EXISTS public.Address (
 -- -----------------------------------------------------
 -- Table public.Shift : looks good, Null checks done!
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS Shift ;
 
 CREATE TABLE IF NOT EXISTS public.Shift (
   shift_id serial PRIMARY KEY,
@@ -160,7 +183,6 @@ CREATE TABLE IF NOT EXISTS public.Shift (
 -- -----------------------------------------------------
 -- Table public.Attendance : Maybe add smthng to check constraint
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS Attendance ;
 
 CREATE TABLE IF NOT EXISTS public.Attendance (
   attendance_date TIMESTAMPTZ NOT NULL,
@@ -196,11 +218,10 @@ CREATE TABLE IF NOT EXISTS public.Attendance (
 -- CREATE INDEX Attendance_Supervisor_idx ON public.Attendance (supervisor_id ASC) VISIBLE;
 
 -- -----------------------------------------------------
--- Table public.Permission : looks good
+-- Table public.Permissions : looks good
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS Permission;
 
-CREATE TABLE IF NOT EXISTS public.Permission(
+CREATE TABLE IF NOT EXISTS public.Permissions(
   permission_id serial PRIMARY KEY,
   permitted_action TEXT NOT NULL
 );
@@ -208,7 +229,6 @@ CREATE TABLE IF NOT EXISTS public.Permission(
 -- -----------------------------------------------------
 -- Table public.Wages : looks good
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS Wages ;
 
 CREATE TABLE IF NOT EXISTS public.Wages (
   wage_date TIMESTAMPTZ NOT NULL,
@@ -230,7 +250,6 @@ CREATE TABLE IF NOT EXISTS public.Wages (
 -- -----------------------------------------------------
 -- Table public.Employee_has_Shift : looks good
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS Employee_Has_Shift ;
 
 CREATE TABLE IF NOT EXISTS public.Employee_Has_Shift (
   employee_id INT NOT NULL,
@@ -255,7 +274,6 @@ CREATE TABLE IF NOT EXISTS public.Employee_Has_Shift (
 -- -----------------------------------------------------
 -- Table public.Role_has_Permissions : looks good
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS Roles_has_Permission ;
 
 CREATE TABLE IF NOT EXISTS public.Roles_has_Permission (
   role_id INT NOT NULL,
@@ -268,7 +286,7 @@ CREATE TABLE IF NOT EXISTS public.Roles_has_Permission (
     ON UPDATE CASCADE,
   CONSTRAINT Roles_has_Permission_Permission
     FOREIGN KEY (permission_id)
-    REFERENCES public.Permission (permission_id)
+    REFERENCES public.Permissions (permission_id)
     ON DELETE CASCADE
     ON UPDATE CASCADE
 );
@@ -278,11 +296,10 @@ CREATE TABLE IF NOT EXISTS public.Roles_has_Permission (
 -- CREATE INDEX Roles_has_Permission_Role1_idx ON public.Role_has_Permissions (role_id ASC) VISIBLE;
 
 -- -----------------------------------------------------
--- Table public.Tables : looks good
+-- Table public.Tabless : looks good
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS Tables ;
 
-CREATE TABLE IF NOT EXISTS public.Tables (
+CREATE TABLE IF NOT EXISTS public.Tabless (
   table_id serial PRIMARY KEY,
   capacity INT NOT NULL,
   table_description TEXT NOT NULL,
@@ -291,11 +308,10 @@ CREATE TABLE IF NOT EXISTS public.Tables (
     CHECK (current_status IN ('occupied','empty','out of order'))
 );
 -- -----------------------------------------------------
--- Table public.Transaction : Add check constraints
+-- Table public.Transactions : Add check constraints
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS Transaction ;
 
-CREATE TABLE IF NOT EXISTS public.Transaction (
+CREATE TABLE IF NOT EXISTS public.Transactions (
   transaction_id serial PRIMARY KEY,
   transaction_description TEXT NOT NULL,
   start_time TIMESTAMPTZ NOT NULL,
@@ -311,12 +327,11 @@ CREATE TABLE IF NOT EXISTS public.Transaction (
     CHECK (trans_status IN ('failed','pending','successful'))
 );
 
--- CREATE INDEX Transaction_Employee_idx ON public.Transaction (supervising_employee_id ASC) VISIBLE;
+-- CREATE INDEX Transaction_Employee_idx ON public.Transactions (supervising_employee_id ASC) VISIBLE;
 
 -- -----------------------------------------------------
 -- Table public.Booking : looks good
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS Booking ;
 
 CREATE TABLE IF NOT EXISTS public.Booking (
   booking_id serial PRIMARY KEY,
@@ -334,7 +349,7 @@ CREATE TABLE IF NOT EXISTS public.Booking (
     ON UPDATE NO ACTION,
   CONSTRAINT Booking_Transaction
     FOREIGN KEY (transaction_id)
-    REFERENCES public.Transaction (transaction_id)
+    REFERENCES public.Transactions (transaction_id)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT Booking_Status_Check
@@ -348,7 +363,6 @@ CREATE TABLE IF NOT EXISTS public.Booking (
 -- -----------------------------------------------------
 -- Table public.Booking_has_Tables : looks good
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS Booking_has_Tables ;
 
 CREATE TABLE IF NOT EXISTS public.Booking_has_Tables (
   booking_id INT NOT NULL,
@@ -361,7 +375,7 @@ CREATE TABLE IF NOT EXISTS public.Booking_has_Tables (
     ON UPDATE NO ACTION,
   CONSTRAINT Booking_has_Tables_Tables
     FOREIGN KEY (table_id)
-    REFERENCES public.Tables (table_id)
+    REFERENCES public.Tabless (table_id)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION
 );
@@ -373,7 +387,6 @@ CREATE TABLE IF NOT EXISTS public.Booking_has_Tables (
 -- -----------------------------------------------------
 -- Table public.Dish : looks good , see redundancies
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS Dish ;
 
 CREATE TABLE IF NOT EXISTS public.Dish (
   dish_id serial PRIMARY KEY,
@@ -398,7 +411,6 @@ CREATE TABLE IF NOT EXISTS public.Dish (
 -- -----------------------------------------------------
 -- Table public.Ingredients : looks good
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS Ingredients ;
 
 CREATE TABLE IF NOT EXISTS public.Ingredients (
   ingredient_id serial PRIMARY KEY,
@@ -413,7 +425,6 @@ CREATE TABLE IF NOT EXISTS public.Ingredients (
 -- -----------------------------------------------------
 -- Table public.Dish_has_Ingredients : looks good
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS Dish_has_Ingredients ;
 
 CREATE TABLE IF NOT EXISTS public.Dish_has_Ingredients (
   dish_id INT NOT NULL,
@@ -441,7 +452,6 @@ CREATE TABLE IF NOT EXISTS public.Dish_has_Ingredients (
 -- -----------------------------------------------------
 -- Table public.Cart : looks good
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS Cart ;
 
 CREATE TABLE IF NOT EXISTS public.Cart (
   Customer_customer_id INT NOT NULL,
@@ -469,7 +479,6 @@ CREATE TABLE IF NOT EXISTS public.Cart (
 -- -----------------------------------------------------
 -- Table public.Favourites : looks good
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS Favourites ;
 
 CREATE TABLE IF NOT EXISTS public.Favourites (
   Customer_customer_id INT NOT NULL,
@@ -494,7 +503,6 @@ CREATE TABLE IF NOT EXISTS public.Favourites (
 -- -----------------------------------------------------
 -- Table public.Rates : looks good
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS Rates ;
 
 CREATE TABLE IF NOT EXISTS public.Rates (
   Customer_customer_id INT NOT NULL,
@@ -523,7 +531,6 @@ CREATE TABLE IF NOT EXISTS public.Rates (
 -- -----------------------------------------------------
 -- Table public.Coupons : looks good (Redundant for now)
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS Coupons ;
 
 CREATE TABLE IF NOT EXISTS public.Coupons (
   code VARCHAR(10) PRIMARY KEY,
@@ -540,7 +547,6 @@ CREATE TABLE IF NOT EXISTS public.Coupons (
 -- -----------------------------------------------------
 -- Table public.Order : looks good
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS Orders ;
 
 CREATE TABLE IF NOT EXISTS public.Orders (
   order_id serial PRIMARY KEY,
@@ -563,7 +569,7 @@ CREATE TABLE IF NOT EXISTS public.Orders (
     ON UPDATE CASCADE,
   CONSTRAINT Order_Transaction
     FOREIGN KEY (transaction_id)
-    REFERENCES public.Transaction (transaction_id)
+    REFERENCES public.Transactions (transaction_id)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT Rating_Check
@@ -579,7 +585,6 @@ CREATE TABLE IF NOT EXISTS public.Orders (
 -- -----------------------------------------------------
 -- Table public.Delivery_Boy : looks good
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS Delivery_Boy ;
 
 CREATE TABLE IF NOT EXISTS public.Delivery_Boy (
   boy_status VARCHAR(20) NOT NULL,
@@ -599,7 +604,6 @@ CREATE TABLE IF NOT EXISTS public.Delivery_Boy (
 -- -----------------------------------------------------
 -- Table public.Online_order : looks good
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS Online_order ;
 
 CREATE TABLE IF NOT EXISTS public.Online_order (
   order_status VARCHAR(15) NOT NULL,
@@ -636,7 +640,6 @@ CREATE TABLE IF NOT EXISTS public.Online_order (
 -- -----------------------------------------------------
 -- Table public.Offline_order : looks good
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS Offline_order ;
 
 CREATE TABLE IF NOT EXISTS public.Offline_order (
   order_id INT NOT NULL,
@@ -660,7 +663,6 @@ CREATE TABLE IF NOT EXISTS public.Offline_order (
 -- -----------------------------------------------------
 -- Table public.Order_has_dish : looks good
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS Order_has_dish ;
 
 CREATE TABLE IF NOT EXISTS public.Order_has_dish (
   dish_id INT NOT NULL,
@@ -688,7 +690,6 @@ CREATE TABLE IF NOT EXISTS public.Order_has_dish (
 -- -----------------------------------------------------
 -- Table public.Ingredients_wasted : looks good
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS Ingredients_wasted ;
 
 CREATE TABLE IF NOT EXISTS public.Ingredients_wasted (
   ingredient_id INT NOT NULL,
@@ -714,7 +715,6 @@ CREATE TABLE IF NOT EXISTS public.Ingredients_wasted (
 -- -----------------------------------------------------
 -- Table public.Supply_Order : looks good
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS Supply_Order ;
 
 CREATE TABLE IF NOT EXISTS public.Supply_Order (
   ingredient_id INT NOT NULL,
@@ -731,7 +731,7 @@ CREATE TABLE IF NOT EXISTS public.Supply_Order (
     ON UPDATE CASCADE,
   CONSTRAINT Ingredients_has_Transaction_Transaction
     FOREIGN KEY (transaction_id)
-    REFERENCES public.Transaction (transaction_id)
+    REFERENCES public.Transactions (transaction_id)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT Quantity_Check
