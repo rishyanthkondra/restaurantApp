@@ -3,7 +3,6 @@
 -- -----------------------------------------------------
 SET timezone = 'Asia/Kolkata';
 -- Dont play with timezones as only one restaurant
--- Review the ON DELETE and ON UPDATE things
 DROP TABLE IF EXISTS Supply_Order ;
 DROP TABLE IF EXISTS Ingredients_wasted ;
 DROP TABLE IF EXISTS Order_has_dish ;
@@ -36,7 +35,7 @@ DROP TABLE IF EXISTS Roles ;
 DROP TABLE IF EXISTS Customer ;
 DROP TABLE IF EXISTS Details ;
 -- -----------------------------------------------------
--- Table public.Details
+-- Table public.Details : BCNF, looks good
 -- -----------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS public.Details (
@@ -51,7 +50,7 @@ CREATE TABLE IF NOT EXISTS public.Details (
 );
 
 -- -----------------------------------------------------
--- Table public.Customer : looks good,Null check done!
+-- Table public.Customer : BCNF, looks good
 -- -----------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS public.Customer (
@@ -64,7 +63,7 @@ CREATE TABLE IF NOT EXISTS public.Customer (
   CONSTRAINT Customer_Details
     FOREIGN KEY (details)
     REFERENCES public.Details (details_id)
-    ON DELETE SET NULL
+    ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT Account_Status_Check
     CHECK (account_status IN ('active','inactive','deleted'))
@@ -73,7 +72,7 @@ CREATE TABLE IF NOT EXISTS public.Customer (
 -- CREATE INDEX Customer_Details_idx ON public.Customer (details ASC) VISIBLE;
 
 -- -----------------------------------------------------
--- Table public.Roles : looks good, Null check done!
+-- Table public.Roles : BCNF, looks good
 -- -----------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS public.Roles (
@@ -83,14 +82,14 @@ CREATE TABLE IF NOT EXISTS public.Roles (
   CONSTRAINT Role_Supervisor
     FOREIGN KEY (supervisor_role)
     REFERENCES public.Roles (role_id)
-    ON DELETE SET NULL
+    ON DELETE CASCADE
     ON UPDATE CASCADE
 );
 
 -- CREATE INDEX Role_Supervisor_idx ON public.Role (supervisor_role ASC) VISIBLE;
 
 -- -----------------------------------------------------
--- Table public.Employee : looks good, Null check done!
+-- Table public.Employee : BCNF, looks good
 -- -----------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS public.Employee (
@@ -105,7 +104,7 @@ CREATE TABLE IF NOT EXISTS public.Employee (
   CONSTRAINT Employee_Details
     FOREIGN KEY (details)
     REFERENCES public.Details (details_id)
-    ON DELETE SET NULL
+    ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT Employee_Role
     FOREIGN KEY (role_id)
@@ -145,17 +144,17 @@ CREATE TABLE IF NOT EXISTS public.Employee (
 -- );
 
 -- -----------------------------------------------------
--- Table public.Address : SOME REDUNDANCIES, DO CHECK
+-- Table public.Address : BCNF, review decisions !!!
 -- -----------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS public.Address (
   address_id serial PRIMARY KEY,
   house_num VARCHAR(45) NOT NULL,
-  region VARCHAR(45) NOT NULL, -- redundant for one restaurant (some check constraint for regions)?
-  city VARCHAR(45) NOT NULL, -- redundant for one restaurant
-  country VARCHAR(45) NOT NULL, -- redundant for one restaurant
-  longitude DOUBLE PRECISION NOT NULL,
-  latitude DOUBLE PRECISION NOT NULL,
+  region VARCHAR(100) NOT NULL, -- Eg: Colony and Area,etc
+  -- city VARCHAR(45) NOT NULL, redundant for one restaurant
+  -- country VARCHAR(45) NOT NULL, redundant for one restaurant use if expansion
+  -- longitude DOUBLE PRECISION NOT NULL, drop this for now add if time permits
+  -- latitude DOUBLE PRECISION NOT NULL, drop this for now add if time permits
   belongs_to INT NOT NULL,
   symbol VARCHAR(45) NOT NULL, -- redundant predifined symbols
   alias VARCHAR(45) NOT NULL,
@@ -171,7 +170,7 @@ CREATE TABLE IF NOT EXISTS public.Address (
 -- CREATE INDEX Address_Details_idx ON public.Address (belongs_to ASC) VISIBLE;
 
 -- -----------------------------------------------------
--- Table public.Shift : looks good, Null checks done!
+-- Table public.Shift : BCNF, looks good
 -- -----------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS public.Shift (
@@ -181,7 +180,7 @@ CREATE TABLE IF NOT EXISTS public.Shift (
 );
 
 -- -----------------------------------------------------
--- Table public.Attendance : Maybe add smthng to check constraint
+-- Table public.Attendance : BCNF, looks good
 -- -----------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS public.Attendance (
@@ -195,17 +194,17 @@ CREATE TABLE IF NOT EXISTS public.Attendance (
   CONSTRAINT Attendance_Employee
     FOREIGN KEY (employee_id)
     REFERENCES public.Employee (employee_id)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT Attendance_Shift
     FOREIGN KEY (shift_id)
     REFERENCES public.Shift (shift_id)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT Attendance_Supervisor
     FOREIGN KEY (supervisor_id)
     REFERENCES public.Employee (employee_id)
-    ON DELETE NO ACTION
+    ON DELETE SET NULL
     ON UPDATE CASCADE,
   CONSTRAINT Attendance_Status_Check
     CHECK (attendance_status IN ('present','late'))
@@ -218,7 +217,7 @@ CREATE TABLE IF NOT EXISTS public.Attendance (
 -- CREATE INDEX Attendance_Supervisor_idx ON public.Attendance (supervisor_id ASC) VISIBLE;
 
 -- -----------------------------------------------------
--- Table public.Permissions : looks good
+-- Table public.Permissions : BCNF, looks good
 -- -----------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS public.Permissions(
@@ -227,7 +226,7 @@ CREATE TABLE IF NOT EXISTS public.Permissions(
 );
 
 -- -----------------------------------------------------
--- Table public.Wages : looks good
+-- Table public.Wages :  BCNF, looks good
 -- -----------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS public.Wages (
@@ -241,14 +240,14 @@ CREATE TABLE IF NOT EXISTS public.Wages (
   CONSTRAINT Wages_Employee
     FOREIGN KEY (employee_id)
     REFERENCES public.Employee (employee_id)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE CASCADE
 );
 
 -- CREATE INDEX Wages_Employee_idx ON public.Wages (employee_id ASC) VISIBLE;
 
 -- -----------------------------------------------------
--- Table public.Employee_has_Shift : looks good
+-- Table public.Employee_has_Shift : BCNF, looks good
 -- -----------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS public.Employee_Has_Shift (
@@ -272,7 +271,7 @@ CREATE TABLE IF NOT EXISTS public.Employee_Has_Shift (
 -- CREATE INDEX Employee_has_Shift_Employee_idx ON public.Employee_has_Shift (employee_id ASC) VISIBLE;
 
 -- -----------------------------------------------------
--- Table public.Role_has_Permissions : looks good
+-- Table public.Role_has_Permissions : BCNF, looks good
 -- -----------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS public.Roles_has_Permission (
@@ -296,7 +295,7 @@ CREATE TABLE IF NOT EXISTS public.Roles_has_Permission (
 -- CREATE INDEX Roles_has_Permission_Role1_idx ON public.Role_has_Permissions (role_id ASC) VISIBLE;
 
 -- -----------------------------------------------------
--- Table public.Tabless : looks good
+-- Table public.Tabless : BCNF, looks good
 -- -----------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS public.Tabless (
@@ -308,7 +307,7 @@ CREATE TABLE IF NOT EXISTS public.Tabless (
     CHECK (current_status IN ('occupied','empty','out of order'))
 );
 -- -----------------------------------------------------
--- Table public.Transactions : Add check constraints
+-- Table public.Transactions : !!! more to be discussed
 -- -----------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS public.Transactions (
@@ -330,7 +329,7 @@ CREATE TABLE IF NOT EXISTS public.Transactions (
 -- CREATE INDEX Transaction_Employee_idx ON public.Transactions (supervising_employee_id ASC) VISIBLE;
 
 -- -----------------------------------------------------
--- Table public.Booking : looks good
+-- Table public.Booking : BCNF, looks good
 -- -----------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS public.Booking (
@@ -345,13 +344,13 @@ CREATE TABLE IF NOT EXISTS public.Booking (
   CONSTRAINT Booking_Customer
     FOREIGN KEY (customer_id)
     REFERENCES public.Customer (customer_id)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT Booking_Transaction
     FOREIGN KEY (transaction_id)
     REFERENCES public.Transactions (transaction_id)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT Booking_Status_Check
     CHECK (booking_status IN ('pending','failed','successful'))
 );
@@ -361,7 +360,7 @@ CREATE TABLE IF NOT EXISTS public.Booking (
 -- CREATE INDEX Booking_Transaction_idx ON public.Booking (transaction_id ASC) VISIBLE;
 
 -- -----------------------------------------------------
--- Table public.Booking_has_Tables : looks good
+-- Table public.Booking_has_Tables : BCNF, looks good
 -- -----------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS public.Booking_has_Tables (
@@ -371,13 +370,13 @@ CREATE TABLE IF NOT EXISTS public.Booking_has_Tables (
   CONSTRAINT Booking_has_Tables_Booking
     FOREIGN KEY (booking_id)
     REFERENCES public.Booking (booking_id)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT Booking_has_Tables_Tables
     FOREIGN KEY (table_id)
     REFERENCES public.Tabless (table_id)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
 );
 
 -- CREATE INDEX Booking_has_Tables_Tables_idx ON public.Booking_has_Tables (table_id ASC) VISIBLE;
@@ -385,7 +384,8 @@ CREATE TABLE IF NOT EXISTS public.Booking_has_Tables (
 -- CREATE INDEX Booking_has_Tables_Booking_idx ON public.Booking_has_Tables (booking_id ASC) VISIBLE;
 
 -- -----------------------------------------------------
--- Table public.Dish : looks good , see redundancies
+-- Table public.Dish :
+-- BCNF, looks good !!! subtype->type ? 
 -- -----------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS public.Dish (
@@ -396,7 +396,7 @@ CREATE TABLE IF NOT EXISTS public.Dish (
   image_url VARCHAR(250) NOT NULL,
   dish_description TEXT NOT NULL,
   dish_availability VARCHAR(20) NOT NULL,
-  last_updated_on TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+  last_updated TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
   nutritional_info TEXT,
   health_info TEXT,
   cusine VARCHAR(45) NOT NULL,
@@ -409,7 +409,7 @@ CREATE TABLE IF NOT EXISTS public.Dish (
 );
 
 -- -----------------------------------------------------
--- Table public.Ingredients : looks good
+-- Table public.Ingredients : BCNF, looks good
 -- -----------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS public.Ingredients (
@@ -423,7 +423,7 @@ CREATE TABLE IF NOT EXISTS public.Ingredients (
 );
 
 -- -----------------------------------------------------
--- Table public.Dish_has_Ingredients : looks good
+-- Table public.Dish_has_Ingredients : BCNF, looks good
 -- -----------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS public.Dish_has_Ingredients (
@@ -450,7 +450,7 @@ CREATE TABLE IF NOT EXISTS public.Dish_has_Ingredients (
 -- CREATE INDEX Dish_has_Ingredients_Dish_idx ON public.Dish_has_Ingredients (dish_id ASC) VISIBLE;
 
 -- -----------------------------------------------------
--- Table public.Cart : looks good
+-- Table public.Cart : BCNF, looks good
 -- -----------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS public.Cart (
@@ -477,7 +477,7 @@ CREATE TABLE IF NOT EXISTS public.Cart (
 -- CREATE INDEX Customer_has_Dish_Customer_idx ON public.Cart (Customer_customer_id ASC) VISIBLE;
 
 -- -----------------------------------------------------
--- Table public.Favourites : looks good
+-- Table public.Favourites : BCNF, looks good
 -- -----------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS public.Favourites (
@@ -501,7 +501,7 @@ CREATE TABLE IF NOT EXISTS public.Favourites (
 -- CREATE INDEX Customer_has_Dish_Customer_idx ON public.Favourites (Customer_customer_id ASC) VISIBLE;
 
 -- -----------------------------------------------------
--- Table public.Rates : looks good
+-- Table public.Rates : BCNF, looks good
 -- -----------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS public.Rates (
@@ -529,7 +529,8 @@ CREATE TABLE IF NOT EXISTS public.Rates (
 -- CREATE INDEX Customer_has_Dish_Customer_idx ON public.Rates (Customer_customer_id ASC) VISIBLE;
 
 -- -----------------------------------------------------
--- Table public.Coupons : looks good (Redundant for now)
+-- Table public.Coupons : BCNF, looks good
+-- (Redundant for now)
 -- -----------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS public.Coupons (
@@ -545,7 +546,7 @@ CREATE TABLE IF NOT EXISTS public.Coupons (
 );
 
 -- -----------------------------------------------------
--- Table public.Order : looks good
+-- Table public.Order : BCNF, looks good
 -- -----------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS public.Orders (
@@ -583,7 +584,8 @@ CREATE TABLE IF NOT EXISTS public.Orders (
 -- CREATE INDEX Order_Transaction_idx ON public.Orders (transaction_id ASC) VISIBLE;
 
 -- -----------------------------------------------------
--- Table public.Delivery_Boy : looks good
+-- Table public.Delivery_Boy : BCNF, looks good
+-- specialization of Employee
 -- -----------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS public.Delivery_Boy (
@@ -595,14 +597,15 @@ CREATE TABLE IF NOT EXISTS public.Delivery_Boy (
   CONSTRAINT Delivery_Boy_Employee
     FOREIGN KEY (employee_id)
     REFERENCES public.Employee (employee_id)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT Boy_Status_Check
     CHECK (boy_status IN ('On delivery','Free'))
 );
 
 -- -----------------------------------------------------
--- Table public.Online_order : looks good
+-- Table public.Online_order : BCNF, looks good
+-- specialization of Orders
 -- -----------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS public.Online_order (
@@ -613,7 +616,7 @@ CREATE TABLE IF NOT EXISTS public.Online_order (
   delivery_charges INT NOT NULL,
   estimated_time TIMESTAMPTZ NOT NULL,
   delivery_boy_employee_id INT NOT NULL,
-  PRIMARY KEY (order_id, delivery_boy_employee_id),
+  PRIMARY KEY (order_id),
   CONSTRAINT Online_order_Order
     FOREIGN KEY (order_id)
     REFERENCES public.Orders (order_id)
@@ -638,7 +641,8 @@ CREATE TABLE IF NOT EXISTS public.Online_order (
 -- CREATE INDEX Online_order_Delivery_Boy_idx ON public.Online_order (delivery_boy_employee_id ASC) VISIBLE;
 
 -- -----------------------------------------------------
--- Table public.Offline_order : looks good
+-- Table public.Offline_order : BCNF, looks good
+-- specialization of Orders
 -- -----------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS public.Offline_order (
@@ -661,7 +665,7 @@ CREATE TABLE IF NOT EXISTS public.Offline_order (
 -- CREATE INDEX Offline_order_Employee_idx ON public.Offline_order (waiter_employee_id ASC) VISIBLE;
 
 -- -----------------------------------------------------
--- Table public.Order_has_dish : looks good
+-- Table public.Order_has_dish : BCNF, looks good
 -- -----------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS public.Order_has_dish (
@@ -688,7 +692,7 @@ CREATE TABLE IF NOT EXISTS public.Order_has_dish (
 -- CREATE INDEX Dish_has_Order_Dish_idx ON public.Order_has_dish (dish_id ASC) VISIBLE;
 
 -- -----------------------------------------------------
--- Table public.Ingredients_wasted : looks good
+-- Table public.Ingredients_wasted : BCNF, looks good
 -- -----------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS public.Ingredients_wasted (
@@ -713,7 +717,7 @@ CREATE TABLE IF NOT EXISTS public.Ingredients_wasted (
 -- CREATE INDEX Ingredients_has_Order_Ingredients_idx ON public.Ingredients_wasted (ingredient_id ASC) VISIBLE;
 
 -- -----------------------------------------------------
--- Table public.Supply_Order : looks good
+-- Table public.Supply_Order : BCNF, looks good
 -- -----------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS public.Supply_Order (
