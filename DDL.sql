@@ -4,8 +4,8 @@
 SET timezone = 'Asia/Kolkata';
 -- Dont play with timezones as only one restaurant
 -- Review the ON DELETE and ON UPDATE things
-DROP TABLE IF EXISTS Supply_Order ;
-DROP TABLE IF EXISTS Ingredients_wasted ;
+DROP TABLE IF EXISTS Supply_Order;
+DROP TABLE IF EXISTS Ingredients_wasted;
 DROP TABLE IF EXISTS Order_has_dish ;
 DROP TABLE IF EXISTS Offline_order ;
 DROP TABLE IF EXISTS Online_order ;
@@ -31,10 +31,10 @@ DROP TABLE IF EXISTS Shift ;
 DROP TABLE IF EXISTS Address ;
 -- DROP TABLE IF EXISTS Owners ; -- remove
 -- DROP TABLE IF EXISTS Announcement; -- remove
-DROP TABLE IF EXISTS Employee ;
-DROP TABLE IF EXISTS Roles ;
-DROP TABLE IF EXISTS Customer ;
-DROP TABLE IF EXISTS Details ;
+DROP TABLE IF EXISTS Employee;
+DROP TABLE IF EXISTS Roles;
+DROP TABLE IF EXISTS Customer;
+DROP TABLE IF EXISTS Details;
 -- -----------------------------------------------------
 -- Table public.Details
 -- -----------------------------------------------------
@@ -405,7 +405,7 @@ CREATE TABLE IF NOT EXISTS public.Dish (
   CONSTRAINT Dish_Availability_Check
     CHECK (dish_availability IN ('available','out of stock','unavailable')),
   CONSTRAINT Cusine_Check
-    CHECK (cusine IN ('Indian','Italian','American','Fusion','Other'))
+    CHECK (cusine IN ('Indian','Italian','American','Fusion'))
 );
 
 -- -----------------------------------------------------
