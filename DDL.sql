@@ -1,7 +1,7 @@
 -- -----------------------------------------------------
 -- Schema public
 -- -----------------------------------------------------
-SET timezone = 'India/Kolkata';
+SET timezone = 'Asia/Kolkata';
 -- Dont play with timezones as only one restaurant
 -- Review the ON DELETE and ON UPDATE things
 -- -----------------------------------------------------
@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS public.Details (
   email VARCHAR(225),
   phone_number VARCHAR(15) NOT NULL, -- OVERKILL ? 
   date_of_birth DATE,
-  gender VARCHAR(10) CHECK(gender IN ('other','male','female')),
+  gender VARCHAR(10) CHECK(gender IN ('other','male','female'))
 );
 
 -- -----------------------------------------------------
@@ -82,7 +82,7 @@ CREATE TABLE IF NOT EXISTS public.Employee (
     ON UPDATE CASCADE,
   CONSTRAINT Employee_Role
     FOREIGN KEY (role_id)
-    REFERENCES public.Role (role_id)
+    REFERENCES public.Roles (role_id)
     ON DELETE SET NULL
     ON UPDATE CASCADE,
   CONSTRAINT Work_Status_Check
@@ -104,7 +104,7 @@ CREATE TABLE IF NOT EXISTS public.Announcement (
   announcement_id serial PRIMARY KEY,
   announcement_text TEXT NOT NULL,
   created_on TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  expires_on TIMESTAMPTZ NOT NULL,
+  expires_on TIMESTAMPTZ NOT NULL
 );
 
 -- -----------------------------------------------------
@@ -116,7 +116,7 @@ CREATE TABLE IF NOT EXISTS public.Owners (
   owner_id serial PRIMARY KEY,
   first_name VARCHAR(45) NOT NULL,
   middle_name VARCHAR(45),
-  last_name VARCHAR(45) NOT NULL,
+  last_name VARCHAR(45) NOT NULL
 );
 
 -- -----------------------------------------------------
@@ -154,7 +154,7 @@ DROP TABLE IF EXISTS Shift ;
 CREATE TABLE IF NOT EXISTS public.Shift (
   shift_id serial PRIMARY KEY,
   start_hours TIME NOT NULL,
-  end_hours TIME NOT NULL,
+  end_hours TIME NOT NULL
 );
 
 -- -----------------------------------------------------
@@ -202,7 +202,7 @@ DROP TABLE IF EXISTS Permission;
 
 CREATE TABLE IF NOT EXISTS public.Permission(
   permission_id serial PRIMARY KEY,
-  permitted_action TEXT NOT NULL,
+  permitted_action TEXT NOT NULL
 );
 
 -- -----------------------------------------------------
@@ -407,7 +407,7 @@ CREATE TABLE IF NOT EXISTS public.Ingredients (
   image_url VARCHAR(250) NOT NULL,
   unit VARCHAR(45) NOT NULL,
   cost_per_unit DOUBLE PRECISION NOT NULL,
-  last_updated TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  last_updated TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 -- -----------------------------------------------------
@@ -523,7 +523,7 @@ CREATE TABLE IF NOT EXISTS public.Rates (
 -- -----------------------------------------------------
 -- Table public.Coupons : looks good (Redundant for now)
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS public.Coupons ;
+DROP TABLE IF EXISTS Coupons ;
 
 CREATE TABLE IF NOT EXISTS public.Coupons (
   code VARCHAR(10) PRIMARY KEY,
@@ -540,9 +540,9 @@ CREATE TABLE IF NOT EXISTS public.Coupons (
 -- -----------------------------------------------------
 -- Table public.Order : looks good
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS Order ;
+DROP TABLE IF EXISTS Orders ;
 
-CREATE TABLE IF NOT EXISTS public.Order (
+CREATE TABLE IF NOT EXISTS public.Orders (
   order_id serial PRIMARY KEY,
   cost INT NOT NULL,
   Coupons_code VARCHAR(10) NULL,
@@ -570,11 +570,11 @@ CREATE TABLE IF NOT EXISTS public.Order (
     CHECK (rating <= 5 OR rating >= 0)
 );
 
--- CREATE INDEX Order_Coupons_idx ON public.Order (Coupons_code ASC) VISIBLE;
+-- CREATE INDEX Order_Coupons_idx ON public.Orders (Coupons_code ASC) VISIBLE;
 
--- CREATE INDEX Order_Customer_idx ON public.Order (customer_id ASC) VISIBLE;
+-- CREATE INDEX Order_Customer_idx ON public.Orders (customer_id ASC) VISIBLE;
 
--- CREATE INDEX Order_Transaction_idx ON public.Order (transaction_id ASC) VISIBLE;
+-- CREATE INDEX Order_Transaction_idx ON public.Orders (transaction_id ASC) VISIBLE;
 
 -- -----------------------------------------------------
 -- Table public.Delivery_Boy : looks good
@@ -612,7 +612,7 @@ CREATE TABLE IF NOT EXISTS public.Online_order (
   PRIMARY KEY (order_id, delivery_boy_employee_id),
   CONSTRAINT Online_order_Order
     FOREIGN KEY (order_id)
-    REFERENCES public.Order (order_id)
+    REFERENCES public.Orders (order_id)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT Online_order_Address
@@ -645,7 +645,7 @@ CREATE TABLE IF NOT EXISTS public.Offline_order (
   PRIMARY KEY (order_id),
   CONSTRAINT Offline_order_Order
     FOREIGN KEY (order_id)
-    REFERENCES public.Order (order_id)
+    REFERENCES public.Orders (order_id)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT Offline_order_Employee
@@ -674,7 +674,7 @@ CREATE TABLE IF NOT EXISTS public.Order_has_dish (
     ON UPDATE CASCADE,
   CONSTRAINT Dish_has_Order_Order
     FOREIGN KEY (order_id)
-    REFERENCES public.Order (order_id)
+    REFERENCES public.Orders (order_id)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT Servings_Check
@@ -702,7 +702,7 @@ CREATE TABLE IF NOT EXISTS public.Ingredients_wasted (
     ON UPDATE CASCADE,
   CONSTRAINT Ingredients_has_Order_Order
     FOREIGN KEY (order_id)
-    REFERENCES public.Order (order_id)
+    REFERENCES public.Orders (order_id)
     ON DELETE CASCADE
     ON UPDATE CASCADE
 );
