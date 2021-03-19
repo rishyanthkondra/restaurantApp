@@ -379,7 +379,8 @@ CREATE TABLE IF NOT EXISTS public.Dish (
   dish_id serial PRIMARY KEY,
   dish_name VARCHAR(45) NOT NULL,
   cost_per_unit INT NOT NULL,
-  currency VARCHAR(10) NOT NULL, -- Redundancy
+  --currency VARCHAR(10) NOT NULL, -- Redundancy
+  image_url VARCHAR(250) NOT NULL,
   dish_description TEXT NOT NULL,
   dish_availability VARCHAR(20) NOT NULL,
   last_updated_on TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
@@ -403,6 +404,7 @@ CREATE TABLE IF NOT EXISTS public.Ingredients (
   ingredient_id serial PRIMARY KEY,
   ingredient_name VARCHAR(45) NOT NULL,
   ingredient_description TEXT NOT NULL,
+  image_url VARCHAR(250) NOT NULL,
   unit VARCHAR(45) NOT NULL,
   cost_per_unit DOUBLE PRECISION NOT NULL,
   last_updated TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -710,7 +712,7 @@ CREATE TABLE IF NOT EXISTS public.Ingredients_wasted (
 -- CREATE INDEX Ingredients_has_Order_Ingredients_idx ON public.Ingredients_wasted (ingredient_id ASC) VISIBLE;
 
 -- -----------------------------------------------------
--- Table public.Supply_Order
+-- Table public.Supply_Order : looks good
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS Supply_Order ;
 
