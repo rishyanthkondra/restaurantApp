@@ -395,7 +395,7 @@ CREATE TABLE IF NOT EXISTS public.Dish (
   --currency VARCHAR(10) NOT NULL, -- Redundancy
   image_url VARCHAR(250) NOT NULL,
   dish_description TEXT NOT NULL,
-  dish_availability VARCHAR(20) NOT NULL,
+  dish_availability VARCHAR(20) NOT NULL DEFAULT 'available',
   last_updated TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
   nutritional_info TEXT,
   health_info TEXT,
@@ -405,7 +405,9 @@ CREATE TABLE IF NOT EXISTS public.Dish (
   CONSTRAINT Dish_Availability_Check
     CHECK (dish_availability IN ('available','out of stock','unavailable')),
   CONSTRAINT Cusine_Check
-    CHECK (cusine IN ('Indian','Italian','American','Fusion'))
+    CHECK (cusine IN ('Indian','Italian','American','Fusion')),
+  CONSTRAINT Dish_Type_Check
+    CHECK (dish_type IN ('Vegetarian','Non Vegetarian','Vegan'))
 );
 
 -- -----------------------------------------------------
