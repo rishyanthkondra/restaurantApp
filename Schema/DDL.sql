@@ -69,7 +69,7 @@ CREATE TABLE IF NOT EXISTS public.Customer (
     CHECK (account_status IN ('active','inactive','deleted'))
 );
 
--- CREATE INDEX Customer_Details_idx ON public.Customer (details ASC) VISIBLE;
+CREATE INDEX "Customer_Details_idx" ON public.Customer USING btree(details);
 
 -- -----------------------------------------------------
 -- Table public.Roles : BCNF, looks good
@@ -117,7 +117,7 @@ CREATE TABLE IF NOT EXISTS public.Employee (
     CHECK (work_type IN ('permanent','temporary','internship'))
 );
 
--- CREATE INDEX Employee_Details_idx ON public.Employee (details ASC) VISIBLE;
+CREATE INDEX "Employee_Details_idx" ON public.Employee USING btree(details);
 
 -- CREATE INDEX Employee_Role_idx ON public.Employee (role_id ASC) VISIBLE;
 
@@ -167,7 +167,7 @@ CREATE TABLE IF NOT EXISTS public.Address (
     ON UPDATE CASCADE
 );
 
--- CREATE INDEX Address_Details_idx ON public.Address (belongs_to ASC) VISIBLE;
+CREATE INDEX "Address_Details_idx" ON public.Address USING btree(belongs_to);
 
 -- -----------------------------------------------------
 -- Table public.Shift : BCNF, looks good
@@ -446,9 +446,7 @@ CREATE TABLE IF NOT EXISTS public.Dish_has_Ingredients (
     CHECK (quantity > 0)
 );
 
--- CREATE INDEX Dish_has_Ingredients_Ingredients_idx ON public.Dish_has_Ingredients (ingredient_id ASC) VISIBLE;
-
--- CREATE INDEX Dish_has_Ingredients_Dish_idx ON public.Dish_has_Ingredients (dish_id ASC) VISIBLE;
+CREATE INDEX "Dish_has_Ingredients_Ingredients_idx" ON public.Dish_has_Ingredients USING btree(ingredient_id,dish_id);
 
 -- -----------------------------------------------------
 -- Table public.Cart : BCNF, looks good
@@ -497,9 +495,7 @@ CREATE TABLE IF NOT EXISTS public.Favourites (
     ON UPDATE CASCADE
 );
 
--- CREATE INDEX Customer_has_Dish_Dish_idx ON public.Favourites (Dish_dish_id ASC) VISIBLE;
-
--- CREATE INDEX Customer_has_Dish_Customer_idx ON public.Favourites (Customer_customer_id ASC) VISIBLE;
+CREATE INDEX "Favourites_Customer_has_Dish_Dish_idx" ON public.Favourites USING btree(Dish_dish_id ASC,Customer_customer_id);
 
 -- -----------------------------------------------------
 -- Table public.Rates : BCNF, looks good
@@ -525,9 +521,7 @@ CREATE TABLE IF NOT EXISTS public.Rates (
     CHECK (rating <= 5 OR rating >= 0)
 );
 
--- CREATE INDEX Customer_has_Dish_Dish_idx ON public.Rates (Dish_dish_id ASC) VISIBLE;
-
--- CREATE INDEX Customer_has_Dish_Customer_idx ON public.Rates (Customer_customer_id ASC) VISIBLE;
+CREATE INDEX "Rates_Customer_has_Dish_Dish_idx" ON public.Rates USING btree(Dish_dish_id,Customer_customer_id);
 
 -- -----------------------------------------------------
 -- Table public.Coupons : BCNF, looks good
@@ -580,7 +574,7 @@ CREATE TABLE IF NOT EXISTS public.Orders (
 
 -- CREATE INDEX Order_Coupons_idx ON public.Orders (Coupons_code ASC) VISIBLE;
 
--- CREATE INDEX Order_Customer_idx ON public.Orders (customer_id ASC) VISIBLE;
+CREATE INDEX "Order_Customer_idx" ON public.Orders USING btree(customer_id);
 
 -- CREATE INDEX Order_Transaction_idx ON public.Orders (transaction_id ASC) VISIBLE;
 
@@ -637,9 +631,7 @@ CREATE TABLE IF NOT EXISTS public.Online_order (
     CHECK (order_status IN ('confirmed','rejected','pending'))
 );
 
--- CREATE INDEX Online_order_Address_idx ON public.Online_order (delivery_address_id ASC) VISIBLE;
-
--- CREATE INDEX Online_order_Delivery_Boy_idx ON public.Online_order (delivery_boy_employee_id ASC) VISIBLE;
+CREATE INDEX "Online_order_Address_idx" ON public.Online_order USING  btree(delivery_address_id,delivery_boy_employee_id);
 
 -- -----------------------------------------------------
 -- Table public.Offline_order : BCNF, looks good
@@ -688,9 +680,7 @@ CREATE TABLE IF NOT EXISTS public.Order_has_dish (
     CHECK (servings > 0)
 );
 
--- CREATE INDEX Dish_has_Order_Order_idx ON public.Order_has_dish (order_id ASC) VISIBLE;
-
--- CREATE INDEX Dish_has_Order_Dish_idx ON public.Order_has_dish (dish_id ASC) VISIBLE;
+CREATE INDEX "Dish_has_Order_Order_idx" ON public.Order_has_dish USING btree(order_id,dish_id ASC);
 
 -- -----------------------------------------------------
 -- Table public.Ingredients_wasted : BCNF, looks good
