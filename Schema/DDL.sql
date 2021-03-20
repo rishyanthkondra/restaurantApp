@@ -144,7 +144,7 @@ CREATE TABLE IF NOT EXISTS public.Employee (
 -- );
 
 -- -----------------------------------------------------
--- Table public.Address : BCNF, review decisions !!!
+-- Table public.Address : BCNF
 -- -----------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS public.Address (
@@ -307,7 +307,7 @@ CREATE TABLE IF NOT EXISTS public.Tabless (
     CHECK (current_status IN ('occupied','empty','out of order'))
 );
 -- -----------------------------------------------------
--- Table public.Transactions : !!! more to be discussed
+-- Table public.Transactions : BCNF, looks good
 -- -----------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS public.Transactions (
@@ -384,8 +384,7 @@ CREATE TABLE IF NOT EXISTS public.Booking_has_Tables (
 -- CREATE INDEX Booking_has_Tables_Booking_idx ON public.Booking_has_Tables (booking_id ASC) VISIBLE;
 
 -- -----------------------------------------------------
--- Table public.Dish :
--- BCNF, looks good !!! subtype->type ? 
+-- Table public.Dish : BCNF, looks good
 -- -----------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS public.Dish (
