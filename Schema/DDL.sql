@@ -43,17 +43,17 @@ CREATE TABLE IF NOT EXISTS public.Details (
   first_name VARCHAR(45) NOT NULL,
   middle_name VARCHAR(45),
   last_name VARCHAR(45) NOT NULL,
-  email VARCHAR(225),
+  email VARCHAR(225) NOT NULL UNIQUE, -- change
   phone_number VARCHAR(15) NOT NULL,
   date_of_birth DATE,
-  gender VARCHAR(10) CHECK(gender IN ('other','male','female'))
+  gender VARCHAR(10) CHECK(gender IN ('other','male','female')),
 );
 
 -- -----------------------------------------------------
 -- Table public.Customer : BCNF, looks good
 -- -----------------------------------------------------
 
-CREATE TABLE IF NOT EXISTS public.Customer (
+CREATE TABLE IF NOT EXISTS public.Customer ( -- change this make details as details_id and make p.k remove customer_id
   customer_id serial PRIMARY KEY,
   registered_on TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
   account_status VARCHAR(10) NOT NULL DEFAULT 'active',
@@ -92,11 +92,11 @@ CREATE TABLE IF NOT EXISTS public.Roles (
 -- Table public.Employee : BCNF, looks good
 -- -----------------------------------------------------
 
-CREATE TABLE IF NOT EXISTS public.Employee (
+CREATE TABLE IF NOT EXISTS public.Employee ( -- change this make details as details_id and make p.k remove employee_id
   employee_id serial PRIMARY KEY,
   joined_on TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
   work_status VARCHAR(20) NOT NULL,
-  left_on TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  left_on TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP, -- change this
   work_type VARCHAR(20) NOT NULL,
   details INT NOT NULL,
   current_wage INT NOT NULL,
