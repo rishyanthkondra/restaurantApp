@@ -1,0 +1,139 @@
+<%- include('../includes/head.ejs') %>
+<link rel="stylesheet" href="/css/forms.css">
+<style>
+    table {
+      width:100%;
+    }
+    table, th, td {
+      border: 1px solid black;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 15px;
+      text-align: left;
+    }
+    #t01 tr:nth-child(even) {
+      background-color: #eee;
+    }
+    #t01 tr:nth-child(odd) {
+     background-color: #fff;
+    }
+    #t01 th {
+      background-color: black;
+      color: white;
+    }
+    </style>
+</head>
+
+<body>
+<%- include('../includes/navigation.ejs') %>
+
+<main>
+
+    <form action="http://localhost:3000/transactions" method="POST">
+        <label for="start_date">Start Date:</label>
+        <input type="date" id="start_date" name="start_date" value= <%= start_date %> >
+        <label for="end_date">End Date:</label>
+        <input type="date" id="end_date" name="end_date" value= <%= end_date %> >
+        <input type="submit">
+    </form>
+      
+    <!-- <form action="http://localhost:3000/orders" method="POST">
+        <button type="submit">Buy</button>
+    </form> -->
+
+    <h2>Successful Transactions</h2>
+
+    <% if(s_trans.length > 0) { %>
+
+    <table id="t01">
+        <tr>
+            <th>Transaction ID</th>
+            <th>Description</th>
+            <th>Time</th>
+            <th>Amount</th>
+            <th>Supervising Employee</th>
+            <th>Employee Name</th>
+          </tr>
+        <% for(var i=0; i < s_trans.length; i++) { total = total+s_trans[i].cost; %>
+            <tr>
+                <td> <%= s_trans[i].transaction_id %> </td>
+                <td> <%= s_trans[i].transaction_description %> </td>
+                <td> <%= s_trans[i].start_time %> </td>
+                <td> <%= s_trans[i].cost %> </td>
+                <td> <%= s_trans[i].supervising_employee_id %> </td>
+                <td> <%= s_trans[i].first_name %> <%= s_trans[i].middle_name %> <%= s_trans[i].last_name %> </td>
+            </tr>
+         <% } %>
+    </table>
+
+    <h4>Total: Rs <%= total %> </h4>
+
+    <% } else { %>
+        <h3>No successful transactions were made in the selected period</h3>
+    <% } %>
+
+    <h2>Pending Purchases</h2>
+
+    <% if(p_trans.length > 0) { total = 0; %>
+
+        <table id="t01">
+            <tr>
+                <th>Transaction ID</th>
+                <th>Description</th>
+                <th>Time</th>
+                <th>Amount</th>
+                <th>Supervising Employee</th>
+                <th>Employee Name</th>
+              </tr>
+            <% for(var i=0; i < p_trans.length; i++) { total = total+p_trans[i].cost; %>
+                <tr>
+                    <td> <%= p_trans[i].transaction_id %> </td>
+                    <td> <%= p_trans[i].transaction_description %> </td>
+                    <td> <%= p_trans[i].start_time %> </td>
+                    <td> <%= p_trans[i].cost %> </td>
+                    <td> <%= p_trans[i].supervising_employee_id %> </td>
+                    <td> <%= p_trans[i].first_name %> <%= p_trans[i].middle_name %> <%= p_trans[i].last_name %> </td>
+                </tr>
+             <% } %>
+        </table>
+    
+        <h4>Total: Rs <%= total %> </h4>
+
+    <% } else { %>
+        <h3>No pending transactions are there from the selected period</h3>
+    <% } %>
+
+    <h2>Failed transactions</h2>
+
+    <% if(f_trans.length > 0) { total = 0; %>
+
+        <table id="t01">
+            <tr>
+                <th>Transaction ID</th>
+                <th>Description</th>
+                <th>Time</th>
+                <th>Amount</th>
+                <th>Supervising Employee</th>
+                <th>Employee Name</th>
+              </tr>
+            <% for(var i=0; i < f_trans.length; i++) { total = total+f_trans[i].cost; %>
+                <tr>
+                    <td> <%= f_trans[i].transaction_id %> </td>
+                    <td> <%= f_trans[i].transaction_description %> </td>
+                    <td> <%= f_trans[i].start_time %> </td>
+                    <td> <%= f_trans[i].cost %> </td>
+                    <td> <%= f_trans[i].supervising_employee_id %> </td>
+                    <td> <%= f_trans[i].first_name %> <%= f_trans[i].middle_name %> <%= f_trans[i].last_name %> </td>
+                </tr>
+             <% } %>
+        </table>
+    
+        <h4>Total: Rs <%= total %> </h4>
+
+    <% } else { %>
+        <h3>No transactions were failed in the selected period</h3>
+    <% } %>
+
+</main>
+<%- include('../includes/end.ejs') %>
