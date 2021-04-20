@@ -1,0 +1,90 @@
+<%- include('../includes/head.ejs') %>
+<link rel="stylesheet" href="/css/forms.css">
+<link rel="stylesheet" href="/css/product.css">
+</head>
+
+<body>
+<%- include('../includes/navigation.ejs') %>
+
+<main>
+    <h2>Employee details</h2>
+    <form class="product-form" action="http://localhost:3000/<%if(editing){%>employees/<%= emp_data.employee_id %>/<%= emp_data.details %><%}else{%>recruit<%}%>" method="POST">
+        <div class="form-control">
+            <label for="first_name">First name</label>
+            <input type="text" name="first_name" id="first_name" value="<% if (editing) { %><%= emp_data.first_name %><% } %>" autofocus required>
+        </div>
+        <div class="form-control">
+            <label for="middle_name">Middle name</label>
+            <input type="text" name="middle_name" id="middle_name" value="<% if (editing) { %><%= emp_data.middle_name %><% } %>">
+        </div>
+        <div class="form-control">
+            <label for="last_name">Last name</label>
+            <input type="text" name="last_name" id="last_name" value="<% if (editing) { %><%= emp_data.last_name %><% } %>" required>
+        </div>
+        <div class="form-control">
+            <label for="gender">Gender</label>
+            <select name="gender" id="gender">
+            <option value="male" <% if (editing && emp_data.gender == 'male') { %> selected <% } %> >Male</option>
+            <option value="female" <% if (editing&&emp_data.gender == 'female') { %> selected <% } %> >Female</option>
+            <option value="other" <% if (editing&&emp_data.gender == 'other') { %> selected <% } %> >Other</option>
+            </select>
+        </div>
+        <div class="form-control">
+            <label for="phone">Phone</label>
+            <input type="tel" name="phone" id="phone"  pattern="[0-9]{10}" value="<% if (editing) { %><%= emp_data.phone_number %><% } %>" required>
+        </div>
+        <div class="form-control">
+            <label for="email">Email</label>
+            <input type="email" name="email" id="email" value="<% if (editing) { %><%= emp_data.email %><% } %>">
+        </div>
+        <div class="form-control">
+            <label for="dob">Date of Birth</label>
+            <input type="date" name="dob" id="dob" value="<% if (editing) { %><%= dob %><% } %>" required>
+        </div>
+        <div class="form-control">
+            <label for="role">Role</label>
+            <select name="role" id="role">
+                <% for(var i=0; i < roles.length; i++) { 
+                    if(editing && emp_data.role_id == roles[i].role_id) {%>
+                    <option value= "<%= roles[i].role_id %>" selected> <%= roles[i].role_name %> </option>
+                 <% } else {%>
+                    <option value= "<%= roles[i].role_id %>"> <%= roles[i].role_name %> </option>
+                    <%} }%>
+            </select>
+        </div>
+        <div class="form-control">
+            <label for="wage">Wage</label>
+            <input type="number" name="wage" id="wage" value="<% if (editing) { %><%= emp_data.current_wage %><% } %>" required>
+        </div>
+        <div class="form-control">
+            <label for="work_type">Work type</label>
+            <select name="work_type" id="work_type" required>
+                <% for(var i=0; i < work_types.length; i++) { 
+                    if (editing&&emp_data.work_type == work_types[i]) {%>
+                    <option value= "<%= work_types[i] %>" selected> <%= work_types[i] %> </option>
+                 <% } else {%>
+                    <option value= "<%= work_types[i] %>"> <%= work_types[i] %> </option>
+                    <%} }%>
+            </select>
+        </div>
+
+        <%if (editing) { %>
+
+        <div class="form-control">
+            <label for="work_status">Work status</label>
+            <select name="work_status" id="work_status" required>
+                <% for(var i=0; i < work_status.length; i++) { 
+                    if (editing&&emp_data.work_status == work_status[i]) {%>
+                    <option value= "<%= work_status[i] %>" selected> <%= work_status[i] %> </option>
+                 <% } else {%>
+                    <option value= "<%= work_status[i] %>"> <%= work_status[i] %> </option>
+                    <%} }%>
+            </select>
+        </div>
+
+        <% } %>
+
+        <button class="btn" type="submit"><% if (editing) { %>Update details<% } else { %>Add Employee<% } %></button>
+    </form>
+</main>
+<%- include('../includes/end.ejs') %>

@@ -1,0 +1,35 @@
+<%- include('../includes/head.ejs') %>
+<link rel="stylesheet" href="/css/forms.css">
+<link rel="stylesheet" href="/css/product.css">
+</head>
+
+<body>
+<%- include('../includes/navigation.ejs') %>
+
+<main>
+    <div class="grid">
+        <% for(var i=0; i < items.length; i++) { %>
+            <article class="card product-item">
+                <header class="card__header">
+                    <h1 class="product__title">
+                        <%= items[i].title %>
+                    </h1>
+                </header>
+                <div class="card__image">
+                    <img src="<%= items[i].image%>" width="50" height="150" alt="<%= items[i].title%>">
+                </div>
+                <div class="card__content">
+                    <h3 class="product__price">Price: <%= items[i].price%></h3>
+                    <h3 class="product__description">Quantity: <%= items[i].quantity%></h3>
+                </div>
+                <div class="card__actions">
+                    <form action="/cart" method="post">
+                        <button class="btn" type="submit">Add to Cart</button>
+                        <input type="hidden" name="product_id" value="<%= items[i].id%>">
+                    </form>
+                </div>
+            </article>
+         <% } %>
+    </div>
+</main>
+<%- include('../includes/end.ejs') %>

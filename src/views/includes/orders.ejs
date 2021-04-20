@@ -1,0 +1,30 @@
+<%- include('../includes/head.ejs') %>
+<link rel="stylesheet" href="/css/forms.css">
+<link rel="stylesheet" href="/css/product.css">
+<link rel="stylesheet" href="/css/cart.css">
+</head>
+
+<body>
+<%- include('../includes/navigation.ejs') %>
+
+<main>
+    <div class="grid">
+        <% for(var i=0; i < items.length; i++) { %>
+            <article class="card product-item">
+                <header class="card__header">
+                    <h1 class="product__title">
+                        <%= items[i].title %>
+                    </h1>
+                </header>
+                <div class="card__image">
+                    <img src="<%=items[i].image%>" width="50" height="150" alt="<%=items[i].title%>">
+                </div>
+                <div class="card__content">
+                    <h2 class="product__price">$ <%=items[i].price%></h2>
+                    <p class="product__description">Qt Ord: <%=items[i].quantity%></p>
+                </div>
+            </article>
+         <% } %>
+    </div>
+</main>
+<%- include('../includes/end.ejs') %>

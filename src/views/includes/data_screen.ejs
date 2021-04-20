@@ -1,0 +1,89 @@
+<%- include('../includes/head.ejs') %>
+<link rel="stylesheet" href="/css/forms.css">
+<style>
+    table {
+      width:100%;
+    }
+    table, th, td {
+      border: 1px solid black;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 15px;
+      text-align: left;
+    }
+    #t01 tr:nth-child(even) {
+      background-color: #eee;
+    }
+    #t01 tr:nth-child(odd) {
+     background-color: #fff;
+    }
+    #t01 th {
+      background-color: black;
+      color: white;
+    }
+    </style>
+</head>
+
+<body>
+<%- include('../includes/navigation.ejs') %>
+
+<main>
+
+    <form action="http://localhost:3000/statistics" method="POST">
+        <label for="start_date">Start Date:</label>
+        <input type="date" id="start_date" name="start_date" value= <%= start_date %> >
+        <label for="end_date">End Date:</label>
+        <input type="date" id="end_date" name="end_date" value= <%= end_date %> >
+        <input type="submit">
+    </form>
+      
+    <!-- <form action="http://localhost:3000/orders" method="POST">
+        <button type="submit">Buy</button>
+    </form> -->
+
+    <h2>Dish stats</h2>
+
+    <% if(dishes.length > 0) { %>
+
+    <table id="t01">
+        <tr>
+            <th>Dish name</th>
+            <th>Quantity cooked</th>
+          </tr>
+        <% for(var i=0; i < dishes.length; i++) { %>
+            <tr>
+                <td> <%= dishes[i].dish_name %> </td>
+                <td> <%= dishes[i].count %> </td>
+            </tr>
+         <% } %>
+    </table>
+
+    <% } else { %>
+        <h3>No dishes were cooked in the selected period</h3>
+        <% } %>
+
+
+    <h2>Ingredient stats</h2>
+
+    <% if(ings.length > 0) { %>
+
+    <table id="t01">
+        <tr>
+            <th>Ingredient name</th>
+            <th>Quantity used</th>
+          </tr>
+        <% for(var i=0; i < ings.length; i++) { %>
+            <tr>
+                <td> <%= ings[i].ingredient_name %> </td>
+                <td> <%= ings[i].count %> </td>
+            </tr>
+         <% } %>
+    </table>
+
+    <% } else { %>
+        <h3>No ingredients were used in the selected period</h3>
+        <% } %>
+
+</main>
+<%- include('../includes/end.ejs') %>

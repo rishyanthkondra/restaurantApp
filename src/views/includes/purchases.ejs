@@ -1,0 +1,121 @@
+<%- include('../includes/head.ejs') %>
+<link rel="stylesheet" href="/css/forms.css">
+<style>
+    table {
+      width:100%;
+    }
+    table, th, td {
+      border: 1px solid black;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 15px;
+      text-align: left;
+    }
+    #t01 tr:nth-child(even) {
+      background-color: #eee;
+    }
+    #t01 tr:nth-child(odd) {
+     background-color: #fff;
+    }
+    #t01 th {
+      background-color: black;
+      color: white;
+    }
+    </style>
+</head>
+
+<body>
+<%- include('../includes/navigation.ejs') %>
+
+<main>
+
+    <form action="http://localhost:3000/purchases" method="POST">
+        <label for="start_date">Start Date:</label>
+        <input type="date" id="start_date" name="start_date" value= <%= start_date %> >
+        <label for="end_date">End Date:</label>
+        <input type="date" id="end_date" name="end_date" value= <%= end_date %> >
+        <input type="submit">
+    </form>
+      
+    <!-- <form action="http://localhost:3000/orders" method="POST">
+        <button type="submit">Buy</button>
+    </form> -->
+
+    <h2>Successful Purchases</h2>
+
+    <% if(s_purs.length > 0) { %>
+
+    <table id="t01">
+        <tr>
+            <th>Item name</th>
+            <th>Quantity purchased</th>
+            <th>Money spent(in Rupees)</th>
+          </tr>
+        <% for(var i=0; i < s_purs.length; i++) { total = total+s_purs[i].count*s_purs[i].cost_per_unit; %>
+            <tr>
+                <td> <%= s_purs[i].ingredient_name %> </td>
+                <td> <%= s_purs[i].count %> </td>
+                <td> <%= s_purs[i].count*s_purs[i].cost_per_unit %> </td>
+            </tr>
+         <% } %>
+    </table>
+
+    <h4>Total: Rs <%= total %> </h4>
+
+    <% } else { %>
+        <h3>No successful purchases were made in the selected period</h3>
+    <% } %>
+
+    <h2>Pending Purchases</h2>
+
+    <% if(p_purs.length > 0) { total = 0; %>
+
+    <table id="t01">
+        <tr>
+            <th>Item name</th>
+            <th>Quantity purchased</th>
+            <th>Money spent(in Rupees)</th>
+          </tr>
+        <% for(var i=0; i < p_purs.length; i++) { total = total+p_purs[i].count*p_purs[i].cost_per_unit; %>
+            <tr>
+                <td> <%= p_purs[i].ingredient_name %> </td>
+                <td> <%= p_purs[i].count %> </td>
+                <td> <%= p_purs[i].count*p_purs[i].cost_per_unit %> </td>
+            </tr>
+         <% } %>
+    </table>
+
+    <h4>Total: Rs <%= total %> </h4>
+
+    <% } else { %>
+        <h3>No pending purchases are there from the selected period</h3>
+    <% } %>
+
+    <h2>Failed Purchases</h2>
+
+    <% if(f_purs.length > 0) { total = 0; %>
+
+    <table id="t01">
+        <tr>
+            <th>Item name</th>
+            <th>Quantity purchased</th>
+            <th>Amount(in Rupees)</th>
+          </tr>
+        <% for(var i=0; i < f_purs.length; i++) { total = total+f_purs[i].count*f_purs[i].cost_per_unit; %>
+            <tr>
+                <td> <%= f_purs[i].ingredient_name %> </td>
+                <td> <%= f_purs[i].count %> </td>
+                <td> <%= f_purs[i].count*f_purs[i].cost_per_unit %> </td>
+            </tr>
+         <% } %>
+    </table>
+
+    <h4>Total: Rs <%= total %> </h4>
+
+    <% } else { %>
+        <h3>No purchases were failed in the selected period</h3>
+    <% } %>
+
+</main>
+<%- include('../includes/end.ejs') %>

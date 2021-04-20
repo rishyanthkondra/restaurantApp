@@ -1,0 +1,58 @@
+<%- include('../includes/head.ejs') %>
+<link rel="stylesheet" href="/css/forms.css">
+<style>
+    table {
+      width:100%;
+    }
+    table, th, td {
+      border: 1px solid black;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 15px;
+      text-align: left;
+    }
+    #t01 tr:nth-child(even) {
+      background-color: #eee;
+    }
+    #t01 tr:nth-child(odd) {
+     background-color: #fff;
+    }
+    #t01 th {
+      background-color: black;
+      color: white;
+    }
+    </style>
+</head>
+
+<body>
+<%- include('../includes/navigation.ejs') %>
+
+<main>
+
+    <h2>Employee details</h2>
+
+    <% if(emps.length > 0) { %>
+
+    <table id="t01">
+        <tr>
+            <th>Employee ID</th>
+            <th>Employee name</th>
+            <th>Role</th>
+        </tr>
+        <% for(var i=0; i < emps.length; i++) { %>
+            <tr>
+                <td> <%= emps[i].employee_id %> </td>
+                <td><a href="http://localhost:3000/employees/<%= emps[i].employee_id %>"> <%= emps[i].first_name %> <%= emps[i].middle_name %> <%= emps[i].last_name %> </a></td>
+                <td> <%= emps[i].role_name %> </td>
+            </tr>
+         <% } %>
+    </table>
+
+    <% } else { %>
+        <h3>There are no Employees</h3>
+        <% } %>
+
+</main>
+<%- include('../includes/end.ejs') %>
+  
