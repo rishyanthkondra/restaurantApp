@@ -15,6 +15,7 @@ const transactions = require('./routes/transactions');
 const recruit = require('./routes/recruit');
 const emp = require('./routes/employees');
 
+const menu = require('./routes/menu');
 
 const app = express();
 app.set('view engine', 'ejs');
@@ -33,5 +34,7 @@ app.use('/purchases',purchases);
 app.use('/transactions',transactions);
 app.use('/recruit',recruit);
 app.use('/employees',emp);
+
+app.use('/menu',menu);
 
 app.listen(3000);
