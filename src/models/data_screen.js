@@ -31,7 +31,7 @@ module.exports = class Data_screen{
     }
 
     get_trans(start_date,end_date){
-        return pool.query(`select * from (transactions INNER JOIN employee ON transactions.supervising_employee_id = employee.employee_id) INNER JOIN details ON details.details_id = employee.details
+        return pool.query(`select * from (transactions INNER JOIN employee ON transactions.supervising_employee_id = employee.employee_id) INNER JOIN details ON details.details_id = employee.employee_id
         where start_time >= $1::date and start_time <= $2::date`,[start_date,end_date]);
     }
 

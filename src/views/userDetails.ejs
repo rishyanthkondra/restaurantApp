@@ -1,0 +1,136 @@
+<%- include('includes/head.ejs') %>
+<link rel="stylesheet" href="/css/forms.css">
+<link rel="stylesheet" href="/css/product.css">
+</head>
+
+<body>
+    <main>
+        <div class = "grid">
+            <div class="grid">
+                <div class="card__image">
+                        <img src="<%=image%>" height="160" alt="<%=first_name%>">
+                </div>
+            </div>
+            <form class="product-form" 
+            action="<%= 'http://localhost:3000/userDetails/'+ String(details_id) +'/edit-details'%>"
+             method="POST">
+                <fieldset>
+                    <legend>Personal Details : </legend>
+                    <div class="form-control">
+                        <label for="first_name">First Name</label>
+                        <input type="text" name="first_name" id="first_name" value="<%= first_name %>">
+                    </div>
+                    <div class="form-control">
+                        <label for="last_name">Last Name</label>
+                        <input type="text" name="last_name" id="last_name" value="<%= last_name %>">
+                    </div>
+                    <div class="form-control">
+                        <label for="email">Email </label>
+                        <input type="text" name="email" id="email" value="<%= email %>" readonly>
+                    </div>
+                    <div class="form-control">
+                        <label for="phone_number">Phone Number</label>
+                        <input type="number" maxlength="15" minlength="10" pattern="^[0-9]*$" 
+                        id="phone_number" name="phone_number" value= <%= phone_number %> >
+                    </div>
+                    <div class="form-control">
+                        <label for="date_of_birth">Date of Birth</label>
+                        <input type="date" id="" name="date_of_birth" value= <%= date_of_birth %> >
+                    </div>
+                    <div class="form-control">
+                        <label for="gender">Gender</label>
+                        <select id="gender" name="gender">
+                            <% if(gender == "male"){%>
+                            <option value="male" selected>male</option>
+                            <%}else{%>
+                            <option value="male">male</option>
+                            <%}%><% if(gender == "female"){%>
+                            <option value="female" selected>female</option>
+                            <%}else{%>
+                            <option value="female">female</option>
+                            <%}%><% if(gender == "other"){%>
+                            <option value="other" selected>other</option>
+                            <%}else{%>
+                            <option value="other">other</option>
+                            <%}%>
+                        </select>
+                    </div>
+                    <button class="btn" type="submit"> Update Details</button>
+                </fieldset>
+            </form>
+            <div class="grid">
+                <% for(var i=0; i < addresses.length; i++) { %>
+                    <form class="product-form" 
+                        action="<%= 'http://localhost:3000/userDetails/'+ String(details_id) +'/edit-address/'
+                        +String(addresses[i].address_id)%>" 
+                        method="POST">
+                        <fieldset>
+                            <legend>Address Details : </legend>
+                            <div class="form-control">
+                                <label for="alias">Name</label>
+                                <input type="text" name="alias" minlength="5" id="alias" value="<%= addresses[i].alias %>">
+                            </div>
+                            <div class="form-control">
+                                <label for="symbol">Symbol</label>
+                                <select id="symbol" name="symbol">
+                                    <% if(addresses[i].symbol == "home"){%>
+                                    <option value="home" selected>home</option>
+                                    <%}else{%>
+                                    <option value="home">home</option>
+                                    <%}%><% if(addresses[i].symbol == "work"){%>
+                                    <option value="work" selected>work</option>
+                                    <%}else{%>
+                                    <option value="work">work</option>
+                                    <%}%><% if(addresses[i].symbol == "other"){%>
+                                    <option value="other" selected>other</option>
+                                    <%}else{%>
+                                    <option value="other">other</option>
+                                    <%}%>
+                                </select>
+                            </div>
+                            <div class="form-control">
+                                <label for="house_num">House Number</label>
+                                <input type="text" name="house_num" minlength="5" id="alias" value="<%= addresses[i].house_num %>">
+                            </div>
+                            <div class="form-control">
+                                <label for="region">Region</label>
+                                <input type="text" name="region" minlength="5" id="region" value="<%= addresses[i].region %>">
+                            </div>
+                            <button class="btn" type="submit"> Update Address</button>
+                            <button class="btn" type="submit" formaction="<%= 'http://localhost:3000/userDetails/'+ String(details_id) +'/delete-address/'
+                            +String(addresses[i].address_id)%>" > Delete Address</button>
+                        </fieldset>
+                    </form>
+                <% } %>
+                <form class="product-form" 
+                    action="<%= 'http://localhost:3000/userDetails/'+ String(details_id) +'/add-address/'%>"
+                    method="POST">
+                    <fieldset>
+                        <legend>Address Details : </legend>
+                        <div class="form-control">
+                            <label for="alias">Name</label>
+                            <input type="text" minlength="5" name="alias" id="alias">
+                        </div>
+                        <div class="form-control">
+                            <label for="symbol">Symbol</label>
+                            <select id="symbol" name="symbol">
+                                <option value="home">home</option>
+                                <option value="work">work</option>
+                                <option value="other">other</option>
+                            </select>
+                        </div>
+                        <div class="form-control">
+                            <label for="house_num">House Number</label>
+                            <input type="text" minlength="5" name="house_num" id="alias">
+                        </div>
+                        <div class="form-control">
+                            <label for="region">Region</label>
+                            <input type="text" minlength="5" name="region" id="region">
+                        </div>
+                        <button class="btn" type="submit"> Add Address</button>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </main>
+<%- include('includes/end.ejs') %>

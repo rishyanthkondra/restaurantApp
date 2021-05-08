@@ -41,12 +41,11 @@ DROP TABLE IF EXISTS Details ;
 CREATE TABLE IF NOT EXISTS public.Details (
   details_id serial PRIMARY KEY,
   first_name VARCHAR(45) NOT NULL,
-  middle_name VARCHAR(45),
   last_name VARCHAR(45) NOT NULL,
   email VARCHAR(225) NOT NULL UNIQUE, -- change
-  phone_number VARCHAR(15) NOT NULL,
+  phone_number VARCHAR(15),
   date_of_birth DATE,
-  gender VARCHAR(10) CHECK(gender IN ('other','male','female')),
+  gender VARCHAR(10) CHECK(gender IN ('other','male','female'))
 );
 
 -- -----------------------------------------------------
@@ -54,14 +53,13 @@ CREATE TABLE IF NOT EXISTS public.Details (
 -- -----------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS public.Customer ( -- change this make details as details_id and make p.k remove customer_id
-  customer_id serial PRIMARY KEY,
+  customer_id INT PRIMARY KEY,
   registered_on TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
   account_status VARCHAR(10) NOT NULL DEFAULT 'active',
   left_on TIMESTAMPTZ,
-  last_login TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  details INT NOT NULL,
+  --last_login TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP, -- scrapped this waste
   CONSTRAINT Customer_Details
-    FOREIGN KEY (details)
+    FOREIGN KEY (customer_id)
     REFERENCES public.Details (details_id)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
@@ -69,7 +67,6 @@ CREATE TABLE IF NOT EXISTS public.Customer ( -- change this make details as deta
     CHECK (account_status IN ('active','inactive','deleted'))
 );
 
-CREATE INDEX "Customer_Details_idx" ON public.Customer USING btree(details);
 
 -- -----------------------------------------------------
 -- Table public.Roles : BCNF, looks good
@@ -93,16 +90,15 @@ CREATE TABLE IF NOT EXISTS public.Roles (
 -- -----------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS public.Employee ( -- change this make details as details_id and make p.k remove employee_id
-  employee_id serial PRIMARY KEY,
+  employee_id  INT PRIMARY KEY,
   joined_on TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
   work_status VARCHAR(20) NOT NULL,
   left_on TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP, -- change this
   work_type VARCHAR(20) NOT NULL,
-  details INT NOT NULL,
   current_wage INT NOT NULL,
   role_id INT NOT NULL,
   CONSTRAINT Employee_Details
-    FOREIGN KEY (details)
+    FOREIGN KEY (employee_id)
     REFERENCES public.Details (details_id)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
@@ -117,7 +113,7 @@ CREATE TABLE IF NOT EXISTS public.Employee ( -- change this make details as deta
     CHECK (work_type IN ('permanent','temporary','internship'))
 );
 
-CREATE INDEX "Employee_Details_idx" ON public.Employee USING btree(details);
+
 
 -- CREATE INDEX Employee_Role_idx ON public.Employee (role_id ASC) VISIBLE;
 
@@ -480,40 +476,40 @@ CREATE TABLE IF NOT EXISTS public.Cart (
 -- -----------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS public.Favourites (
-  Customer_customer_id INT NOT NULL,
-  Dish_dish_id INT NOT NULL,
-  PRIMARY KEY (Customer_customer_id, Dish_dish_id),
+  customer_id INT NOT NULL, -- changed here
+  dish_id INT NOT NULL, -- changed here
+  PRIMARY KEY (customer_id,dish_id),
   CONSTRAINT Customer_has_Dish_Customer
-    FOREIGN KEY (Customer_customer_id)
+    FOREIGN KEY (customer_id)
     REFERENCES public.Customer (customer_id)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT Customer_has_Dish_Dish
-    FOREIGN KEY (Dish_dish_id)
+    FOREIGN KEY (dish_id)
     REFERENCES public.Dish (dish_id)
     ON DELETE CASCADE
     ON UPDATE CASCADE
 );
 
-CREATE INDEX "Favourites_Customer_has_Dish_Dish_idx" ON public.Favourites USING btree(Dish_dish_id ASC,Customer_customer_id);
+CREATE INDEX "Favourites_Customer_has_Dish_Dish_idx" ON public.Favourites USING btree(dish_id ASC,customer_id);
 
 -- -----------------------------------------------------
 -- Table public.Rates : BCNF, looks good
 -- -----------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS public.Rates (
-  Customer_customer_id INT NOT NULL,
-  Dish_dish_id INT NOT NULL,
+  customer_id INT NOT NULL, -- changed name here
+  dish_id INT NOT NULL, -- here too
   rating INT NOT NULL,
   review TEXT,
-  PRIMARY KEY (Customer_customer_id, Dish_dish_id),
+  PRIMARY KEY (customer_id,dish_id),
   CONSTRAINT Customer_has_Dish_Customer
-    FOREIGN KEY (Customer_customer_id)
+    FOREIGN KEY (customer_id)
     REFERENCES public.Customer (customer_id)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT Customer_has_Dish_Dish
-    FOREIGN KEY (Dish_dish_id)
+    FOREIGN KEY (dish_id)
     REFERENCES public.Dish (dish_id)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
@@ -521,7 +517,7 @@ CREATE TABLE IF NOT EXISTS public.Rates (
     CHECK (rating <= 5 OR rating >= 0)
 );
 
-CREATE INDEX "Rates_Customer_has_Dish_Dish_idx" ON public.Rates USING btree(Dish_dish_id,Customer_customer_id);
+CREATE INDEX "Rates_Customer_has_Dish_Dish_idx" ON public.Rates USING btree(dish_id,customer_id);
 
 -- -----------------------------------------------------
 -- Table public.Coupons : BCNF, looks good
