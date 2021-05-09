@@ -11,7 +11,7 @@
         <% for(var i=0; i < ilist.length; i++) { %>
             <div class="form-control">
                 <label for=ilist[i].ingredient_id> <%= ilist[i].ingredient_name %> </label>
-                <input type="number" name=ilist[i].ingredient_id id=<%= ilist[i].ingredient_name %>  value="<%= ilist[i].quantity %>">
+                <input type="number" name=ilist[i].ingredient_id id=<%= ilist[i].ingredient_name %> min = "0" value="<%= ilist[i].quantity %>">
             </div>
         <% } %>
         <button class="btn" type="submit">Update</button>
