@@ -27,6 +27,24 @@
                 <div class="card__content">
                     <h3 class="product__price">Quantity: <%= dishes[i].quantity  %></h3>
                 </div>
+                <div class="card__actions">
+                    <form action="/menu/increment" method="post">
+                        <button class="btn" type="submit">+</button>
+                        <input type="hidden" name="dish_id" value=<%= dishes[i].id %> >
+                    </form>
+                </div>
+                <div class="card__actions">
+                    <form action="/menu/decrement" method="post">
+                        <button class="btn" type="submit">-</button>
+                        <input type="hidden" name="dish_id" value=<%= dishes[i].id %> >
+                    </form>
+                </div>
+                <div class="card__actions">
+                    <form action="/menu" method="get">
+                        <button class="btn" type="submit">back</button>
+                        <!-- <input type="hidden" name="dish_id" value=<%= dishes[i].id %> > -->
+                    </form>
+                </div>
             </article>
         <% } %>
 

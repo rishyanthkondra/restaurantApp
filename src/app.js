@@ -44,6 +44,9 @@ const paytm = require('./routes/paytm');
 const menu = require('./routes/menu');
 const cart = require('./routes/cart');
 const orders = require('./routes/orders');
+const allot = require('./routes/allot_order');
+const deli = require('./routes/delboys');
+const conf = require('./routes/confirm');
 
 //---------------------- Endpoint Baseurls ---------------------//
 
@@ -63,6 +66,9 @@ app.use('/paytm',paytm);
 app.use('/menu',menu);
 app.use('/cart',cart);
 app.use('/orders',orders);
+app.use('/current_orders',allot);
+app.use('/delboys',deli);
+app.use('/pending_orders',conf);
 
 //////////////////////////////////////////////////////////////////
 ///////////////////// SERVING ////////////////////////////////////

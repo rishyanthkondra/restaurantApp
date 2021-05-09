@@ -9,8 +9,11 @@
 
 <main>
 
-    <form action="/menu/dish_add"+ method="post">
-        <button class="btn" type="submit">add</button>
+    <form action="/menu/dish_add" method="post">
+        <button class="btn" type="submit">add dish</button>
+    </form>
+    <form action="/menu/ing_add" method="post">
+        <button class="btn" type="submit">add ingredient</button>
     </form>
 
     <div class="grid">
@@ -47,6 +50,12 @@
                 <div class="card__actions">
                     <form action="/menu/delete" method="post">
                         <button class="btn" type="submit">delete</button>
+                        <input type="hidden" name="dish_id" value=<%= dishes[i].id %> >
+                    </form>
+                </div>
+                <div class="card__actions">
+                    <form action="/menu/recipe" method="post">
+                        <button class="btn" type="submit">Recipe</button>
                         <input type="hidden" name="dish_id" value=<%= dishes[i].id %> >
                     </form>
                 </div>
