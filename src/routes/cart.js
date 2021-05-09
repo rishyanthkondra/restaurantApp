@@ -7,7 +7,7 @@ const router = express.Router();
 
 
 router.get('/',cartCon.get_cart);
-router.post('/',cartCon.post_cart);
+// router.post('/',cartCon.post_cart);
 
 
 module.exports = router;
