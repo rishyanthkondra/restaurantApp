@@ -35,6 +35,7 @@ app.use((req, res, next) => {
 const homeRoute = require('./routes/home');
 const userHomeRoute = require('./routes/userHome');
 const userDetailsRoute = require('./routes/userDetails');
+const bookingsRoute = require('./routes/bookings');
 const data_screen = require('./routes/data_screen');
 const purchases = require('./routes/purchases');
 const transactions = require('./routes/transactions');
@@ -48,7 +49,7 @@ app.use('/home',homeRoute);
 // customer related : 
 app.use('/userHome',userHomeRoute);
 app.use('/userDetails',userDetailsRoute);
-
+app.use('/bookings',bookingsRoute);
 
 app.use('/statistics',data_screen);
 app.use('/purchases',purchases);

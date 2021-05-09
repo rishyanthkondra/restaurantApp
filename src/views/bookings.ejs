@@ -1,0 +1,41 @@
+<%- include('includes/head.ejs') %>
+<link rel="stylesheet" href="/css/forms.css">
+<link rel="stylesheet" href="/css/product.css">
+</head>
+
+<body>
+    <main>
+        <div class = "grid">
+                <fieldset>
+                    <legend>New Booking : </legend>
+                    <form class="" 
+                            action="http://localhost:3000/bookings/"
+                            method="POST">
+                        <div style="background-image: url('/images/Tables.png');background-attachment: fixed;
+                        background-position: center;
+                        background-repeat: no-repeat;
+                        background-size: contain;">
+                            <!--img src="/images/Tables.png" width="60%" alt="None"-->
+                            <input type = "checkbox" style="position: relative; top: 1%; left:1%;" name="table1" value="true">
+                        </div>
+                        <div class="grid" style="display: inline-block;">
+                            <fieldset>
+                                <legend>Select Date Time : </legend>
+                                <div class="form-control">
+                                    <label for="date">Date</label>
+                                    <input type="date" min="10-05-2021" name="date" id="date" required>
+                                </div>
+                                <div class="form-control">
+                                    <label for="time">Time</label>
+                                    <input type="time" min="11:00" max="21:00" step=3600 name="time" id="time" required>
+                                </div>
+                                <button class="btn" type="submit" 
+                                onclick="return confirm('Request free tables at selected time?')">
+                                Get Free Tables</button>
+                            </fieldset>
+                        </div>
+                    </form>
+                </fieldset>
+        </div>
+    </main>
+<%- include('includes/end.ejs') %>
