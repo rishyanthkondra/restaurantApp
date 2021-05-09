@@ -3,7 +3,7 @@ const config = require("../Paytm/config");
 const https = require("https");
 const qs = require("querystring");
 
-const formidable =  require('formidable');
+// const formidable =  require('formidable');
 
 
 exports.paytmcallback = (req, res) => {
