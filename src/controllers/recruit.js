@@ -18,7 +18,6 @@ exports.get_form = async (req,res,next) => {
 exports.post_form = async (req,res,next) => {
     const recitem = new Data_screen();
     var first_name = req.body.first_name;
-    var middle_name = req.body.middle_name;
     var last_name = req.body.last_name;
     var phone = req.body.phone;
     var email = req.body.email;
@@ -30,6 +29,6 @@ exports.post_form = async (req,res,next) => {
     if(!email){
         email = null;
     }
-    await recitem.new_employee(first_name,middle_name,last_name,phone,email,dob,role,wage,gender,work_type);
+    await recitem.new_employee(first_name,last_name,phone,email,dob,role,wage,gender,work_type);
     res.redirect('/employees');
 };

@@ -39,23 +39,23 @@ module.exports = class Data_screen{
         return pool.query('select * from roles');
     }
 
-    async new_employee(first_name,middle_name,last_name,phone,email,dob,role,wage,gender,work_type,work_status='active'){
-         var details = await pool.query(`INSERT INTO details(first_name,middle_name,last_name,email,phone_number,date_of_birth,gender) VALUES($1,$2,$3,$4,$5,$6,$7) 
-         RETURNING details_id`,[first_name,middle_name,last_name,email,phone,dob,gender]);
-         var emp = await pool.query("INSERT INTO employee(work_status,work_type,details,current_wage,role_id) VALUES($5,$1,$2,$3,$4)",[work_type,details.rows[0].details_id,wage,role,work_status]);
+    async new_employee(first_name,last_name,phone,email,dob,role,wage,gender,work_type,work_status='active'){
+         var details = await pool.query(`INSERT INTO details(first_name,last_name,email,phone_number,date_of_birth,gender) VALUES($1,$2,$3,$4,$5,$6) 
+         RETURNING details_id`,[first_name,last_name,email,phone,dob,gender]);
+         var emp = await pool.query("INSERT INTO employee(employee_id, work_status,work_type,current_wage,role_id) VALUES($5,$1,$2,$3,$4)",[work_type,details.rows[0].details_id,wage,role,work_status]);
     }
 
     get_emps(){
-        return pool.query('SELECT * from (employee INNER JOIN details ON employee.details = details.details_id) INNER JOIN Roles ON employee.role_id = roles.role_id');
+        return pool.query('SELECT * from (employee INNER JOIN details ON employee.employee_id = details.details_id) INNER JOIN Roles ON employee.role_id = roles.role_id');
     }
 
     get_emp(empid){
-        return pool.query('SELECT * from employee INNER JOIN details ON employee.details = details.details_id WHERE employee.employee_id=$1',[empid]);
+        return pool.query('SELECT * from employee INNER JOIN details ON employee.employee_id = details.details_id WHERE employee.employee_id=$1',[empid]);
     }
 
-    async update_employee(empid,details_id,first_name,middle_name,last_name,phone,email,dob,role,wage,gender,work_type,work_status){
-        var details = await pool.query(`UPDATE details SET first_name = $1,middle_name=$2,last_name=$3,email=$4,phone_number=$5,date_of_birth=$6,gender=$7
-         WHERE details_id = $8`,[first_name,middle_name,last_name,email,phone,dob,gender,details_id]);
+    async update_employee(empid,details_id,first_name,last_name,phone,email,dob,role,wage,gender,work_type,work_status){
+        var details = await pool.query(`UPDATE details SET first_name = $1,last_name=$2,email=$3,phone_number=$4,date_of_birth=$5,gender=$6
+         WHERE details_id = $7`,[first_name,last_name,email,phone,dob,gender,details_id]);
         var emp = await pool.query("UPDATE employee SET work_status=$1,work_type=$2,current_wage=$3,role_id=$4 WHERE employee_id=$5",[work_status,work_type,wage,role,empid]);
    }
 

@@ -42,7 +42,6 @@ exports.get_emp = async (req,res,next) => {
 exports.post_emp = async (req,res,next) => {
     const recitem = new Data_screen();
     var first_name = req.body.first_name;
-    var middle_name = req.body.middle_name;
     var last_name = req.body.last_name;
     var phone = req.body.phone;
     var email = req.body.email;
@@ -55,6 +54,6 @@ exports.post_emp = async (req,res,next) => {
     if(!email){
         email = null;
     }
-    await recitem.update_employee(req.params.empid,req.params.did,first_name,middle_name,last_name,phone,email,dob,role,wage,gender,work_type,work_status);
+    await recitem.update_employee(req.params.empid,req.params.did,first_name,last_name,phone,email,dob,role,wage,gender,work_type,work_status);
     res.redirect('/employees');
 };
