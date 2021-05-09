@@ -8,7 +8,6 @@
 <%- include('../includes/navigation.ejs') %>
 
 <main>
-    <h2>Credits available: <%=credits%></h2>
     <form action="http://localhost:3000/orders" method="POST">
         <button type="submit">Buy</button>
     </form>
@@ -24,7 +23,8 @@
                     <img src="<%=items[i].image%>" width="50" height="150" alt="<%=items[i].title%>">
                 </div>
                 <div class="card__content">
-                    <h2 class="product__price">$ <%=items[i].price%></h2>
+                    <h2 class="product__price">$ <%=items[i].cost_per_unit%></h2>
+                    <p class="product__description">Description: <%=items[i].dish_description%></p>
                     <p class="product__description">Qt Ord: <%=items[i].quantity%></p>
                 </div>
             </article>

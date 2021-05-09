@@ -23,13 +23,14 @@ module.exports = class Orders{
         return pool.query('UPDATE users set credit = credit-$1 where user_id = 1;',[cartvalue]);
     }
 
-    order_cond(){
-        return pool.query('SELECT * FROM cart where user_id = 1');
+    order_cond(cusId){
+        return pool.query('SELECT * FROM cart where customer_customer_id = $1;',[cusId]);
     }
 
 
-    get_cartvalue(){
-        return pool.query('SELECT sum(products.price*cart.quantity) as cartvalue FROM cart inner join products on cart.item_id = products.id where cart.user_id = 1 group by cart.user_id;');
+    get_cartvalue(cusId){
+        // return pool.query('SELECT sum(products.price*cart.quantity) as cartvalue FROM cart inner join products on cart.item_id = products.id where cart.user_id = 1 group by cart.user_id;');
+        return pool.query('SELECT sum(dish.cost_per_unit*cart.quantity) as cartvalue FROM cart inner join dish on cart.dish_dish_id = dish.dish_id where cart.customer_customer_id = $1 group by cart.customer_customer_id;',[cusId])
     }
     get_credits(){
         return pool.query('SELECT credit from users where user_id = 1');

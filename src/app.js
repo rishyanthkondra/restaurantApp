@@ -14,6 +14,7 @@ const purchases = require('./routes/purchases');
 const transactions = require('./routes/transactions');
 const recruit = require('./routes/recruit');
 const emp = require('./routes/employees');
+const paytm = require('./routes/paytm');
 
 
 const app = express();
@@ -33,5 +34,6 @@ app.use('/purchases',purchases);
 app.use('/transactions',transactions);
 app.use('/recruit',recruit);
 app.use('/employees',emp);
+app.use('/paytm',paytm);
 
 app.listen(3000);
