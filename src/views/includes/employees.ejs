@@ -43,7 +43,7 @@
         <% for(var i=0; i < emps.length; i++) { %>
             <tr>
                 <td> <%= emps[i].employee_id %> </td>
-                <td><a href="http://localhost:3000/employees/<%= emps[i].employee_id %>"> <%= emps[i].first_name %> <%= emps[i].middle_name %> <%= emps[i].last_name %> </a></td>
+                <td><a href="http://localhost:3000/employees/<%= emps[i].employee_id %>"> <%= emps[i].first_name %> <%= emps[i].last_name %> </a></td>
                 <td> <%= emps[i].role_name %> </td>
             </tr>
          <% } %>

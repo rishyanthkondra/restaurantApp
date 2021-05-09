@@ -41,6 +41,13 @@ const purchases = require('./routes/purchases');
 const transactions = require('./routes/transactions');
 const recruit = require('./routes/recruit');
 const emp = require('./routes/employees');
+const paytm = require('./routes/paytm');
+const menu = require('./routes/menu');
+const cart = require('./routes/cart');
+const orders = require('./routes/orders');
+const allot = require('./routes/allot_order');
+const deli = require('./routes/delboys');
+const conf = require('./routes/confirm');
 
 //---------------------- Endpoint Baseurls ---------------------//
 
@@ -56,6 +63,13 @@ app.use('/purchases',purchases);
 app.use('/transactions',transactions);
 app.use('/recruit',recruit);
 app.use('/employees',emp);
+app.use('/paytm',paytm);
+app.use('/menu',menu);
+app.use('/cart',cart);
+app.use('/orders',orders);
+app.use('/current_orders',allot);
+app.use('/delboys',deli);
+app.use('/pending_orders',conf);
 
 //////////////////////////////////////////////////////////////////
 ///////////////////// SERVING ////////////////////////////////////

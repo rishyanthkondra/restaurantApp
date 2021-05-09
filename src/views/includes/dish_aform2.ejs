@@ -1,0 +1,25 @@
+<%- include('../includes/head.ejs') %>
+<link rel="stylesheet" href="/css/forms.css">
+<link rel="stylesheet" href="/css/product.css">
+</head>
+
+<body>
+<%- include('../includes/navigation.ejs') %>
+
+<main>
+    <form action="/menu/addit2" method="post">
+        <% for(var i=0; i < ilist.length; i++) { %>
+            <div class="form-control">
+                <label for=ilist[i].ingredient_id> <%= ilist[i].ingredient_name %> </label>
+                <input type="number" name=ilist[i].ingredient_id id=<%= ilist[i].ingredient_name %> min = "0" value="0">
+            </div>
+        <% } %>
+        <button class="btn" type="submit">Submit</button>
+        <input type="hidden" name="dish_id" value=<%= dish_id %> >
+    </form>
+    <form class="product-form" action="/menu"+ method="get">
+        <button class="btn" type="submit">Cancel</button>
+    </form>
+</main>
+<%- include('../includes/end.ejs') %>
+

@@ -1,0 +1,66 @@
+<%- include('../includes/head.ejs') %>
+<link rel="stylesheet" href="/css/forms.css">
+<link rel="stylesheet" href="/css/product.css">
+<link rel="stylesheet" href="/css/cart.css">
+</head>
+
+<body>
+<%- include('../includes/navigation.ejs') %>
+
+<main>
+
+    <form action="/menu/dish_add" method="post">
+        <button class="btn" type="submit">add dish</button>
+    </form>
+    <form action="/menu/ing_add" method="post">
+        <button class="btn" type="submit">add ingredient</button>
+    </form>
+
+    <div class="grid">
+        <% for(var i=0; i < dishes.length; i++) { %>
+
+            <article class="card product-item">                
+                <header class="card__header">
+                    <h1 class="card__title"><%= dishes[i].name %></h1>
+                </header>
+                <div class="card__image">
+                    <img src="<%= dishes[i].image %>" height="150px" alt="<%= dishes[i].title %>">
+                    <p class="card__description"><%= dishes[i].description  %></p>
+                </div>
+                <div class="card__content">
+                    <h3 class="product__price">Price: <%= dishes[i].price  %></h3>
+                </div>
+                <div class="card__content">
+                    <h3 class="product__price">Rating: <%= dishes[i].rating  %>/5</h3>
+                </div>
+                <div class="card__actions">
+                    <form action="/menu/atc" method="post">
+                        <button class="btn" type="submit">ATC</button>
+                        <input type="hidden" name="dish_id" value=<%= dishes[i].id %> >
+                    </form>
+                </div>
+                <div class="card__actions">
+                    <form action="/menu/update" method="post">
+                        <button class="btn" type="submit">update</button>
+                        <input type="hidden" name="dish_id" value=<%= dishes[i].id %> >
+                    </form>
+                </div>
+                <div class="card__actions">
+                    <form action="/menu/delete" method="post">
+                        <button class="btn" type="submit">delete</button>
+                        <input type="hidden" name="dish_id" value=<%= dishes[i].id %> >
+                    </form>
+                </div>
+                <div class="card__actions">
+                    <form action="/menu/recipe" method="post">
+                        <button class="btn" type="submit">Recipe</button>
+                        <input type="hidden" name="dish_id" value=<%= dishes[i].id %> >
+                    </form>
+                </div>
+            </article>
+        <% } %>
+
+    </div>
+</main>
+
+<%- include('../includes/end.ejs') %>

@@ -1,0 +1,64 @@
+<%- include('../includes/head.ejs') %>
+<link rel="stylesheet" href="/css/forms.css">
+<link rel="stylesheet" href="/css/product.css">
+</head>
+
+<body>
+<%- include('../includes/navigation.ejs') %>
+
+<main>
+    <form class="product-form" action="/menu/addit" method="POST">
+        <div class="form-control">
+            <label for="dish_name">Dish Name</label>
+            <input type="text" name="dish_name" id="dish_name" value="" required>
+        </div>
+        <div class="form-control">
+            <label for="image_url">Image url</label>
+            <input type="text" name="image_url" id="image_url" value="" required>
+        </div>
+        <div class="form-control">
+            <label for="cost_per_unit">cost_per_unit</label>
+            <input type="number" name="cost_per_unit" id="cost_per_unit" min="0" oninput="validity.valid||(value='');" required>
+        </div>
+        <div class="form-control">
+            <label for="dish_description">Description</label>
+            <input type="text" name="dish_description" id="dish_description"  value="" required>
+        </div>
+        <div class="form-control">
+            <label for="nutritional_info">Nutritional Info</label>
+            <input type="text" name="nutritional_info" id="nutritional_info"  value="">
+        </div>
+        <div class="form-control">
+            <label for="health_info">Health Info</label>
+            <input type="text" name="health_info" id="health_info"  value="">
+        </div>
+        <div class="form-control">
+            <label for="cusine">Cusine</label>
+            <input list="cusine" name="cusine" required>
+            <datalist id="cusine">
+                <option value="Indian">
+                <option value="Italian">
+                <option value="American">
+                <option value="Fusion">
+            </datalist>
+        </div>
+        <div class="form-control">
+            <label for="dish_type">Dish Type</label>
+            <input list="dish_type" name="dish_type" required>
+            <datalist id="dish_type">
+                <option value="Vegetarian">
+                <option value="Non Vegetarian">
+                <option value="Vegan">
+            </datalist>
+        </div>
+        <div class="form-control">
+            <label for="sub_type">Sub Type</label>
+            <input type="text" name="sub_type" id="sub_type"  value="" required>
+        </div>
+        <button class="btn" type="submit">Next</button>
+    </form>
+    <form class="product-form" action="/menu" method="get">
+        <button class="btn" type="submit">Cancel</button>
+    </form>
+</main>
+<%- include('../includes/end.ejs') %>

@@ -165,6 +165,19 @@ form {
   width: 100%;
 }
 
+.card__description{
+  position: absolute;
+  background: #00695c;
+  color: #fff;
+  visibility: hidden;
+  opacity: 0;
+}
+
+.card__image:hover .card__description{
+  visibility: visible;
+  opacity: 1;
+}
+
 .card__image img {
   width: 100%;
 }
