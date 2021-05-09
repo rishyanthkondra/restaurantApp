@@ -1,12 +1,18 @@
 const Cart = require('../models/cart');
+const User = require("../models/user");
 // const Prod = require('../models/prod');
 
 
 exports.get_cart = async (req,res,next) => {
 
     const cartitem = new Cart();
-    const cartitems = await cartitem.get_all(1);// change 1 to cusId
-    console.log(cartitems.rows)
+    const email = req.oidc.user.email;
+    const usr = new User(email);
+    const details_id = await usr.getDetailsId().catch(err=>console.log(err));
+
+    const cartitems = await cartitem.get_all(details_id);
+    // console.log(cartitems.rows);
+    // console.log(req.details_id)
     res.render('includes/cart.ejs', {
         pageTitle: 'Cart',
         path: '/cart',

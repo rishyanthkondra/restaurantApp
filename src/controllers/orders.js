@@ -1,22 +1,32 @@
 const Orders = require('../models/orders');
+const User = require("../models/user");
 const checksum_lib = require("../Paytm/checksum");
 const config = require("../Paytm/config");
 
 exports.order = async (req,res,next) => {
 
+    const email = req.oidc.user.email;
+    const usr = new User(email);
+    const details_id = await usr.getDetailsId().catch(err=>console.log(err));
+    
     const orderitem = new Orders();
-    const checks = await orderitem.order_cond(1);//change 1 to cusId
-    console.log(checks.rows.length)
+    const checks = await orderitem.order_cond(details_id);
+    // console.log(checks.rows.length)
+
     if(checks.rows.length > 0){
         // const credits = await orderitem.get_credits().catch(err => console.log(err));
-        var cartvalue = await orderitem.get_cartvalue(1).catch(err => console.log(err));//change 1 to cusId
+        var cartvalue = await orderitem.get_cartvalue(details_id).catch(err => console.log(err));
         cartvalue = cartvalue.rows[0].cartvalue
-        console.log(cartvalue);
+        // console.log(cartvalue);
+
+        const details = await usr.getDetailsUsingDetailsId(details_id);
+        // console.log(details.rows[0])
+    
         var paymentDetails = {
-            amount: "1.00",//cartvalue,
-            customerId: "1",
-            customerEmail: "vineethdorna@gmail.com",
-            customerPhone: "7777777777"
+            amount: cartvalue.toString(),
+            customerId:  details_id.toString(),
+            customerEmail:  email,
+            customerPhone: details.rows[0].phone_number
         }
 
         if(!paymentDetails.amount || !paymentDetails.customerId || !paymentDetails.customerEmail || !paymentDetails.customerPhone) {
@@ -30,7 +40,7 @@ exports.order = async (req,res,next) => {
             params['ORDER_ID'] = 'TEST_'  + new Date().getTime();
             params['CUST_ID'] = paymentDetails.customerId;
             params['TXN_AMOUNT'] = paymentDetails.amount;
-            params['CALLBACK_URL'] = 'http://localhost:3000/paytm/callback';
+            params['CALLBACK_URL'] = 'http://localhost:3000/paytm/callback/'+details_id.toString();
             params['EMAIL'] = paymentDetails.customerEmail;
             params['MOBILE_NO'] = paymentDetails.customerPhone;
         
@@ -51,7 +61,6 @@ exports.order = async (req,res,next) => {
             });
         }
 
-        // res.redirect('/cart');
     }
     else{
         res.redirect('/cart');

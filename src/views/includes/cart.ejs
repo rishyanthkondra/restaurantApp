@@ -1,3 +1,5 @@
+
+
 <%- include('../includes/head.ejs') %>
 <link rel="stylesheet" href="/css/forms.css">
 <link rel="stylesheet" href="/css/product.css">
@@ -8,27 +10,40 @@
 <%- include('../includes/navigation.ejs') %>
 
 <main>
+
     <form action="http://localhost:3000/orders" method="POST">
         <button type="submit">Buy</button>
     </form>
+
     <div class="grid">
         <% for(var i=0; i < items.length; i++) { %>
-            <article class="card product-item">
+
+            <article class="card product-item">                
                 <header class="card__header">
-                    <h1 class="product__title">
-                        <%= items[i].title %>
-                    </h1>
+                    <h1 class="card__title"><%= items[i].dish_name %></h1>
                 </header>
                 <div class="card__image">
-                    <img src="<%=items[i].image%>" width="50" height="150" alt="<%=items[i].title%>">
+                    <img src="<%= items[i].image_url %>" width="50" height="150" alt="<%=items[i].title%>">
                 </div>
                 <div class="card__content">
-                    <h2 class="product__price">$ <%=items[i].cost_per_unit%></h2>
-                    <p class="product__description">Description: <%=items[i].dish_description%></p>
+                    <h3 class="product__price">Price: <%= items[i].cost_per_unit %></h3>
+                </div>
+                <div class="card__content">
+                    <h5 class="product__price">Description: <%= items[i].dish_description %></h5>
+                </div>
+                <div class="card__content">
                     <p class="product__description">Qt Ord: <%=items[i].quantity%></p>
                 </div>
+                <!-- <div class="card__actions">
+                    <form action="/menu/atc" method="post">
+                        <button class="btn" type="submit">ATC</button>
+                        <input type="hidden" name="dish_id" value=<%= items[i].dish_id %> >
+                    </form>
+                </div> -->
             </article>
-         <% } %>
+        <% } %>
+
     </div>
 </main>
+
 <%- include('../includes/end.ejs') %>
