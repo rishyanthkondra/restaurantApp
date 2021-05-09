@@ -7,14 +7,14 @@
 <%- include('../includes/navigation.ejs') %>
 
 <main>
-    <form action="/menu/addit2" method="post">
+    <form action="/menu/recipeout" method="post">
         <% for(var i=0; i < ilist.length; i++) { %>
             <div class="form-control">
                 <label for=ilist[i].ingredient_id> <%= ilist[i].ingredient_name %> </label>
-                <input type="number" name=ilist[i].ingredient_id id=<%= ilist[i].ingredient_name %>  value="0">
+                <input type="number" name=ilist[i].ingredient_id id=<%= ilist[i].ingredient_name %>  value="<%= ilist[i].quantity %>">
             </div>
         <% } %>
-        <button class="btn" type="submit">Submit</button>
+        <button class="btn" type="submit">Update</button>
         <input type="hidden" name="dish_id" value=<%= dish_id %> >
     </form>
     <form class="product-form" action="/menu"+ method="get">

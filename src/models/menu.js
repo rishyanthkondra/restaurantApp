@@ -35,4 +35,24 @@ module.exports = class Menu{
     deletedish(){
         return pool.query('DELETE FROM dish where dish_id='+ this.dish_id + ';');
     }
+
+    static get_all_dishes(){
+        return pool.query('select dish_id from dish order by dish_id;');
+    }
+
+    static add_to_cart(dish_id,user_id,quantity){
+        return pool.query('Insert into cart(dish_dish_id,customer_customer_id,quantity) values ($1,$2,$3)',[dish_id,user_id,quantity]);
+    }
+
+    static cart_inc(dish_id,user_id){
+        return pool.query('update cart set quantity = quantity + 1 where dish_dish_id = $1 and customer_customer_id = $2',[dish_id,user_id]);
+    }
+
+    static cart_dec(dish_id,user_id){
+        return pool.query('update cart set quantity = quantity - 1 where dish_dish_id = $1 and customer_customer_id = $2',[dish_id,user_id]);
+    }
+
+    static delete_from_cart(dish_id,user_id){
+        return pool.query('delete from cart where dish_dish_id = $1 and customer_customer_id = $2',[dish_id,user_id]);
+    }
 };

@@ -1,0 +1,37 @@
+<%- include('../includes/head.ejs') %>
+<link rel="stylesheet" href="/css/forms.css">
+<link rel="stylesheet" href="/css/product.css">
+</head>
+
+<body>
+<%- include('../includes/navigation.ejs') %>
+
+<main>
+    <form class="product-form" action="/menu/ing_addit" method="POST">
+        <div class="form-control">
+            <label for="ingredient_name">ingredient Name</label>
+            <input type="text" name="ingredient_name" id="ingredient_name" value="">
+        </div>
+        <div class="form-control">
+            <label for="image_url">Image url</label>
+            <input type="text" name="image_url" id="image_url" value="">
+        </div>
+        <div class="form-control">
+            <label for="cost_per_unit">cost_per_unit</label>
+            <input type="number" name="cost_per_unit" id="cost_per_unit" step="0.01" value="">
+        </div>
+        <div class="form-control">
+            <label for="ingredient_description">Description</label>
+            <input type="text" name="ingredient_description" id="ingredient_description"  value="">
+        </div>
+        <div class="form-control">
+            <label for="unit">unit</label>
+            <input type="text" name="unit" id="unit"  value="">
+        </div>
+        <button class="btn" type="submit">submit</button>
+    </form>
+    <form class="product-form" action="/menu" method="get">
+        <button class="btn" type="submit">Cancel</button>
+    </form>
+</main>
+<%- include('../includes/end.ejs') %>
