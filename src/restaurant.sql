@@ -343,7 +343,7 @@ CREATE TABLE IF NOT EXISTS public.Dish_has_Ingredients (
   quantity INT NOT NULL,
   PRIMARY KEY (dish_id, ingredient_id),
   CONSTRAINT Quantity_Check
-    CHECK (quantity > 0)
+    CHECK (quantity >= 0)
 );
 
 CREATE INDEX "Dish_has_Ingredients_Ingredients_idx" ON public.Dish_has_Ingredients USING btree(ingredient_id,dish_id);
