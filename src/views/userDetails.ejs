@@ -1,136 +1,305 @@
-<%- include('includes/head.ejs') %>
-<link rel="stylesheet" href="/css/forms.css">
-<link rel="stylesheet" href="/css/product.css">
+<!DOCTYPE html>
+<html  >
+<head>
+  <!-- Site made with Mobirise Website Builder v5.3.5, https://mobirise.com -->
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="generator" content="Mobirise v5.3.5, mobirise.com">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+  <link rel="shortcut icon" href="<%=userImage%>" type="image/x-icon">
+  <meta name="description" content="">
+  
+  
+  <title><%=pageTitle%></title>
+  <link rel="stylesheet" href="assets/tether/tether.min.css">
+  <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="assets/bootstrap/css/bootstrap-grid.min.css">
+  <link rel="stylesheet" href="assets/bootstrap/css/bootstrap-reboot.min.css">
+  <link rel="stylesheet" href="assets/dropdown/css/style.css">
+  <link rel="stylesheet" href="assets/theme/css/style.css">
+  <link rel="preload" href="https://fonts.googleapis.com/css?family=Jost:100,200,300,400,500,600,700,800,900,100i,200i,300i,400i,500i,600i,700i,800i,900i&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Jost:100,200,300,400,500,600,700,800,900,100i,200i,300i,400i,500i,600i,700i,800i,900i&display=swap"></noscript>
+  <link rel="preload" as="style" href="assets/mobirise/css/mbr-additional.css"><link rel="stylesheet" href="assets/mobirise/css/mbr-additional.css" type="text/css">
+  
 </head>
-
 <body>
-    <main>
-        <div class = "grid">
-            <div class="grid">
-                <div class="card__image">
-                        <img src="<%=image%>" height="160" alt="<%=first_name%>">
-                </div>
+
+<!--header-->
+<section class="menu cid-s48OLK6784" once="menu" id="menu1-h">    
+    <nav class="navbar navbar-dropdown navbar-fixed-top navbar-expand-lg">
+        <div class="container">
+            <div class="navbar-brand">
+                <span class="navbar-logo">
+                        <img src="<%=userImage%>" alt="<%=displayName%>" style="height: 3.8rem;">
+                </span>
+                <span class="navbar-caption-wrap">
+                    <a class="navbar-caption text-black display-7" href="/userDetails">
+                        <%=displayName%>
+                    </a>
+                </span>
             </div>
-            <form class="product-form" 
-            action="<%= 'http://localhost:3000/userDetails/'+ String(details_id) +'/edit-details'%>"
-             method="POST">
-                <fieldset>
-                    <legend>Personal Details : </legend>
-                    <div class="form-control">
-                        <label for="first_name">First Name</label>
-                        <input type="text" name="first_name" id="first_name" value="<%= first_name %>">
-                    </div>
-                    <div class="form-control">
-                        <label for="last_name">Last Name</label>
-                        <input type="text" name="last_name" id="last_name" value="<%= last_name %>">
-                    </div>
-                    <div class="form-control">
-                        <label for="email">Email </label>
-                        <input type="text" name="email" id="email" value="<%= email %>" readonly>
-                    </div>
-                    <div class="form-control">
-                        <label for="phone_number">Phone Number</label>
-                        <input type="number" maxlength="15" minlength="10" pattern="^[0-9]*$" 
-                        id="phone_number" name="phone_number" value= <%= phone_number %> >
-                    </div>
-                    <div class="form-control">
-                        <label for="date_of_birth">Date of Birth</label>
-                        <input type="date" id="" name="date_of_birth" value= <%= date_of_birth %> >
-                    </div>
-                    <div class="form-control">
-                        <label for="gender">Gender</label>
-                        <select id="gender" name="gender">
-                            <% if(gender == "male"){%>
-                            <option value="male" selected>male</option>
-                            <%}else{%>
-                            <option value="male">male</option>
-                            <%}%><% if(gender == "female"){%>
-                            <option value="female" selected>female</option>
-                            <%}else{%>
-                            <option value="female">female</option>
-                            <%}%><% if(gender == "other"){%>
-                            <option value="other" selected>other</option>
-                            <%}else{%>
-                            <option value="other">other</option>
-                            <%}%>
-                        </select>
-                    </div>
-                    <button class="btn" type="submit"> Update Details</button>
-                </fieldset>
-            </form>
-            <div class="grid">
-                <% for(var i=0; i < addresses.length; i++) { %>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <div class="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav nav-dropdown nav-right" data-app-modern-menu="true">
+                    <li class="nav-item">
+                		<a class="nav-link link text-primary display-4" href="/home">
+                			Home
+                		</a>
+                	</li>
+                    <li class="nav-item">
+                		<a class="nav-link link text-primary display-4" href="">
+                			Menu
+                		</a>
+                	</li>
+                	<li class="nav-item">
+                		<a class="nav-link link text-primary display-4" href="">
+                			Cart
+                		</a>
+                	</li>
+                	<li class="nav-item">
+                		<a class="nav-link link text-primary display-4" href="">
+                			Orders
+                		</a>
+                	</li>
+                	<li class="nav-item">
+                		<a class="nav-link link text-primary display-4" href="/bookings">
+                			Bookings
+                		</a>
+                	</li>
+                    <% if (isEmployee) {%>
+                	<li class="nav-item dropdown">
+                		<a class="nav-link link text-primary dropdown-toggle display-4" href="#" data-toggle="dropdown-submenu" aria-expanded="false">
+                            Mode
+                		</a>
+                		<div class="dropdown-menu">
+                			<a class="text-primary dropdown-item display-4" href="">
+                				Employee
+                			</a>
+                			<a class="text-primary dropdown-item display-4" href="">
+                				User
+                			</a>
+                		</div>
+                	</li>
+                    <%}%>
+                	<li class="nav-item">
+                		<a class="nav-link link text-primary display-4" href="http://localhost:3000/logout">
+                		    Logout
+                        </a>
+                	</li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+</section>
+
+<!--Content-->
+<section class="header11 cid-swZHoHlbUv mbr-fullscreen mbr-parallax-background" id="header11-o">
+
+    
+
+    <div class="mbr-overlay" style="opacity: 0.3; background-color: rgb(0, 0, 0);"></div>
+
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-6 image-wrapper">
                     <form class="product-form" 
-                        action="<%= 'http://localhost:3000/userDetails/'+ String(details_id) +'/edit-address/'
-                        +String(addresses[i].address_id)%>" 
-                        method="POST">
+                    action="userDetails/edit-details"
+                     method="POST">
                         <fieldset>
-                            <legend>Address Details : </legend>
-                            <div class="form-control">
-                                <label for="alias">Name</label>
-                                <input type="text" name="alias" minlength="5" id="alias" value="<%= addresses[i].alias %>">
+                            <legend>Personal Details : </legend>
+                            <div class="grid">
+                                <div class="card__image">
+                                        <img src="<%=userImage%>" height="160vp" alt="<%=first_name%>">
+                                </div>
                             </div>
                             <div class="form-control">
-                                <label for="symbol">Symbol</label>
-                                <select id="symbol" name="symbol">
-                                    <% if(addresses[i].symbol == "home"){%>
-                                    <option value="home" selected>home</option>
+                                <label for="first_name">First Name</label>
+                                <input type="text" name="first_name" id="first_name" value="<%= first_name %>" required>
+                            </div>
+                            <div class="form-control">
+                                <label for="last_name">Last Name</label>
+                                <input type="text" name="last_name" id="last_name" value="<%= last_name %>" required>
+                            </div>
+                            <div class="form-control">
+                                <label for="email">Email </label>
+                                <input type="text" name="email" id="email" value="<%= email %>" readonly>
+                            </div>
+                            <div class="form-control">
+                                <label for="phone_number">Phone Number</label>
+                                <input type="number" maxlength="15" minlength="10" 
+                                id="phone_number" name="phone_number" value= <%= phone_number %> required>
+                            </div>
+                            <div class="form-control">
+                                <label for="date_of_birth">Date of Birth</label>
+                                <input type="date" max = "2016-01-01" id="date_of_birth" name="date_of_birth" value= <%= date_of_birth %> required>
+                            </div>
+                            <div class="form-control">
+                                <label for="gender">Gender</label>
+                                <select id="gender" name="gender">
+                                    <% if(gender == "male"){%>
+                                    <option value="male" selected>male</option>
                                     <%}else{%>
-                                    <option value="home">home</option>
-                                    <%}%><% if(addresses[i].symbol == "work"){%>
-                                    <option value="work" selected>work</option>
+                                    <option value="male">male</option>
+                                    <%}%><% if(gender == "female"){%>
+                                    <option value="female" selected>female</option>
                                     <%}else{%>
-                                    <option value="work">work</option>
-                                    <%}%><% if(addresses[i].symbol == "other"){%>
+                                    <option value="female">female</option>
+                                    <%}%><% if(gender == "other"){%>
                                     <option value="other" selected>other</option>
                                     <%}else{%>
                                     <option value="other">other</option>
                                     <%}%>
                                 </select>
                             </div>
+                            <button type="submit"
+                                onclick="return confirm('Updating Details')"> 
+                                Update Details</button>
+                            </fieldset>
+                        </form>
+                </div>
+            </div>
+            <div class="col-12 col-md">
+                <div class="grid">
+                    <% for(var i=0; i < addresses.length; i++) { %>
+                        <form class="product-form" 
+                            action="userDetails/edit-address/?address_id=<%=addresses[i].address_id%>" 
+                            method="POST">
+                                <p class="mbr-text mbr-fonts-style display-7">Address Details</p>
+                                <div class="form-control">
+                                    <label for="alias">Name</label>
+                                    <input type="text" name="alias" minlength="5" id="alias" value="<%= addresses[i].alias %>">
+                                </div>
+                                <div class="form-control">
+                                    <label for="symbol">Symbol</label>
+                                    <select id="symbol" name="symbol">
+                                        <% if(addresses[i].symbol == "home"){%>
+                                        <option value="home" selected>home</option>
+                                        <%}else{%>
+                                        <option value="home">home</option>
+                                        <%}%><% if(addresses[i].symbol == "work"){%>
+                                        <option value="work" selected>work</option>
+                                        <%}else{%>
+                                        <option value="work">work</option>
+                                        <%}%><% if(addresses[i].symbol == "other"){%>
+                                        <option value="other" selected>other</option>
+                                        <%}else{%>
+                                        <option value="other">other</option>
+                                        <%}%>
+                                    </select>
+                                </div>
+                                <div class="form-control">
+                                    <label for="house_num">House Number</label>
+                                    <input type="text" name="house_num" minlength="5" id="alias" value="<%= addresses[i].house_num %>">
+                                </div>
+                                <div class="form-control">
+                                    <label for="region">Region</label>
+                                    <input type="text" name="region" minlength="5" id="region" value="<%= addresses[i].region %>">
+                                </div>
+                                <button type="submit" 
+                                    onclick="return confirm('Are you sure you want to update <%= addresses[i].alias%>?')"> 
+                                Update Address</button>
+                                <button  type="submit" 
+                                    onclick="return confirm('Are you sure you want to delete <%= addresses[i].alias%>?')"
+                                    formaction="userDetails/delete-address/?address_id=<%=addresses[i].address_id%>" >
+                                 Delete Address</button>
+                        </form>
+                    <% } %>
+                    <form class="product-form" 
+                        action="userDetails/add-address"
+                        method="POST">
+                        <fieldset>
+                            <p class="mbr-text mbr-fonts-style display-7">Add Address details</p>
+                            <div class="form-control">
+                                <label for="alias">Name</label>
+                                <input type="text" minlength="5" name="alias" id="alias" required>
+                            </div>
+                            <div class="form-control">
+                                <label for="symbol">Symbol</label>
+                                <select id="symbol" name="symbol">
+                                    <option value="home">home</option>
+                                    <option value="work">work</option>
+                                    <option value="other">other</option>
+                                </select>
+                            </div>
                             <div class="form-control">
                                 <label for="house_num">House Number</label>
-                                <input type="text" name="house_num" minlength="5" id="alias" value="<%= addresses[i].house_num %>">
+                                <input type="text" minlength="5" name="house_num" id="alias" required>
                             </div>
                             <div class="form-control">
                                 <label for="region">Region</label>
-                                <input type="text" name="region" minlength="5" id="region" value="<%= addresses[i].region %>">
+                                <input type="text" minlength="5" name="region" id="region" required>
                             </div>
-                            <button class="btn" type="submit"> Update Address</button>
-                            <button class="btn" type="submit" formaction="<%= 'http://localhost:3000/userDetails/'+ String(details_id) +'/delete-address/'
-                            +String(addresses[i].address_id)%>" > Delete Address</button>
+                            <button type="submit" 
+                                onclick="return confirm('Adding new address')">
+                            Add Address</button>
                         </fieldset>
                     </form>
-                <% } %>
-                <form class="product-form" 
-                    action="<%= 'http://localhost:3000/userDetails/'+ String(details_id) +'/add-address/'%>"
-                    method="POST">
-                    <fieldset>
-                        <legend>Address Details : </legend>
-                        <div class="form-control">
-                            <label for="alias">Name</label>
-                            <input type="text" minlength="5" name="alias" id="alias">
-                        </div>
-                        <div class="form-control">
-                            <label for="symbol">Symbol</label>
-                            <select id="symbol" name="symbol">
-                                <option value="home">home</option>
-                                <option value="work">work</option>
-                                <option value="other">other</option>
-                            </select>
-                        </div>
-                        <div class="form-control">
-                            <label for="house_num">House Number</label>
-                            <input type="text" minlength="5" name="house_num" id="alias">
-                        </div>
-                        <div class="form-control">
-                            <label for="region">Region</label>
-                            <input type="text" minlength="5" name="region" id="region">
-                        </div>
-                        <button class="btn" type="submit"> Add Address</button>
-                    </fieldset>
-                </form>
+                </div>
             </div>
         </div>
-    </main>
-<%- include('includes/end.ejs') %>
+    </div>
+</section>
+
+<!--Footer-->
+<section class="footer6 cid-swZIImfDHv" once="footers" id="footer6-p">
+    <div class="container">
+        <div class="row content mbr-white">
+            <div class="col-12 col-md-3 mbr-fonts-style display-7">
+                <h5 class="mbr-section-subtitle mbr-fonts-style mb-2 mt-4 display-7">
+                    <strong>Contacts</strong>
+                </h5>
+                <p class="mbr-text mbr-fonts-style mb-4 display-7">
+                    Email: meatandeat@gmail.com <br>
+                    Phone: +91 - 0870- 255722<br><br></p>
+            </div>
+            <div class="col-12 col-md-3 mbr-fonts-style display-7">
+                <h5 class="mbr-section-subtitle mbr-fonts-style mb-2 mt-5 display-7">
+                    <strong>Feedback</strong>
+                </h5>
+                <p class="mbr-text mbr-fonts-style mb-4 display-7">
+                    Please send us your ideas, bug reports, suggestions! Any feedback would be appreciated.
+                </p>
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="google-map"><iframe frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/place?key=AIzaSyCZI5F_k6S1k46ujh0SNrapM89f7mJxd30&amp;q=IITB New GymkhanaMain Gate Rd, Opposite Hostel 11, IIT Area, Powai, Mumbai, Maharashtra 400076" allowfullscreen=""></iframe></div>
+            </div>
+        </div>
+        <div class="footer-lower">
+            <div class="col-sm-12 copyright pl-0">
+                <p class="mbr-text mbr-fonts-style mbr-white display-7">
+                    © Copyright 2025 Meat And Eat - All Rights Reserved
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section style="background-color: #fff; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif; color:#aaa; font-size:12px; padding: 0; align-items: center; display: flex;">
+<a style="flex: 1 1; height: 3rem; padding-left: 1rem;"></a>
+<p style="flex: 0 0 auto; margin:0; padding-right:1rem;">
+    <a href="https://mobirise.site/m" style="color:#aaa;">
+    </a>
+</p>
+</section>
+
+<script src="assets/web/assets/jquery/jquery.min.js"></script>
+<script src="assets/popper/popper.min.js"></script>  
+<script src="assets/tether/tether.min.js"></script>  
+<script src="assets/bootstrap/js/bootstrap.min.js"></script>  
+<script src="assets/smoothscroll/smooth-scroll.js"></script>
+<script src="assets/dropdown/js/nav-dropdown.js"></script>
+<script src="assets/dropdown/js/navbar-dropdown.js"></script>
+<script src="assets/touchswipe/jquery.touch-swipe.min.js"></script>
+<script src="assets/parallax/jarallax.min.js"></script>
+<script src="assets/theme/js/script.js"></script>  
+</body>
+</html>

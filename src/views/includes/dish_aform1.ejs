@@ -10,19 +10,19 @@
     <form class="product-form" action="/menu/addit" method="POST">
         <div class="form-control">
             <label for="dish_name">Dish Name</label>
-            <input type="text" name="dish_name" id="dish_name" value="">
+            <input type="text" name="dish_name" id="dish_name" value="" required>
         </div>
         <div class="form-control">
             <label for="image_url">Image url</label>
-            <input type="text" name="image_url" id="image_url" value="">
+            <input type="text" name="image_url" id="image_url" value="" required>
         </div>
         <div class="form-control">
             <label for="cost_per_unit">cost_per_unit</label>
-            <input type="number" name="cost_per_unit" id="cost_per_unit" step="0.01" value="">
+            <input type="number" name="cost_per_unit" id="cost_per_unit" min="0" oninput="validity.valid||(value='');" required>
         </div>
         <div class="form-control">
             <label for="dish_description">Description</label>
-            <input type="text" name="dish_description" id="dish_description"  value="">
+            <input type="text" name="dish_description" id="dish_description"  value="" required>
         </div>
         <div class="form-control">
             <label for="nutritional_info">Nutritional Info</label>
@@ -34,15 +34,26 @@
         </div>
         <div class="form-control">
             <label for="cusine">Cusine</label>
-            <input type="text" name="cusine" id="cusine"  value="">
+            <input list="cusine" name="cusine" required>
+            <datalist id="cusine">
+                <option value="Indian">
+                <option value="Italian">
+                <option value="American">
+                <option value="Fusion">
+            </datalist>
         </div>
         <div class="form-control">
             <label for="dish_type">Dish Type</label>
-            <input type="text" name="dish_type" id="dish_type"  value="">
+            <input list="dish_type" name="dish_type" required>
+            <datalist id="dish_type">
+                <option value="Vegetarian">
+                <option value="Non Vegetarian">
+                <option value="Vegan">
+            </datalist>
         </div>
         <div class="form-control">
             <label for="sub_type">Sub Type</label>
-            <input type="text" name="sub_type" id="sub_type"  value="">
+            <input type="text" name="sub_type" id="sub_type"  value="" required>
         </div>
         <button class="btn" type="submit">Next</button>
     </form>

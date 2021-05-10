@@ -1,21 +1,20 @@
 const User = require("../models/user");
 
-exports.param_details_id_handler = (req,res,next,details_id)=>{
-    req.details_id = details_id;//can handle any other useful info here
-    next();
-};
-exports.get_user_home = (req,res,next) => {
+exports.get_user_home = async (req,res,next) => {
     if (req.oidc.isAuthenticated()){
         const user = new User(req.oidc.user.email);
-        console.log(`Authenticated in user home : ${req.details_id}`);
-        res.send(JSON.stringify({
-            pageTitle : 'User Home',
-            isEmployee : false,//user.checkIsEmployee(),
-            favDishes : 'favdishes',//user.getFavouriteDishes().rows,
-            freqDishes : 'freqdishes',//user.getFrequenDishes().rows,
-            //recommender_dishes
-            bestSellers : 'bestSellers',//user.getBestSellers()
-        }));
+        const detailRows = await user.getDetails().catch(err=>console.log(err));
+        const details = detailRows.rows[0];
+        const isEmp = await user.checkIsEmployee().catch(err=>console.log(err));
+        //console.log(`Authenticated in user home : ${req.details_id}`);
+        res.render('userHome.ejs',{
+            pageTitle:'User Home',
+            alertMessage:false,
+            isEmployee : isEmp,
+            userImage : req.oidc.user.picture,
+            displayName : details.first_name,
+            debugString : 'In get_home,unauthenticated'
+        });
     }else{
         res.redirect('/home');
     }
