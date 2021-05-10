@@ -298,9 +298,6 @@ CREATE TABLE IF NOT EXISTS public.Tabless (
   table_id serial PRIMARY KEY,
   capacity INT NOT NULL,
   table_description TEXT NOT NULL,
-  current_status VARCHAR(15) NOT NULL,
-  CONSTRAINT Current_Status_Check
-    CHECK (current_status IN ('occupied','empty','out of order'))
 );
 -- -----------------------------------------------------
 -- Table public.Transactions : BCNF, looks good

@@ -15,11 +15,11 @@ exports.get_home = async (req,res,next) => {
         res.redirect(`/userHome/${details_id}`);
     }else{
         //unauthenticated  home page
-        res.send(JSON.stringify({
+        res.render('home.ejs',{
             pageTitle:'Home',
             alertMessage:false,
             debugString : 'In get_home,unauthenticated'
-        }));
+        });
     }
 }
 
