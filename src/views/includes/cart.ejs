@@ -13,7 +13,13 @@
 
     <form action="http://localhost:3000/orders" method="POST">
         <button type="submit">Buy</button>
+        <select name="address_id">
+            <% for(var i=0; i < addrs.length; i++) { %>
+                <option value="<%= addrs[i].address_id %>"> <%= addrs[i].alias %> </option>
+            <% } %>
+        </select>
     </form>
+
 
     <div class="grid">
         <% for(var i=0; i < items.length; i++) { %>
