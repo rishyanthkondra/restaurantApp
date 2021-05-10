@@ -1,6 +1,14 @@
 const Data_screen = require('../models/data_screen');
+const User = require("../models/user");
 
 exports.get_emp = async (req,res,next) => {
+
+    if (req.oidc.isAuthenticated()){
+
+        const user = new User(req.oidc.user.email);
+        const isEmp = await user.checkIsRequiredRole('Manager').catch(err=> console.log(err));
+
+        if(isEmp){
 
     var empitem = new Data_screen();
     const emps = await empitem.get_emps();
@@ -11,6 +19,9 @@ exports.get_emp = async (req,res,next) => {
         var work_status = ['suspended','active','leave','vacation','fired','reserve'];
         const work_types = ['permanent','temporary','internship'];
         var today = current_data.rows[0].date_of_birth;
+        if(today == null){
+            today = new Date();
+        }
         var dd = String(today.getDate()).padStart(2, '0');
         var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
         var yyyy = today.getFullYear();
@@ -37,9 +48,26 @@ exports.get_emp = async (req,res,next) => {
         editing: false
     });
     }
+
+}
+else{
+    res.redirect('/home');
+}
+}
+else{
+    res.redirect('/home');
+}
 };
 
 exports.post_emp = async (req,res,next) => {
+
+    if (req.oidc.isAuthenticated()){
+
+        const user = new User(req.oidc.user.email);
+        const isEmp = await user.checkIsRequiredRole('Manager').catch(err=> console.log(err));
+
+        if(isEmp){
+
     const recitem = new Data_screen();
     var first_name = req.body.first_name;
     var last_name = req.body.last_name;
@@ -54,6 +82,15 @@ exports.post_emp = async (req,res,next) => {
     if(!email){
         email = null;
     }
-    await recitem.update_employee(req.params.empid,req.params.did,first_name,last_name,phone,email,dob,role,wage,gender,work_type,work_status);
+    await recitem.update_employee(req.params.empid,first_name,last_name,phone,email,dob,role,wage,gender,work_type,work_status);
     res.redirect('/employees');
+}
+else{
+    res.redirect('/home');
+}
+}
+else{
+    res.redirect('/home');
+}
+
 };
