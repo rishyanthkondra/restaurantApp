@@ -8,14 +8,6 @@
 <%- include('../includes/navigation.ejs') %>
 
 <main>
-
-    <form action="/menu/dish_add" method="post">
-        <button class="btn" type="submit">add dish</button>
-    </form>
-    <form action="/menu/ing_add" method="post">
-        <button class="btn" type="submit">add ingredient</button>
-    </form>
-
     <div class="grid">
         <% for(var i=0; i < dishes.length; i++) { %>
 
@@ -36,24 +28,6 @@
                 <div class="card__actions">
                     <form action="/menu/atc" method="post">
                         <button class="btn" type="submit">ATC</button>
-                        <input type="hidden" name="dish_id" value=<%= dishes[i].id %> >
-                    </form>
-                </div>
-                <div class="card__actions">
-                    <form action="/menu/update" method="post">
-                        <button class="btn" type="submit">update</button>
-                        <input type="hidden" name="dish_id" value=<%= dishes[i].id %> >
-                    </form>
-                </div>
-                <div class="card__actions">
-                    <form action="/menu/delete" method="post">
-                        <button class="btn" type="submit">delete</button>
-                        <input type="hidden" name="dish_id" value=<%= dishes[i].id %> >
-                    </form>
-                </div>
-                <div class="card__actions">
-                    <form action="/menu/recipe" method="post">
-                        <button class="btn" type="submit">Recipe</button>
                         <input type="hidden" name="dish_id" value=<%= dishes[i].id %> >
                     </form>
                 </div>
