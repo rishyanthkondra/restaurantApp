@@ -8,10 +8,11 @@
 
 <main>
     <h2>Employee details</h2>
-    <form class="product-form" action="http://localhost:3000/<%if(editing){%>employees/<%= emp_data.employee_id %>/<%= emp_data.details %><%}else{%>recruit<%}%>" method="POST">
+    <form class="product-form" action="http://localhost:3000/<%if(editing){%>employees/<%= emp_data.employee_id %> <%}else{%>recruit<%}%>" method="POST">
+        <% if (editing) { %>
         <div class="form-control">
             <label for="first_name">First name</label>
-            <input type="text" name="first_name" id="first_name" value="<% if (editing) { %><%= emp_data.first_name %><% } %>" autofocus required>
+            <input type="text" name="first_name" id="first_name" value="<% if (editing) { %> <%= emp_data.first_name %><% } %>" autofocus required>
         </div>
         <div class="form-control">
             <label for="last_name">Last name</label>
@@ -30,12 +31,13 @@
             <input type="tel" name="phone" id="phone"  pattern="[0-9]{10}" value="<% if (editing) { %><%= emp_data.phone_number %><% } %>" required>
         </div>
         <div class="form-control">
-            <label for="email">Email</label>
-            <input type="email" name="email" id="email" value="<% if (editing) { %><%= emp_data.email %><% } %>">
-        </div>
-        <div class="form-control">
             <label for="dob">Date of Birth</label>
             <input type="date" name="dob" id="dob" value="<% if (editing) { %><%= dob %><% } %>" required>
+        </div>
+        <% } %>
+        <div class="form-control">
+            <label for="email">Email</label>
+            <input type="email" name="email" id="email" value="<% if (editing) { %><%= emp_data.email %><% } %>">
         </div>
         <div class="form-control">
             <label for="role">Role</label>

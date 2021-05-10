@@ -11,6 +11,9 @@ exports.get_emp = async (req,res,next) => {
         var work_status = ['suspended','active','leave','vacation','fired','reserve'];
         const work_types = ['permanent','temporary','internship'];
         var today = current_data.rows[0].date_of_birth;
+        if(today == null){
+            today = new Date();
+        }
         var dd = String(today.getDate()).padStart(2, '0');
         var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
         var yyyy = today.getFullYear();
@@ -54,6 +57,6 @@ exports.post_emp = async (req,res,next) => {
     if(!email){
         email = null;
     }
-    await recitem.update_employee(req.params.empid,req.params.did,first_name,last_name,phone,email,dob,role,wage,gender,work_type,work_status);
+    await recitem.update_employee(req.params.empid,first_name,last_name,phone,email,dob,role,wage,gender,work_type,work_status);
     res.redirect('/employees');
 };

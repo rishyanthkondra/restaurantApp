@@ -39,10 +39,8 @@ module.exports = class Data_screen{
         return pool.query('select * from roles');
     }
 
-    async new_employee(first_name,last_name,phone,email,dob,role,wage,gender,work_type,work_status='active'){
-         var details = await pool.query(`INSERT INTO details(first_name,last_name,email,phone_number,date_of_birth,gender) VALUES($1,$2,$3,$4,$5,$6) 
-         RETURNING details_id`,[first_name,last_name,email,phone,dob,gender]);
-         var emp = await pool.query("INSERT INTO employee(employee_id, work_status,work_type,current_wage,role_id) VALUES($5,$1,$2,$3,$4)",[work_type,details.rows[0].details_id,wage,role,work_status]);
+    async new_employee(details_id,role,wage,work_type,work_status='active'){
+         var emp = await pool.query("INSERT INTO employee(employee_id, work_status,work_type,current_wage,role_id) VALUES($5,$1,$2,$3,$4)",[work_status,work_type,wage,role,details_id]);
     }
 
     get_emps(){
@@ -53,9 +51,9 @@ module.exports = class Data_screen{
         return pool.query('SELECT * from employee INNER JOIN details ON employee.employee_id = details.details_id WHERE employee.employee_id=$1',[empid]);
     }
 
-    async update_employee(empid,details_id,first_name,last_name,phone,email,dob,role,wage,gender,work_type,work_status){
+    async update_employee(empid,first_name,last_name,phone,email,dob,role,wage,gender,work_type,work_status){
         var details = await pool.query(`UPDATE details SET first_name = $1,last_name=$2,email=$3,phone_number=$4,date_of_birth=$5,gender=$6
-         WHERE details_id = $7`,[first_name,last_name,email,phone,dob,gender,details_id]);
+         WHERE details_id = $7`,[first_name,last_name,email,phone,dob,gender,empid]);
         var emp = await pool.query("UPDATE employee SET work_status=$1,work_type=$2,current_wage=$3,role_id=$4 WHERE employee_id=$5",[work_status,work_type,wage,role,empid]);
    }
 
