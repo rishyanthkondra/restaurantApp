@@ -1,6 +1,4 @@
 const User = require("../models/user");
-const url = require('url');
-const querystring = require('querystring');
 
 exports.get_user_home = async (req,res,next) => {
     if (req.oidc.isAuthenticated()){
@@ -10,8 +8,11 @@ exports.get_user_home = async (req,res,next) => {
         const isEmp = await user.checkIsEmployee().catch(err=>console.log(err));
         //console.log(`Authenticated in user home : ${req.details_id}`);
         res.render('userHome.ejs',{
-            pageTitle:'Home',
+            pageTitle:'User Home',
             alertMessage:false,
+            isEmployee : isEmp,
+            userImage : req.oidc.user.picture,
+            displayName : details.first_name,
             debugString : 'In get_home,unauthenticated'
         });
     }else{

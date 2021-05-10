@@ -1,21 +1,23 @@
 const User = require("../models/user");
 const UserDetails = require("../models/userDetails");
 
-exports.param_details_id_handler = (req,res,next,details_id)=>{
-    req.details_id = details_id;//can handle any other useful info here
-    next();
-};
-exports.param_date_handler = (req,res,next,date)=>{
-    req.date = date;//can handle any other useful info here
-    next();
-};
-exports.param_start_time_handler = (req,res,next,start_time)=>{
-    req.start_time = start_time;//can handle any other useful info here
-    next();
-};
 
 exports.get_bookings = async (req,res,next)=>{
-    res.render('bookings.ejs',{pageTitle: 'Bookings'});
+    if (req.oidc.isAuthenticated()){
+        const user = new User(req.oidc.user.email);
+        const detailRows = await user.getDetails().catch(err=>console.log(err));
+        const details = detailRows.rows[0];
+        const isEmp = await user.checkIsEmployee().catch(err=>console.log(err));
+        //console.log(`Authenticated in user home : ${req.details_id}`);
+        res.render('bookings.ejs',{
+            pageTitle:'Bookings',
+            isEmployee : isEmp,
+            userImage : req.oidc.user.picture,
+            displayName : details.first_name
+        });
+    }else{
+        res.redirect('/home');
+    }
 }
 
 exports.get_bookings_with_time= async (req,res,next)=>{

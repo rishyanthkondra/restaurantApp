@@ -22,12 +22,12 @@ exports.get_user_details = async (req,res,next) => { // get details and addresse
         const all_adresses = await user.getAddresses().catch(err => console.log(err));
         const result  = {
             pageTitle : 'User Details',
+            displayName : details.first_name,
             isEmployee : isEmp,
             email : req.oidc.user.email,
             first_name :details.first_name,
             last_name : details.last_name,
-            image : req.oidc.user.picture,
-            details_id : req.details_id,
+            userImage : req.oidc.user.picture,
             date_of_birth : dob,
             phone_number : (details.phone_number)? details.phone_number : '0000000000',
             gender : (details.gender)? details.gender : 'male',

@@ -6,13 +6,12 @@ exports.get_home = async (req,res,next) => {
         const usr = new User(email);
         const inDb = await usr.inDb().catch(err=> console.log(err));
         console.log(`In database? : ${inDb}`);
-        console.log(JSON.stringify(req.oidc.user));
+        //console.log(JSON.stringify(req.oidc.user));
         if (!inDb){
             console.log('Doing first time things');
             await usr.doFirstTimeThings(req.oidc.user).catch(err=>console.log(err));
         }
-        const details_id = await usr.getDetailsId().catch(err=>console.log(err));
-        res.redirect(`/userHome/${details_id}`);
+        res.redirect('/userHome');
     }else{
         //unauthenticated  home page
         res.render('home.ejs',{
