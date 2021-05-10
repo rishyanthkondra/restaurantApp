@@ -1,7 +1,14 @@
 const Data_screen = require("../models/data_screen");
-const Users = require("../models/user");
+const User = require("../models/user");
 
 exports.get_form = async (req,res,next) => {
+
+    if (req.oidc.isAuthenticated()){
+
+        const user = new User(req.oidc.user.email);
+        const isEmp = await user.checkIsRequiredRole('Manager').catch(err=> console.log(err));
+
+        if(isEmp){
 
     const recitem = new Data_screen();
     const roles = await recitem.get_roles();
@@ -14,9 +21,26 @@ exports.get_form = async (req,res,next) => {
         work_types: work_types,
         editing: false
     });
+
+}
+else{
+    res.redirect('/home');
+}
+}
+else{
+    res.redirect('/home');
+}
 };
 
 exports.post_form = async (req,res,next) => {
+
+    if (req.oidc.isAuthenticated()){
+
+        const user = new User(req.oidc.user.email);
+        const isEmp = await user.checkIsRequiredRole('Manager').catch(err=> console.log(err));
+
+        if(isEmp){
+
     const recitem = new Data_screen();
     var email = req.body.email;
     var role = req.body.role;
@@ -34,5 +58,13 @@ exports.post_form = async (req,res,next) => {
         res.redirect('/recruit');
     }
     
+}
+else{
+    res.redirect('/home');
+}
+}
+else{
+    res.redirect('/home');
+}
     
 };

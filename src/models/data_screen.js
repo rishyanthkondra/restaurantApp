@@ -44,7 +44,7 @@ module.exports = class Data_screen{
     }
 
     get_emps(){
-        return pool.query('SELECT * from (employee INNER JOIN details ON employee.employee_id = details.details_id) INNER JOIN Roles ON employee.role_id = roles.role_id');
+        return pool.query('SELECT * from (employee INNER JOIN details ON employee.employee_id = details.details_id) INNER JOIN Roles ON employee.role_id = roles.role_id ORDER BY employee.employee_id');
     }
 
     get_emp(empid){

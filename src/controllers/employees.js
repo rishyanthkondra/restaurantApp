@@ -1,6 +1,14 @@
 const Data_screen = require('../models/data_screen');
+const User = require("../models/user");
 
 exports.get_emp = async (req,res,next) => {
+
+    if (req.oidc.isAuthenticated()){
+
+        const user = new User(req.oidc.user.email);
+        const isEmp = await user.checkIsRequiredRole('Manager').catch(err=> console.log(err));
+
+        if(isEmp){
 
     var empitem = new Data_screen();
     const emps = await empitem.get_emps();
@@ -40,9 +48,26 @@ exports.get_emp = async (req,res,next) => {
         editing: false
     });
     }
+
+}
+else{
+    res.redirect('/home');
+}
+}
+else{
+    res.redirect('/home');
+}
 };
 
 exports.post_emp = async (req,res,next) => {
+
+    if (req.oidc.isAuthenticated()){
+
+        const user = new User(req.oidc.user.email);
+        const isEmp = await user.checkIsRequiredRole('Manager').catch(err=> console.log(err));
+
+        if(isEmp){
+
     const recitem = new Data_screen();
     var first_name = req.body.first_name;
     var last_name = req.body.last_name;
@@ -59,4 +84,13 @@ exports.post_emp = async (req,res,next) => {
     }
     await recitem.update_employee(req.params.empid,first_name,last_name,phone,email,dob,role,wage,gender,work_type,work_status);
     res.redirect('/employees');
+}
+else{
+    res.redirect('/home');
+}
+}
+else{
+    res.redirect('/home');
+}
+
 };
