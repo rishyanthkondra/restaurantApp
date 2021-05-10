@@ -1,20 +1,13 @@
 const Address = require("../models/address");
 const User = require("../models/user");
 const UserDetails = require("../models/userDetails");
-
-exports.param_details_id_handler = (req,res,next,details_id)=>{
-    req.details_id = details_id;//can handle any other useful info here
-    next();
-};
-exports.param_address_id_handler = (req,res,next,address_id)=>{
-    req.address_id = address_id;//can handle any other useful info here
-    next();
-};
+const url = require('url');
+const querystring = require('querystring');
 
 exports.get_user_details = async (req,res,next) => { // get details and addresses
     if (req.oidc.isAuthenticated()){
         const user = new User(req.oidc.user.email);
-        console.log(`Authenticated, in user details : ${req.details_id}`);
+        console.log(`Authenticated, in user details : ${req.oidc.user.email}`);
         const detailRows = await user.getDetails().catch(err=>console.log(err));
         const details = detailRows.rows[0];
         const isEmp = await user.checkIsEmployee().catch(err=> console.log(err));
@@ -61,7 +54,7 @@ exports.post_user_details = async (req,res,next) => { // update details
         await updatedDetails.updateDetails().
                         then(()=>{
                             console.log('Update successful');
-                            res.redirect(`/userDetails/${req.details_id}`);
+                            res.redirect('/userDetails');
                         }).catch(err => console.log(err));
     }else{
         res.redirect('/home');
@@ -70,17 +63,22 @@ exports.post_user_details = async (req,res,next) => { // update details
 
 exports.post_address_details = async (req,res,next) => { //update single address
     if (req.oidc.isAuthenticated()){
-        console.log(`Authenticated, posting user address details : ${req.details_id}`);
+        console.log('reached here');
+        const address = req.query.address_id;
+        console.log('reached here');
+        if(!address){
+            res.redirect('/userDetails');
+        }
         const updatedAddress = new Address( req.oidc.user.email,
-                                            req.address_id,
+                                            address,
                                             req.body.house_num,
                                             req.body.region,
                                             req.body.alias,
                                             req.body.symbol);
         updatedAddress.updateAddress().
                         then(()=>{
-                            console.log(`Updated address : ${req.address_id}`);
-                            res.redirect(`/userDetails/${req.details_id}`);
+                            console.log(`Updated address : ${address}`);
+                            res.redirect('/userDetails');
                         }).catch(err => console.log(err));
     }else{
         res.redirect('/home');
@@ -90,9 +88,13 @@ exports.post_address_details = async (req,res,next) => { //update single address
 exports.delete_address = async (req,res,next) => { // delete exsting address 
     if (req.oidc.isAuthenticated()){
         //console.log(`Authenticated, posting delete address : ${req.address_id}`);
-        const address = req.address_id;
+        const address = req.query.address_id;
+        if(!address){
+            res.redirect('/userDetails');
+        }
         Address.deleteAddress(address).then(()=>{
-            res.redirect(`/userDetails/${req.details_id}`);
+            console.log(`deleted address : ${address}`);
+            res.redirect('/userDetails');
         }).catch(err=> console.log(err));
     }else{
         res.redirect('/home');
@@ -110,7 +112,7 @@ exports.put_address = async (req,res,next) => { // add new address
                                         req.body.symbol);
         newAddress.addAddress().
                         then(()=>{
-                            res.redirect(`/userDetails/${req.details_id}`);
+                            res.redirect('/userDetails');
                         }).catch(err => console.log(err));
     }else{
         res.redirect('/home');
