@@ -11,17 +11,24 @@ exports.get_cart = async (req,res,next) => {
         const email = req.oidc.user.email;
         const usr = new User(email);
         const details_id = await usr.getDetailsId().catch(err=>console.log(err));
+        const detailRows = await usr.getDetails().catch(err=>console.log(err));
+        const details = detailRows.rows[0];
+        const isEmp = await usr.checkIsEmployee().catch(err=>console.log(err));
+
 
         const cartitems = await cartitem.get_all(details_id);
         const addritems = await usr.getAddressesUsingDetailsId(details_id);
-        // console.log(cartitems.rows);
+        console.log(cartitems.rows);
         // console.log(req.details_id);
         // console.log(addritems);
         res.render('includes/cart.ejs', {
             pageTitle: 'Cart',
             path: '/cart',
             editing: false,
-            items: cartitems.rows,
+            userImage: req.oidc.user.picture,
+            isEmployee : isEmp,
+            userImage : req.oidc.user.picture,
+            displayName : details.first_name,items: cartitems.rows,
             addrs: addritems.rows
         });
     }
