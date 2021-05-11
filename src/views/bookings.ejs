@@ -1,41 +1,302 @@
-<%- include('includes/head.ejs') %>
-<link rel="stylesheet" href="/css/forms.css">
-<link rel="stylesheet" href="/css/product.css">
+<!DOCTYPE html>
+<html  >
+<head>
+  <!-- Site made with Mobirise Website Builder v5.3.5, https://mobirise.com -->
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="generator" content="Mobirise v5.3.5, mobirise.com">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+  <link rel="shortcut icon" href="<%=userImage%>" type="image/x-icon">
+  <meta name="description" content="">
+  
+  
+  <title><%=pageTitle%></title>
+  <link rel="stylesheet" href="assets/tether/tether.min.css">
+  <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="assets/bootstrap/css/bootstrap-grid.min.css">
+  <link rel="stylesheet" href="assets/bootstrap/css/bootstrap-reboot.min.css">
+  <link rel="stylesheet" href="assets/dropdown/css/style.css">
+  <link rel="stylesheet" href="assets/theme/css/style.css">
+  <link rel="preload" href="https://fonts.googleapis.com/css?family=Jost:100,200,300,400,500,600,700,800,900,100i,200i,300i,400i,500i,600i,700i,800i,900i&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Jost:100,200,300,400,500,600,700,800,900,100i,200i,300i,400i,500i,600i,700i,800i,900i&display=swap"></noscript>
+  <link rel="preload" as="style" href="assets/mobirise/css/mbr-additional.css"><link rel="stylesheet" href="assets/mobirise/css/mbr-additional.css" type="text/css">
+  
 </head>
-
 <body>
-    <main>
-        <div class = "grid">
-                <fieldset>
-                    <legend>New Booking : </legend>
-                    <form class="" 
-                            action="http://localhost:3000/bookings/"
-                            method="POST">
-                        <div style="background-image: url('/images/Tables.png');background-attachment: fixed;
-                        background-position: center;
-                        background-repeat: no-repeat;
-                        background-size: contain;">
-                            <!--img src="/images/Tables.png" width="60%" alt="None"-->
-                            <input type = "checkbox" style="position: relative; top: 1%; left:1%;" name="table1" value="true">
-                        </div>
-                        <div class="grid" style="display: inline-block;">
-                            <fieldset>
-                                <legend>Select Date Time : </legend>
-                                <div class="form-control">
-                                    <label for="date">Date</label>
-                                    <input type="date" min="10-05-2021" name="date" id="date" required>
-                                </div>
-                                <div class="form-control">
-                                    <label for="time">Time</label>
-                                    <input type="time" min="11:00" max="21:00" step=3600 name="time" id="time" required>
-                                </div>
-                                <button class="btn" type="submit" 
-                                onclick="return confirm('Request free tables at selected time?')">
-                                Get Free Tables</button>
-                            </fieldset>
+
+<!--header-->
+<section class="menu cid-s48OLK6784" once="menu" id="menu1-h">    
+    <nav class="navbar navbar-dropdown navbar-fixed-top navbar-expand-lg">
+        <div class="container">
+            <div class="navbar-brand">
+                <span class="navbar-logo">
+                        <img src="<%=userImage%>" alt="<%=displayName%>" style="height: 3.8rem;">
+                </span>
+                <span class="navbar-caption-wrap">
+                    <a class="navbar-caption text-black display-7" href="/userDetails">
+                        <%=displayName%>
+                    </a>
+                </span>
+            </div>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <div class="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav nav-dropdown nav-right" data-app-modern-menu="true">
+                    <li class="nav-item">
+                		<a class="nav-link link text-primary display-4" href="/home">
+                			Home
+                		</a>
+                	</li>
+                    <li class="nav-item">
+                		<a class="nav-link link text-primary display-4" href="">
+                			Menu
+                		</a>
+                	</li>
+                	<li class="nav-item">
+                		<a class="nav-link link text-primary display-4" href="">
+                			Cart
+                		</a>
+                	</li>
+                	<li class="nav-item">
+                		<a class="nav-link link text-primary display-4" href="">
+                			Orders
+                		</a>
+                	</li>
+                    <% if (isEmployee) {%>
+                	<li class="nav-item dropdown">
+                		<a class="nav-link link text-primary dropdown-toggle display-4" href="#" data-toggle="dropdown-submenu" aria-expanded="false">
+                            Mode
+                		</a>
+                		<div class="dropdown-menu">
+                			<a class="text-primary dropdown-item display-4" href="">
+                				Employee
+                			</a>
+                			<a class="text-primary dropdown-item display-4" href="">
+                				User
+                			</a>
+                		</div>
+                	</li>
+                    <%}%>
+                	<li class="nav-item">
+                		<a class="nav-link link text-primary display-4" href="http://localhost:3000/logout">
+                		    Logout
+                        </a>
+                	</li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+</section>
+<%if(pop) {%>
+    <script>
+        alert("<%=message%>");
+        window.location.href = "/bookings";
+    </script>
+<%}%>
+<!--Content-->
+<section class="header11 cid-swZHoHlbUv mbr-fullscreen mbr-parallax-background" id="header11-o">
+
+    
+
+    <div class="mbr-overlay" style="opacity: 0.3; background-color: rgb(0, 0, 0);"></div>
+
+    <% if(hasAct) {%>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col" align="center">
+                <p class="mbr-text mbr-fonts-style display-7" align="top"><strong>Active Booking</strong></p>
+                <div align="center" style="background-color:rgba(0, 0, 0, 0.5);border-radius: 1vw;width: 70%;">
+                    <br>
+                    <div class="text-wrapper text-center">
+                        <p class="mbr-text mbr-fonts-style display-7">
+                            Booking id : <%=actBook.booking_id%>
+                        </p>
+                        <p class="mbr-text mbr-fonts-style display-7">
+                            Booked on : <%=actBook.booking_time%>
+                        </p>
+                        <p class="mbr-text mbr-fonts-style display-7">
+                            Start time : <%=actBook.start_time%>
+                        </p>
+                        <p class="mbr-text mbr-fonts-style display-7">
+                            Tables booked : <%for (var i=0; i<actBook.tables.rowCount;i++){%>
+                                &nbsp Table <%=actBook.tables.rows[i].table_id%> 
+                            <%}%>
+                        </p>
+                    </div>
+                    <form method="POST" action="/bookings?cancel=true">
+                        <div class="col-sm-10">
+                            <button class="btn btn-primary btn-block" type="submit"
+                            onclick="return confirm('Cancelling booking')">Cancel</button>
                         </div>
                     </form>
-                </fieldset>
+                    <br>
+                </div>
+            </div>
         </div>
-    </main>
-<%- include('includes/end.ejs') %>
+        <br><br>
+        <div class="row">
+            <div class="col" align="center">
+                <p class="mbr-text mbr-fonts-style display-7" align="top"><strong>Table Layout</strong></p>
+                <div align="center" style="background-color:rgba(0, 0, 0, 0.5);border-radius: 1vw;width: 90%;">
+                    <br>
+                    <div style="width:90%;">
+                        <img src="/images/Tables.png">
+                    </div>
+                    <br>
+                </div>
+            </div>
+        </div>    
+    </div>
+    <% }else{%>
+    <div class="container">
+        <div class="row">
+            <div class="col" align="center">
+                <p class="mbr-text mbr-fonts-style display-7" align="top"><strong>Table Layout</strong></p>
+                <div align="center" style="background-color:rgba(0, 0, 0, 0.5);border-radius: 1vw;width: 90%;">
+                    <br>
+                    <div style="width:90%;">
+                        <img src="/images/Tables.png">
+                    </div>
+                    <br>
+                </div>
+            </div>
+        </div>    
+        <br><br>
+        <div class="row justify-content-center">
+            <div class="col-12 col-md">
+                <div class="text-wrapper text-center">
+                    <p class="mbr-text mbr-fonts-style display-7">Book atleast one day in advance, from 11:00 AM to 9:00 PM</p>
+                    <p class="mbr-text mbr-fonts-style display-7">Select avialble tables using numbers based on your location preferences</p>
+                    <p class="mbr-text mbr-fonts-style display-7">You cannot exceed capaity of 20</p>
+                    <p class="mbr-text mbr-fonts-style display-7">You can have only one active booking</p>
+                </div>
+            </div>
+        </div>
+        <br><br>
+        <div class="row justify-content-center">
+            <div class="col" align="center">
+                <div align="center" style="background-color:rgba(0, 0, 0, 0.5);border-radius: 1vw;width: 90%;">
+                    <br>
+                    <form class="" 
+                        action="http://localhost:3000/bookings"
+                        method="POST">
+                        <div class="form-group row" style="width: 50%;">
+                            <label class="mbr-text mbr-fonts-style mb-2 display-7" for="date">Date</label>
+                            <div class="col-sm-10">
+                            <input type="date" class="form-control" min="<%=minDate%>"
+                                value=<%= dateVal %> name="date" id="date" required>
+                            </div>
+                        </div>
+                        <div class="form-group row" style="width: 50%;">
+                            <label class="mbr-text mbr-fonts-style mb-2 display-7" for="time">Time</label>
+                            <div class="col-sm-10">
+                            <input type="time" class="form-control" min="<%=minTime%>" max="<%=maxTime%>" step=3600 
+                                value=<%=timeVal%> name="time" id="time" required>
+                            </div>
+                        </div>
+                        <div class="form-group row" style="width: 50%;">
+                            <div class="col-sm-10">
+                            <button class="btn btn-primary btn-block" type="submit"
+                            onclick="return confirm('Requesting free table')">Get Free Tables</button>
+                            </div>
+                        </div>
+                    </form>
+                    <br>
+                </div>
+            </div>
+        </div>    
+        <%if(hasFree){%>
+        <div class="row justify-content-center">
+            <div class="col" align="center">
+                <div align="center" style="background-color:rgba(0, 0, 0, 0.5);border-radius: 1vw;width: 90%;">
+                    <br>
+                    <form class="" 
+                        action="http://localhost:3000/bookings?book=true"
+                        method="POST">
+                        <input type="hidden" value=<%= dateVal %> name="date" id="date">
+                        <input type="hidden" value=<%= timeVal %> name="time" id="time">
+                        <div class="form-group row" style="width: 50%;">
+                            <%for(var i=0;i<tables.length;i++){%>
+                                <input type="checkbox" class="mbr-text mb-2" name="table<%=tables[i]%>" id="table<%=tables[i]%>">
+                                <label for="table<%=tables[i]%>" style="color: white;"> &nbsp Table <%=tables[i]%></label>
+                                &nbsp;&nbsp;
+                            <%}%>
+                        </div>
+                        <div class="form-group row" style="width: 50%;">
+                            <div class="col-sm-10">
+                            <button class="btn btn-primary btn-block" type="submit"
+                            onclick="return confirm('Booking Selected Tables')">Book Now</button>
+                            </div>
+                        </div>
+                    </form>
+                    <br>
+                </div>
+            </div>
+        </div>  
+        <%}%>  
+    </div>
+    <% }%>
+</section>
+
+<!--Footer-->
+<section class="footer6 cid-swZIImfDHv" once="footers" id="footer6-p">
+    <div class="container">
+        <div class="row content mbr-white">
+            <div class="col-12 col-md-3 mbr-fonts-style display-7">
+                <h5 class="mbr-section-subtitle mbr-fonts-style mb-2 mt-4 display-7">
+                    <strong>Contacts</strong>
+                </h5>
+                <p class="mbr-text mbr-fonts-style mb-4 display-7">
+                    Email: meatandeat@gmail.com <br>
+                    Phone: +91 - 0870- 255722<br><br></p>
+            </div>
+            <div class="col-12 col-md-3 mbr-fonts-style display-7">
+                <h5 class="mbr-section-subtitle mbr-fonts-style mb-2 mt-5 display-7">
+                    <strong>Feedback</strong>
+                </h5>
+                <p class="mbr-text mbr-fonts-style mb-4 display-7">
+                    Please send us your ideas, bug reports, suggestions! Any feedback would be appreciated.
+                </p>
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="google-map"><iframe frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/place?key=AIzaSyCZI5F_k6S1k46ujh0SNrapM89f7mJxd30&amp;q=IITB New GymkhanaMain Gate Rd, Opposite Hostel 11, IIT Area, Powai, Mumbai, Maharashtra 400076" allowfullscreen=""></iframe></div>
+            </div>
+        </div>
+        <div class="footer-lower">
+            <div class="col-sm-12 copyright pl-0">
+                <p class="mbr-text mbr-fonts-style mbr-white display-7">
+                    © Copyright 2025 Meat And Eat - All Rights Reserved
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section style="background-color: #fff; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif; color:#aaa; font-size:12px; padding: 0; align-items: center; display: flex;">
+<a style="flex: 1 1; height: 3rem; padding-left: 1rem;"></a>
+<p style="flex: 0 0 auto; margin:0; padding-right:1rem;">
+    <a href="https://mobirise.site/m" style="color:#aaa;">
+    </a>
+</p>
+</section>
+
+<script src="assets/web/assets/jquery/jquery.min.js"></script>
+<script src="assets/popper/popper.min.js"></script>  
+<script src="assets/tether/tether.min.js"></script>  
+<script src="assets/bootstrap/js/bootstrap.min.js"></script>  
+<script src="assets/smoothscroll/smooth-scroll.js"></script>
+<script src="assets/dropdown/js/nav-dropdown.js"></script>
+<script src="assets/dropdown/js/navbar-dropdown.js"></script>
+<script src="assets/touchswipe/jquery.touch-swipe.min.js"></script>
+<script src="assets/parallax/jarallax.min.js"></script>
+<script src="assets/theme/js/script.js"></script>  
+</body>
+</html>

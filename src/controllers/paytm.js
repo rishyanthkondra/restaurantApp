@@ -2,17 +2,31 @@ const checksum_lib = require("../Paytm/checksum");
 const config = require("../Paytm/config");
 const https = require("https");
 const qs = require("querystring");
-
 // const formidable =  require('formidable');
 
+const Cart = require('../models/cart');
+const User = require("../models/user");
 
-exports.paytmcallback = (req, res) => {
+exports.paytmcallback = async (req, res) => {
 
     var post_data = req.body;
     var post_data = req.body;
     var checksumhash = post_data.CHECKSUMHASH;
     var result = checksum_lib.verifychecksum(post_data, config.PaytmConfig.key, checksumhash);
     if (result && post_data.STATUS == "TXN_SUCCESS"){
+
+        const cart = new Cart();
+
+        const details_id = req.params.did;
+        console.log(details_id)
+        
+        cartitems = await cart.get_all(details_id).catch(err=>console.log(err));
+        cartitems = cartitems.rows
+        
+        await cart.empty_all(details_id).catch(err=>console.log(err));
+        console.log(cartitems);
+
+
         res.redirect('/cart');
     }
     else{

@@ -1,13 +1,14 @@
 const pool = require('../utils/database')
 const User = require('../models/user')
 module.exports = class Address{
-    constructor(email,address_id,house_num,region,alias,symbol){
+    constructor(email,address_id,house_num,region,alias,symbol,area_code){
         this.email = email;
         this.address_id = address_id;
         this.house_num = house_num;
         this.alias = alias;
         this.region = region;
         this.symbol = symbol;
+        this.area_code = area_code;
     }
 
     async getDetailsId(){
@@ -19,10 +20,10 @@ module.exports = class Address{
     async addAddress(){ //use address model
         const details_id = await this.getDetailsId().catch(err=>console.log(err));
         return  pool.query(
-                        "INSERT INTO address(house_num,region,belongs_to,symbol,alias)"+ 
-                        " VALUES ($1,$2,$3,$4,$5)" ,
+                        "INSERT INTO address(house_num,region,belongs_to,symbol,alias,primarycode)"+ 
+                        " VALUES ($1,$2,$3,$4,$5,$6)" ,
                         [this.house_num,this.region,
-                        details_id,this.symbol,this.alias]);
+                        details_id,this.symbol,this.alias,this.area_code]);
     }
     ///// -> deleting an existing address
     static deleteAddress(address_id){
@@ -34,9 +35,10 @@ module.exports = class Address{
                         "house_num = $1,"+
                         "region = $2,"+
                         "symbol = $3,"+
-                        "alias = $4"+
-                        " WHERE address_id = $5" ,
+                        "alias = $4,"+
+                        "primarycode = $5"+
+                        " WHERE address_id = $6;" ,
                         [this.house_num,this.region,this.symbol,
-                        this.alias,this.address_id]);
+                        this.alias,this.area_code,this.address_id]);
     }
 }

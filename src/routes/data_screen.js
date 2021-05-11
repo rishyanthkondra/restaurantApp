@@ -7,7 +7,6 @@ const router = express.Router();
 
 
 router.get('/',data_con.get_stats);
-router.get('/:start_date/:end_date',data_con.get_stats);
 router.post('/',data_con.get_new_stats);
 
 
