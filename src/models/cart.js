@@ -20,9 +20,13 @@ module.exports = class Cart{
     async update_cart(prodId,userId){
         return pool.query('UPDATE cart SET quantity = quantity+1 WHERE item_id = $1 AND user_id = $2;', [prodId,userId]);
     }
-    get_all(cusId){
+    async get_all(cusId){
         // return pool.query('SELECT products.title,products.image,products.price,cart.quantity FROM cart inner join products on cart.item_id = products.id and cart.user_id = 1');
         return pool.query('SELECT * from cart inner join dish on cart.dish_dish_id = dish.dish_id and cart.customer_customer_id = $1',[cusId])
+    }
+
+    async empty_all(cusId){
+        return pool.query('DELETE FROM cart WHERE customer_customer_id=$1;',[cusId]);
     }
 
     // get_credits(){

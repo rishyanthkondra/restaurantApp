@@ -1,9 +1,5 @@
 const User = require("../models/user");
 
-exports.param_details_id_handler = (req,res,next,details_id)=>{
-    req.details_id = details_id;//can handle any other useful info here
-    next();
-};
 exports.get_user_home = async (req,res,next) => {
     if (req.oidc.isAuthenticated()){
         const user = new User(req.oidc.user.email);
@@ -11,9 +7,12 @@ exports.get_user_home = async (req,res,next) => {
         const details = detailRows.rows[0];
         const isEmp = await user.checkIsEmployee().catch(err=>console.log(err));
         //console.log(`Authenticated in user home : ${req.details_id}`);
-        res.render('home.ejs',{
-            pageTitle:'Home',
+        res.render('userHome.ejs',{
+            pageTitle:'User Home',
             alertMessage:false,
+            isEmployee : isEmp,
+            userImage : req.oidc.user.picture,
+            displayName : details.first_name,
             debugString : 'In get_home,unauthenticated'
         });
     }else{

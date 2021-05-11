@@ -1,12 +1,19 @@
 const pool= require('../utils/database');
 module.exports = class Orders{
 
-    constructor(){
-        this.title = "";
-        this.image = "";
-        this.price = 0;
-        this.quantity = 0;
+    constructor(cartvalue,cusId,transId){
+        this.order_id = null;
+        this.cost = cartvalue;
+        this.cusId = cusId;
+        this.transId = transId;
     }
+
+    async add_order(cartvalue,cusId,transId){
+        const order_id = await pool.query('INSERT INTO orders(cost,customer_id,transaction_id) VALUES ($1,$2,$3) RETURNING order_id',[cartvalue,cusId,transId]);
+        this.order_id = order_id.rows[0].order_id;
+        return this.order_id;
+    }
+
 
     async order(cartvalue){
         //see if order already placed for the object
@@ -20,7 +27,7 @@ module.exports = class Orders{
            await pool.query({text: query_s});
        }
        await pool.query('DELETE from cart where user_id = 1;')
-        return pool.query('UPDATE users set credit = credit-$1 where user_id = 1;',[cartvalue]);
+    return pool.query('UPDATE users set credit = credit-$1 where user_id = 1;',[cartvalue]);
     }
 
     order_cond(cusId){
