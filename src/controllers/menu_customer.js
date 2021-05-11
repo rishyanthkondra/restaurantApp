@@ -5,11 +5,17 @@ const User = require("../models/user");
 
 exports.get_menu = async (req,res,next) => {
     if (req.oidc.isAuthenticated()){
-
+            const user = new User(req.oidc.user.email);
             const dishlist = await Menu.get_dishes();
+            const detailRows = await user.getDetails().catch(err=>console.log(err));
+            const details = detailRows.rows[0];
+            const isEmp = await user.checkIsEmployee().catch(err=> console.log(err));
             res.render('includes/menu_customer.ejs', {
                 pageTitle: 'Menu',
                 path: '/menu_customer',
+                isEmployee : isEmp,
+                userImage : req.oidc.user.picture,
+                displayName : details.first_name,
                 dishes: dishlist.rows
             });
     }
@@ -22,6 +28,9 @@ exports.get_menu = async (req,res,next) => {
 exports.get_dishcart = async (req,res,next) => {
     if (req.oidc.isAuthenticated()){
         const user = new User(req.oidc.user.email);
+        const detailRows = await user.getDetails().catch(err=>console.log(err));
+        const details = detailRows.rows[0];
+        const isEmp = await user.checkIsEmployee().catch(err=> console.log(err));
             var dish_id = req.params.dish_id;
             var details_id = await user.getDetailsId();
             var currdish = await Menu.get_cartdish(dish_id,details_id); //// change this using user_id
@@ -33,6 +42,9 @@ exports.get_dishcart = async (req,res,next) => {
             res.render('includes/dish.ejs', {
                 pageTitle: 'Dish',
                 path: '/menu_customer/'+dish_id,
+                isEmployee : isEmp,
+                userImage : req.oidc.user.picture,
+                displayName : details.first_name,
                 dishes: currdish.rows
             });
     }
