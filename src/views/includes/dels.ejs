@@ -95,28 +95,23 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav nav-dropdown nav-right" data-app-modern-menu="true">
                     <li class="nav-item">
-                		<a class="nav-link link text-primary display-4" href="/home">
+                		<a class="nav-link link text-primary display-4" href="/emp_home">
                 			Home
                 		</a>
                 	</li>
                     <li class="nav-item">
-                		<a class="nav-link link text-primary display-4" href="">
-                			Menu
+            		    <a class="nav-link link text-primary display-4" href="http://localhost:3000/menu_chef">
+            			    Menu
+            		    </a>
+            	    </li>
+                    <li class="nav-item">
+            		    <a class="nav-link link text-primary display-4" href="http://localhost:3000/pending_orders">
+            			    Pending Orders
                 		</a>
                 	</li>
-                	<li class="nav-item">
-                		<a class="nav-link link text-primary display-4" href="">
-                			Cart
-                		</a>
-                	</li>
-                	<li class="nav-item">
-                		<a class="nav-link link text-primary display-4" href="">
-                			Orders
-                		</a>
-                	</li>
-                	<li class="nav-item">
-                		<a class="nav-link link text-primary display-4" href="/bookings">
-                			Bookings
+                    <li class="nav-item">
+            		    <a class="nav-link link text-primary display-4" href="http://localhost:3000/current_orders">
+            			    Current Orders
                 		</a>
                 	</li>
                     <% if (isEmployee) {%>
@@ -128,7 +123,7 @@
                 			<a class="text-primary dropdown-item display-4" href="">
                 				Employee
                 			</a>
-                			<a class="text-primary dropdown-item display-4" href="">
+                			<a class="text-primary dropdown-item display-4" href="http://localhost:3000/userHome">
                 				User
                 			</a>
                 		</div>

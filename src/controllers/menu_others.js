@@ -7,6 +7,8 @@ exports.get_menu = async (req,res,next) => {
     if (req.oidc.isAuthenticated()){
 
         const user = new User(req.oidc.user.email);
+        const detailRows = await user.getDetails().catch(err=>console.log(err));
+        const details = detailRows.rows[0];
         const isEmp = await user.checkIsEmployee().catch(err=> console.log(err));
         if(isEmp){
             const isChef = await user.checkIsRequiredRole('Chef').catch(err=> console.log(err));
@@ -18,6 +20,9 @@ exports.get_menu = async (req,res,next) => {
                 res.render('includes/menu_others.ejs', {
                     pageTitle: 'Menu',
                     path: '/menu_others',
+                    isEmployee : isEmp,
+                    userImage : req.oidc.user.picture,
+                    displayName : details.first_name,
                     dishes: dishlist.rows
                 });
             }
