@@ -40,6 +40,19 @@ module.exports = class User{
         }
     }
 
+    async getRole(){
+        if (!this.inDb()){
+            console.warn("Tried checking employee records for an email not in database!");
+            return false;
+        }else{
+            const details_id = await this.getDetailsId().catch(err=>console.log(err));
+            const inEmployee = await pool.query(
+                " select role_name from employee natural join roles WHERE employee_id = $1;",
+                [details_id]);
+            return inEmployee.rows;
+        }
+    }
+
 ////////////////// some useful functions
     async getDetailsId(){
         const details = await pool.query(
