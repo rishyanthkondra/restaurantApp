@@ -1,88 +1,268 @@
-<%- include('../includes/head.ejs') %>
-<link rel="stylesheet" href="/css/forms.css">
-<link rel="stylesheet" href="/css/product.css">
+<!DOCTYPE html>
+<html  >
+<head>
+  <!-- Site made with Mobirise Website Builder v5.3.5, https://mobirise.com -->
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="generator" content="Mobirise v5.3.5, mobirise.com">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+  <link rel="shortcut icon" href="<%=userImage%>" type="image/x-icon">
+  <meta name="description" content="">
+  <style>
+    table {
+      width:100%;
+    }
+    table, th, td {
+      border: 1px solid black;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 15px;
+      text-align: left;
+    }
+    #t01 tr:nth-child(even) {
+      background-color: #eee;
+    }
+    #t01 tr:nth-child(odd) {
+     background-color: #fff;
+    }
+    #t01 th {
+      background-color: black;
+      color: white;
+    }
+    </style>
+  
+  <title><%=pageTitle%></title>
+  <link rel="stylesheet" href="/css/forms.css">
+  <link rel="stylesheet" href="assets/tether/tether.min.css">
+  <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="assets/bootstrap/css/bootstrap-grid.min.css">
+  <link rel="stylesheet" href="assets/bootstrap/css/bootstrap-reboot.min.css">
+  <link rel="stylesheet" href="assets/dropdown/css/style.css">
+  <link rel="stylesheet" href="assets/theme/css/style.css">
+  <link rel="preload" href="https://fonts.googleapis.com/css?family=Jost:100,200,300,400,500,600,700,800,900,100i,200i,300i,400i,500i,600i,700i,800i,900i&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Jost:100,200,300,400,500,600,700,800,900,100i,200i,300i,400i,500i,600i,700i,800i,900i&display=swap"></noscript>
+  <link rel="preload" as="style" href="assets/mobirise/css/mbr-additional.css"><link rel="stylesheet" href="assets/mobirise/css/mbr-additional.css" type="text/css">
+  
 </head>
-
 <body>
-<%- include('../includes/navigation.ejs') %>
 
-<main>
-    <h2>Employee details</h2>
-    <form class="product-form" action="http://localhost:3000/<%if(editing){%>employees/<%= emp_data.employee_id %> <%}else{%>recruit<%}%>" method="POST">
-        <% if (editing) { %>
-        <div class="form-control">
-            <label for="first_name">First name</label>
-            <input type="text" name="first_name" id="first_name" value="<% if (editing) { %> <%= emp_data.first_name %><% } %>" autofocus required>
+<!--header-->
+<section class="menu cid-s48OLK6784" once="menu" id="menu1-h">    
+    <nav class="navbar navbar-dropdown navbar-fixed-top navbar-expand-lg">
+        <div class="container">
+            <div class="navbar-brand">
+                <span class="navbar-logo">
+                        <img src="<%=userImage%>" alt="<%=displayName%>" style="height: 3.8rem;">
+                </span>
+                <span class="navbar-caption-wrap">
+                    <a class="navbar-caption text-black display-7" href="/userDetails">
+                        <%=displayName%>
+                    </a>
+                </span>
+            </div>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <div class="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav nav-dropdown nav-right" data-app-modern-menu="true">
+                    <li class="nav-item">
+                		<a class="nav-link link text-primary display-4" href="/home">
+                			Home
+                		</a>
+                	</li>
+                    <li class="nav-item">
+                		<a class="nav-link link text-primary display-4" href="">
+                			Menu
+                		</a>
+                	</li>
+                	<li class="nav-item">
+                		<a class="nav-link link text-primary display-4" href="">
+                			Cart
+                		</a>
+                	</li>
+                	<li class="nav-item">
+                		<a class="nav-link link text-primary display-4" href="">
+                			Orders
+                		</a>
+                	</li>
+                	<li class="nav-item">
+                		<a class="nav-link link text-primary display-4" href="/bookings">
+                			Bookings
+                		</a>
+                	</li>
+                    <% if (isEmployee) {%>
+                	<li class="nav-item dropdown">
+                		<a class="nav-link link text-primary dropdown-toggle display-4" href="#" data-toggle="dropdown-submenu" aria-expanded="false">
+                            Mode
+                		</a>
+                		<div class="dropdown-menu">
+                			<a class="text-primary dropdown-item display-4" href="">
+                				Employee
+                			</a>
+                			<a class="text-primary dropdown-item display-4" href="">
+                				User
+                			</a>
+                		</div>
+                	</li>
+                    <%}%>
+                	<li class="nav-item">
+                		<a class="nav-link link text-primary display-4" href="http://localhost:3000/logout">
+                		    Logout
+                        </a>
+                	</li>
+                </ul>
+            </div>
         </div>
-        <div class="form-control">
-            <label for="last_name">Last name</label>
-            <input type="text" name="last_name" id="last_name" value="<% if (editing) { %><%= emp_data.last_name %><% } %>" required>
-        </div>
-        <div class="form-control">
-            <label for="gender">Gender</label>
-            <select name="gender" id="gender">
-            <option value="male" <% if (editing && emp_data.gender == 'male') { %> selected <% } %> >Male</option>
-            <option value="female" <% if (editing&&emp_data.gender == 'female') { %> selected <% } %> >Female</option>
-            <option value="other" <% if (editing&&emp_data.gender == 'other') { %> selected <% } %> >Other</option>
-            </select>
-        </div>
-        <div class="form-control">
-            <label for="phone">Phone</label>
-            <input type="tel" name="phone" id="phone"  pattern="[0-9]{10}" value="<% if (editing) { %><%= emp_data.phone_number %><% } %>" required>
-        </div>
-        <div class="form-control">
-            <label for="dob">Date of Birth</label>
-            <input type="date" name="dob" id="dob" value="<% if (editing) { %><%= dob %><% } %>" required>
-        </div>
-        <% } %>
-        <div class="form-control">
-            <label for="email">Email</label>
-            <input type="email" name="email" id="email" value="<% if (editing) { %><%= emp_data.email %><% } %>">
-        </div>
-        <div class="form-control">
-            <label for="role">Role</label>
-            <select name="role" id="role">
-                <% for(var i=0; i < roles.length; i++) { 
-                    if(editing && emp_data.role_id == roles[i].role_id) {%>
-                    <option value= "<%= roles[i].role_id %>" selected> <%= roles[i].role_name %> </option>
-                 <% } else {%>
-                    <option value= "<%= roles[i].role_id %>"> <%= roles[i].role_name %> </option>
-                    <%} }%>
-            </select>
-        </div>
-        <div class="form-control">
-            <label for="wage">Wage</label>
-            <input type="number" name="wage" id="wage" value="<% if (editing) { %><%= emp_data.current_wage %><% } %>" required>
-        </div>
-        <div class="form-control">
-            <label for="work_type">Work type</label>
-            <select name="work_type" id="work_type" required>
-                <% for(var i=0; i < work_types.length; i++) { 
-                    if (editing&&emp_data.work_type == work_types[i]) {%>
-                    <option value= "<%= work_types[i] %>" selected> <%= work_types[i] %> </option>
-                 <% } else {%>
-                    <option value= "<%= work_types[i] %>"> <%= work_types[i] %> </option>
-                    <%} }%>
-            </select>
-        </div>
+    </nav>
 
-        <%if (editing) { %>
+</section>
 
-        <div class="form-control">
-            <label for="work_status">Work status</label>
-            <select name="work_status" id="work_status" required>
-                <% for(var i=0; i < work_status.length; i++) { 
-                    if (editing&&emp_data.work_status == work_status[i]) {%>
-                    <option value= "<%= work_status[i] %>" selected> <%= work_status[i] %> </option>
-                 <% } else {%>
-                    <option value= "<%= work_status[i] %>"> <%= work_status[i] %> </option>
-                    <%} }%>
-            </select>
+<!--Content-->
+<section class="header11 cid-swZHoHlbUv mbr-fullscreen mbr-parallax-background" id="header11-o">
+
+    
+
+    <div class="mbr-overlay" style="opacity: 0.3; background-color: rgb(0, 0, 0);"></div>
+
+    <div class="container">
+        <h2 class="mbr-section-subtitle mbr-fonts-style mb-2 mt-4 display-100" style="color: red;">Employee details</h2>
+        <form class="product-form" action="http://localhost:3000/<%if(editing){%>employees?emp_id=<%= emp_data.employee_id %> <%}else{%>recruit<%}%>" method="POST">
+            <% if (editing) { %>
+            <div class="form-control">
+                <label for="first_name" class="mbr-section-subtitle mbr-fonts-style mb-2 mt-4 display-100" style="color: black;">First name</label>
+                <input type="text" name="first_name" id="first_name" value="<% if (editing) { %><%= emp_data.first_name %><% } %>" autofocus required>
+            </div>
+            <div class="form-control">
+                <label for="last_name" class="mbr-section-subtitle mbr-fonts-style mb-2 mt-4 display-100" style="color: black;">Last name</label>
+                <input type="text" name="last_name" id="last_name" value="<% if (editing) { %><%= emp_data.last_name %><% } %>" required>
+            </div>
+            <div class="form-control">
+                <label for="gender" class="mbr-section-subtitle mbr-fonts-style mb-2 mt-4 display-100" style="color: black;">Gender</label>
+                <select name="gender" id="gender">
+                <option value="male" <% if (editing && emp_data.gender == 'male') { %> selected <% } %> >Male</option>
+                <option value="female" <% if (editing&&emp_data.gender == 'female') { %> selected <% } %> >Female</option>
+                <option value="other" <% if (editing&&emp_data.gender == 'other') { %> selected <% } %> >Other</option>
+                </select>
+            </div>
+            <div class="form-control">
+                <label for="phone" class="mbr-section-subtitle mbr-fonts-style mb-2 mt-4 display-100" style="color: black;">Phone</label>
+                <input type="tel" name="phone" id="phone"  pattern="[0-9]{10}" value="<% if (editing) { %><%= emp_data.phone_number %><% } %>">
+            </div>
+            <div class="form-control">
+                <label for="dob" class="mbr-section-subtitle mbr-fonts-style mb-2 mt-4 display-100" style="color: black;">Date of Birth</label>
+                <input type="date" name="dob" id="dob" value="<% if (editing) { %><%= dob %><% } %>" required>
+            </div>
+            <% } %>
+            <div class="form-control">
+                <label for="email" class="mbr-section-subtitle mbr-fonts-style mb-2 mt-4 display-100" style="color: black;">Email</label>
+                <input type="email" name="email" id="email" value="<% if (editing) { %><%= emp_data.email %><% } %>" required>
+            </div>
+            <div class="form-control">
+                <label for="role" class="mbr-section-subtitle mbr-fonts-style mb-2 mt-4 display-100" style="color: black;">Role</label>
+                <select name="role" id="role">
+                    <% for(var i=0; i < roles.length; i++) { 
+                        if(editing && emp_data.role_id == roles[i].role_id) {%>
+                        <option value= "<%= roles[i].role_id %>" selected> <%= roles[i].role_name %> </option>
+                     <% } else {%>
+                        <option value= "<%= roles[i].role_id %>"> <%= roles[i].role_name %> </option>
+                        <%} }%>
+                </select>
+            </div>
+            <div class="form-control">
+                <label for="wage" class="mbr-section-subtitle mbr-fonts-style mb-2 mt-4 display-100" style="color: black;">Wage</label>
+                <input type="number" name="wage" id="wage" value="<% if (editing) { %><%= emp_data.current_wage %><% } %>" required>
+            </div>
+            <div class="form-control">
+                <label for="work_type" class="mbr-section-subtitle mbr-fonts-style mb-2 mt-4 display-100" style="color: black;">Work type</label>
+                <select name="work_type" id="work_type" required>
+                    <% for(var i=0; i < work_types.length; i++) { 
+                        if (editing&&emp_data.work_type == work_types[i]) {%>
+                        <option value= "<%= work_types[i] %>" selected> <%= work_types[i] %> </option>
+                     <% } else {%>
+                        <option value= "<%= work_types[i] %>"> <%= work_types[i] %> </option>
+                        <%} }%>
+                </select>
+            </div>
+    
+            <%if (editing) { %>
+    
+            <div class="form-control">
+                <label for="work_status" class="mbr-section-subtitle mbr-fonts-style mb-2 mt-4 display-100" style="color: black;">Work status</label>
+                <select name="work_status" id="work_status" required>
+                    <% for(var i=0; i < work_status.length; i++) { 
+                        if (editing&&emp_data.work_status == work_status[i]) {%>
+                        <option value= "<%= work_status[i] %>" selected> <%= work_status[i] %> </option>
+                     <% } else {%>
+                        <option value= "<%= work_status[i] %>"> <%= work_status[i] %> </option>
+                        <%} }%>
+                </select>
+            </div>
+    
+            <% } %>
+    
+            <button class="btn" type="submit" style="color: green;"><% if (editing) { %>Update details<% } else { %>Add Employee<% } %></button>
+        </form>
+      </div>
+</section>
+
+<!--Footer-->
+<section class="footer6 cid-swZIImfDHv" once="footers" id="footer6-p">
+    <div class="container">
+        <div class="row content mbr-white">
+            <div class="col-12 col-md-3 mbr-fonts-style display-7">
+                <h5 class="mbr-section-subtitle mbr-fonts-style mb-2 mt-4 display-7">
+                    <strong>Contacts</strong>
+                </h5>
+                <p class="mbr-text mbr-fonts-style mb-4 display-7">
+                    Email: meatandeat@gmail.com <br>
+                    Phone: +91 - 0870- 255722<br><br></p>
+            </div>
+            <div class="col-12 col-md-3 mbr-fonts-style display-7">
+                <h5 class="mbr-section-subtitle mbr-fonts-style mb-2 mt-5 display-7">
+                    <strong>Feedback</strong>
+                </h5>
+                <p class="mbr-text mbr-fonts-style mb-4 display-7">
+                    Please send us your ideas, bug reports, suggestions! Any feedback would be appreciated.
+                </p>
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="google-map"><iframe frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/place?key=AIzaSyCZI5F_k6S1k46ujh0SNrapM89f7mJxd30&amp;q=IITB New GymkhanaMain Gate Rd, Opposite Hostel 11, IIT Area, Powai, Mumbai, Maharashtra 400076" allowfullscreen=""></iframe></div>
+            </div>
         </div>
+        <div class="footer-lower">
+            <div class="col-sm-12 copyright pl-0">
+                <p class="mbr-text mbr-fonts-style mbr-white display-7">
+                    © Copyright 2025 Meat And Eat - All Rights Reserved
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
 
-        <% } %>
 
-        <button class="btn" type="submit"><% if (editing) { %>Update details<% } else { %>Add Employee<% } %></button>
-    </form>
-</main>
-<%- include('../includes/end.ejs') %>
+<section style="background-color: #fff; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif; color:#aaa; font-size:12px; padding: 0; align-items: center; display: flex;">
+<a style="flex: 1 1; height: 3rem; padding-left: 1rem;"></a>
+<p style="flex: 0 0 auto; margin:0; padding-right:1rem;">
+    <a href="https://mobirise.site/m" style="color:#aaa;">
+    </a>
+</p>
+</section>
+
+<script src="assets/web/assets/jquery/jquery.min.js"></script>
+<script src="assets/popper/popper.min.js"></script>  
+<script src="assets/tether/tether.min.js"></script>  
+<script src="assets/bootstrap/js/bootstrap.min.js"></script>  
+<script src="assets/smoothscroll/smooth-scroll.js"></script>
+<script src="assets/dropdown/js/nav-dropdown.js"></script>
+<script src="assets/dropdown/js/navbar-dropdown.js"></script>
+<script src="assets/touchswipe/jquery.touch-swipe.min.js"></script>
+<script src="assets/parallax/jarallax.min.js"></script>
+<script src="assets/theme/js/script.js"></script>  
+</body>
+</html>

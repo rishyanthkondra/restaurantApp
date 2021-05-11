@@ -6,6 +6,8 @@ exports.get_form = async (req,res,next) => {
     if (req.oidc.isAuthenticated()){
 
         const user = new User(req.oidc.user.email);
+        const detailRows = await user.getDetails().catch(err=>console.log(err));
+        const details = detailRows.rows[0];
         const isEmp = await user.checkIsRequiredRole('Manager').catch(err=> console.log(err));
 
         if(isEmp){
@@ -19,6 +21,10 @@ exports.get_form = async (req,res,next) => {
         path: '/recruit',
         roles: roles.rows,
         work_types: work_types,
+        isEmployee : isEmp,
+        userImage : req.oidc.user.picture,
+        email : req.oidc.user.email,
+        displayName : details.first_name,
         editing: false
     });
 
@@ -46,10 +52,10 @@ exports.post_form = async (req,res,next) => {
     var role = req.body.role;
     var wage = req.body.wage;
     var work_type = req.body.work_type;
-    const new_emp = new Users(email);
+    const new_emp = new User(email);
     var checks = await new_emp.inDb();
-    if(checks){
-        console.log("hello");
+    var check2 = await new_emp.checkIsEmployee();
+    if(checks && !check2){
         var details_id = await new_emp.getDetailsId();
         await recitem.new_employee(details_id,role,wage,work_type);
         res.redirect('/employees');

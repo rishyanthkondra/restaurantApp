@@ -18,8 +18,9 @@ exports.select_order = async (req,res,next) => {
     res.render('includes/allot.ejs', {
         pageTitle: 'Allot Orders',
         isEmployee : isEmp,
-        image : req.oidc.user.picture,
+        userImage : req.oidc.user.picture,
         email : req.oidc.user.email,
+        displayName : details.first_name,
         path: '/current_orders',
         orders: ord_details.rows
     });
@@ -39,6 +40,8 @@ exports.get_porder = async (req,res,next) => {
     if (req.oidc.isAuthenticated()){
 
         const user = new User(req.oidc.user.email);
+        const detailRows = await user.getDetails().catch(err=>console.log(err));
+        const details = detailRows.rows[0];
         const isEmp = await user.checkIsRequiredRole('Chef').catch(err=> console.log(err));
 
         if(isEmp){
@@ -51,7 +54,11 @@ exports.get_porder = async (req,res,next) => {
         path: '/pending_orders',
         orders: ord_details.rows,
         dishes: [],
-        servings: []
+        servings: [],
+        isEmployee : isEmp,
+        userImage : req.oidc.user.picture,
+        email : req.oidc.user.email,
+        displayName : details.first_name
     });
 
 }
@@ -74,7 +81,8 @@ exports.acc_ord = async (req,res,next) => {
         if(isEmp){
 
     var orditem = new Allot_order();
-    const ord_details = await orditem.get_acc(req.params.order_id,'confirmed');
+    const order_id = parseInt((req._parsedOriginalUrl.query).split('=')[1]);
+    const ord_details = await orditem.get_acc(order_id,'confirmed');
 
     res.redirect('/pending_orders');
 
@@ -98,7 +106,8 @@ exports.rej_ord = async (req,res,next) => {
         if(isEmp){
 
     var orditem = new Allot_order();
-    const ord_details = await orditem.get_acc(req.params.order_id,'rejected');
+    const order_id = parseInt((req._parsedOriginalUrl.query).split('=')[1]);
+    const ord_details = await orditem.get_acc(order_id,'rejected');
 
     res.redirect('/pending_orders');
 
