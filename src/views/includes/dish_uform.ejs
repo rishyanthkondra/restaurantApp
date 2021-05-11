@@ -8,7 +8,7 @@
 <%- include('../includes/navigation.ejs') %>
 
 <main>
-    <form class="product-form" action="/menu/updateit" method="POST">
+    <form class="product-form" action="/menu_chef/updateit" method="POST">
         <div class="form-control">
             <label for="price">New Cost</label>
             <input type="number" name="price" id="price" min = "0" value="">
@@ -16,7 +16,7 @@
         <button class="btn" type="submit">Submit</button>
         <input type="hidden" name="dish_id" value=<%= myid %> >
     </form>
-    <form class="product-form" action="/menu" method="get">
+    <form class="product-form" action="/menu_chef" method="get">
         <button class="btn" type="submit">Cancel</button>
     </form>
 </main>

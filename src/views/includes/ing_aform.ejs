@@ -7,7 +7,7 @@
 <%- include('../includes/navigation.ejs') %>
 
 <main>
-    <form class="product-form" action="/menu/ing_addit" method="POST">
+    <form class="product-form" action="/menu_chef/ing_addit" method="POST">
         <div class="form-control">
             <label for="ingredient_name">ingredient Name</label>
             <input type="text" name="ingredient_name" id="ingredient_name" value="" required>
@@ -30,7 +30,7 @@
         </div>
         <button class="btn" type="submit">submit</button>
     </form>
-    <form class="product-form" action="/menu" method="get">
+    <form class="product-form" action="/menu_chef" method="get">
         <button class="btn" type="submit">Cancel</button>
     </form>
 </main>
