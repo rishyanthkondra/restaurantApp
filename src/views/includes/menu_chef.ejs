@@ -9,10 +9,10 @@
 
 <main>
 
-    <form action="/menu/dish_add" method="post">
+    <form action="/menu_chef/dish_add" method="post">
         <button class="btn" type="submit">add dish</button>
     </form>
-    <form action="/menu/ing_add" method="post">
+    <form action="/menu_chef/ing_add" method="post">
         <button class="btn" type="submit">add ingredient</button>
     </form>
 
@@ -34,19 +34,19 @@
                     <h3 class="product__price">Rating: <%= dishes[i].rating  %>/5</h3>
                 </div>
                 <div class="card__actions">
-                    <form action="/menu/update" method="post">
+                    <form action="/menu_chef/update" method="post">
                         <button class="btn" type="submit">update</button>
                         <input type="hidden" name="dish_id" value=<%= dishes[i].id %> >
                     </form>
                 </div>
                 <div class="card__actions">
-                    <form action="/menu/delete" method="post">
+                    <form action="/menu_chef/delete" method="post">
                         <button class="btn" type="submit">delete</button>
                         <input type="hidden" name="dish_id" value=<%= dishes[i].id %> >
                     </form>
                 </div>
                 <div class="card__actions">
-                    <form action="/menu/recipe" method="post">
+                    <form action="/menu_chef/recipe" method="post">
                         <button class="btn" type="submit">Recipe</button>
                         <input type="hidden" name="dish_id" value=<%= dishes[i].id %> >
                     </form>

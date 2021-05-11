@@ -14,126 +14,13 @@ exports.get_menu = async (req,res,next) => {
             if(isChef){
                 res.render('includes/menu_chef.ejs', {
                     pageTitle: 'Menu',
-                    path: '/menu',
+                    path: '/menu_chef',
                     dishes: dishlist.rows
                 });
             }
             else{
-                res.render('includes/menu_others.ejs', {
-                    pageTitle: 'Menu',
-                    path: '/menu',
-                    dishes: dishlist.rows
-                });
+                res.redirect('/home');
             }
-        }
-        else{
-            const dishlist = await Menu.get_dishes();
-            res.render('includes/menu_customer.ejs', {
-                pageTitle: 'Menu',
-                path: '/menu',
-                dishes: dishlist.rows
-            });
-        }
-    }
-    else{
-        res.redirect('/home');
-    }
-};
-
-
-exports.get_dishcart = async (req,res,next) => {
-    if (req.oidc.isAuthenticated()){
-        const user = new User(req.oidc.user.email);
-        const isEmp = await user.checkIsEmployee().catch(err=> console.log(err));
-        if(!isEmp){
-            var dish_id = req.params.dish_id;
-            var details_id = await user.getDetailsId();
-            var currdish = await Menu.get_cartdish(dish_id,details_id); //// change this using user_id
-            // console.log(currdish);
-            if (currdish.rows.length == 0){
-                currdish = await Menu.get_dish(dish_id);
-            }
-            // console.log(currdish);
-            res.render('includes/dish.ejs', {
-                pageTitle: 'Dish',
-                path: '/menu/'+dish_id,
-                dishes: currdish.rows
-            });
-        }
-        else{
-            res.redirect('/home');
-        }
-    }
-    else{
-        res.redirect('/home');
-    }
-};
-
-exports.post_dishcart = async (req,res,next) => {
-    if (req.oidc.isAuthenticated()){
-        const user = new User(req.oidc.user.email);
-        const isEmp = await user.checkIsEmployee().catch(err=> console.log(err));
-        if(!isEmp){
-            const item_id = req.body.dish_id
-            res.redirect('/menu/'+item_id);
-        }
-        else{
-            res.redirect('/home');
-        }
-    }
-    else{
-        res.redirect('/home');
-    }
-};
-
-exports.post_increment = async (req,res,next) => {
-    if (req.oidc.isAuthenticated()){
-        const user = new User(req.oidc.user.email);
-        const isEmp = await user.checkIsEmployee().catch(err=> console.log(err));
-        if(!isEmp){
-            var dish_id = req.body.dish_id;
-            var details_id = await user.getDetailsId();
-            var currdish = await Menu.get_cartdish(dish_id,details_id); //// change this using user_id
-            // console.log(currdish);
-            if (currdish.rows.length == 0){
-                await Menu.add_to_cart(dish_id,details_id,1);//// change this using user_id
-            }
-            else{
-                await Menu.cart_inc(dish_id,details_id); //// change this using user_id
-            }
-            res.redirect('/menu/'+dish_id);
-        }
-        else{
-            res.redirect('/home');
-        }
-    }
-    else{
-        res.redirect('/home');
-    }
-};
-
-exports.post_decrement = async (req,res,next) => {
-    if (req.oidc.isAuthenticated()){
-        const user = new User(req.oidc.user.email);
-        const isEmp = await user.checkIsEmployee().catch(err=> console.log(err));
-        if(!isEmp){
-            var dish_id = req.body.dish_id;
-            var details_id = await user.getDetailsId();
-            var currdish = await Menu.get_cartdish(dish_id,details_id); //// change this using user_id
-            // console.log(currdish);
-            if (currdish.rows.length == 0){
-                
-            }
-            else{
-                var thedish = currdish.rows;
-                if(thedish[0].quantity>1){
-                    await Menu.cart_dec(dish_id,details_id); //// change this using user_id
-                }
-                else{
-                    await Menu.delete_from_cart(dish_id,details_id);//// change this using user_id
-                }
-            }
-            res.redirect('/menu/'+dish_id);
         }
         else{
             res.redirect('/home');
@@ -156,7 +43,7 @@ exports.post_update = async (req,res,next) => {
                 // res.redirect('/menu/'+dish_id);
                 res.render('includes/dish_uform.ejs', {
                     pageTitle: 'DishUpdate',
-                    path: '/menu/update_form',
+                    path: '/menu_chef',
                     myid : dish_id
                 });
             }
@@ -186,7 +73,7 @@ exports.post_updateit = async (req,res,next) => {
                 dish
                     .updatedish(price)
                     .then(() => {
-                        res.redirect('/menu');
+                        res.redirect('/menu_chef');
                     })
                     .catch(err => console.log(err));
             }
@@ -215,7 +102,7 @@ exports.post_delete = async (req,res,next) => {
                 dish
                     .deletedish()
                     .then(() => {
-                        res.redirect('/menu');
+                        res.redirect('/menu_chef');
                     })
                     .catch(err => console.log(err));
             }
@@ -241,7 +128,7 @@ exports.post_add = async(req,res,next) => {
             if(isChef){
                 res.render('includes/dish_aform1.ejs', {
                     pageTitle: 'dishAddForm1',
-                    path: '/menu'
+                    path: '/menu_chef'
                 })
             }
             else{
@@ -283,7 +170,7 @@ exports.post_addit = async(req,res,next) => {
                 // console.log(inglist);
                 res.render('includes/dish_aform2.ejs', {
                     pageTitle: 'dishAddForm2',
-                    path: '/menu',
+                    path: '/menu_chef',
                     dish_id : tempid,
                     ilist : inglist.rows
                 })
@@ -318,7 +205,7 @@ exports.post_addit2 = async(req,res,next) => {
                     // console.log(dish_id);
                     // console.log(quantity[i]);
                 }
-                res.redirect('/menu');
+                res.redirect('/menu_chef');
             }
             else{
                 res.redirect('/home');
@@ -342,7 +229,7 @@ exports.post_ingadd = async(req,res,next) => {
             if(isChef){
                 res.render('includes/ing_aform.ejs', {
                     pageTitle: 'ingAddForm',
-                    path: '/menu'
+                    path: '/menu_chef'
                 })
             }
             else{
@@ -381,7 +268,7 @@ exports.post_ingadd1 = async(req,res,next) => {
                 for(var i=0;i<dish_id.length;i++){
                     await Ing.add_dish_has_ing(dish_id[i].dish_id,tempid,0);
                 }
-                res.redirect('/menu');
+                res.redirect('/menu_chef');
             }
             else{
                 res.redirect('/home');
@@ -408,7 +295,7 @@ exports.post_recipe = async(req,res,next) =>{
                 // console.log(inglist);
                 res.render('includes/recipe_form.ejs', {
                     pageTitle: 'Recipe',
-                    path: '/menu',
+                    path: '/menu_chef',
                     dish_id : dish_id,
                     ilist : inglist.rows
                 })
@@ -451,7 +338,7 @@ exports.post_recipeout = async(req,res,next) =>{
                         }
                     }
                 }
-                res.redirect('/menu');
+                res.redirect('/menu_chef');
             }
             else{
                 res.redirect('/home');

@@ -70,10 +70,10 @@ module.exports = class Bookings{
                         details_id]);
         const bid = qRes.rows[0].booking_id;
         for (var i=0;i<this.tableList.length;i++){
-            console.log(this.tableList[i]);
             pool.query("INSERT INTO booking_has_tables VALUES($1,$2);",
             [bid,this.tableList[i]]);
         }
+        return true;
     }
 
     

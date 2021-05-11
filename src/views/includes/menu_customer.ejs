@@ -26,7 +26,7 @@
                     <h3 class="product__price">Rating: <%= dishes[i].rating  %>/5</h3>
                 </div>
                 <div class="card__actions">
-                    <form action="/menu/atc" method="post">
+                    <form action="/menu_customer/atc" method="post">
                         <button class="btn" type="submit">ATC</button>
                         <input type="hidden" name="dish_id" value=<%= dishes[i].id %> >
                     </form>
