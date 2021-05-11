@@ -7,7 +7,7 @@
 <%- include('../includes/navigation.ejs') %>
 
 <main>
-    <form action="/menu/recipeout" method="post">
+    <form action="/menu_chef/recipeout" method="post">
         <% for(var i=0; i < ilist.length; i++) { %>
             <div class="form-control">
                 <label for=ilist[i].ingredient_id> <%= ilist[i].ingredient_name %> </label>
@@ -17,7 +17,7 @@
         <button class="btn" type="submit">Update</button>
         <input type="hidden" name="dish_id" value=<%= dish_id %> >
     </form>
-    <form class="product-form" action="/menu"+ method="get">
+    <form class="product-form" action="/menu_chef"+ method="get">
         <button class="btn" type="submit">Cancel</button>
     </form>
 </main>
