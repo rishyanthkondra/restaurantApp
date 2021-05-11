@@ -97,7 +97,7 @@
 <%if(pop) {%>
     <script>
         alert("<%=message%>");
-        window.location.href = "/booking";
+        window.location.href = "/bookings";
     </script>
 <%}%>
 <!--Content-->
@@ -191,14 +191,14 @@
                             <label class="mbr-text mbr-fonts-style mb-2 display-7" for="date">Date</label>
                             <div class="col-sm-10">
                             <input type="date" class="form-control" min="<%=minDate%>"
-                                value="<%= dateVal %> " name="date" id="date" required>
+                                value=<%= dateVal %> name="date" id="date" required>
                             </div>
                         </div>
                         <div class="form-group row" style="width: 50%;">
                             <label class="mbr-text mbr-fonts-style mb-2 display-7" for="time">Time</label>
                             <div class="col-sm-10">
                             <input type="time" class="form-control" min="<%=minTime%>" max="<%=maxTime%>" step=3600 
-                                value="<%= timeVal %> "name="time" id="time" required>
+                                value=<%=timeVal%> name="time" id="time" required>
                             </div>
                         </div>
                         <div class="form-group row" style="width: 50%;">
@@ -212,6 +212,7 @@
                 </div>
             </div>
         </div>    
+        <%if(hasFree){%>
         <div class="row justify-content-center">
             <div class="col" align="center">
                 <div align="center" style="background-color:rgba(0, 0, 0, 0.5);border-radius: 1vw;width: 90%;">
@@ -219,24 +220,14 @@
                     <form class="" 
                         action="http://localhost:3000/bookings?book=true"
                         method="POST">
+                        <input type="hidden" value=<%= dateVal %> name="date" id="date">
+                        <input type="hidden" value=<%= timeVal %> name="time" id="time">
                         <div class="form-group row" style="width: 50%;">
-                            <input type="checkbox" class="mbr-text mb-2" name="table1" id="table1" required>
-                            <label for="table1" style="color: white;"> &nbsp Table 1</label>
-                            &nbsp;&nbsp;
-                            <input type="checkbox" class="mbr-text mb-2" name="table2" id="table2" required>
-                            <label for="table1" style="color: white;"> &nbsp Table 2</label>
-                            &nbsp;&nbsp;
-                            <input type="checkbox" class="mbr-text mb-2" name="table3" id="table3" required>
-                            <label for="table1" style="color: white;"> &nbsp Table 3</label>
-                            &nbsp;&nbsp;
-                            <input type="checkbox" class="mbr-text mb-2" name="table4" id="table4" required>
-                            <label for="table1" style="color: white;"> &nbsp Table 4</label>
-                            &nbsp;&nbsp;
-                        </div>
-                        <div class="form-group row" style="width: 50%;">
-                            <input type="checkbox" class="mbr-text mb-2" name="table5" id="table5" required>
-                            <label for="table5" style="color: white;"> &nbsp Table 5</label>
-                            &nbsp;&nbsp;
+                            <%for(var i=0;i<tables.length;i++){%>
+                                <input type="checkbox" class="mbr-text mb-2" name="table<%=tables[i]%>" id="table<%=tables[i]%>">
+                                <label for="table<%=tables[i]%>" style="color: white;"> &nbsp Table <%=tables[i]%></label>
+                                &nbsp;&nbsp;
+                            <%}%>
                         </div>
                         <div class="form-group row" style="width: 50%;">
                             <div class="col-sm-10">
@@ -248,7 +239,8 @@
                     <br>
                 </div>
             </div>
-        </div>    
+        </div>  
+        <%}%>  
     </div>
     <% }%>
 </section>
