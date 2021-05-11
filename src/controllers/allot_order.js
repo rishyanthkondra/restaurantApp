@@ -6,6 +6,8 @@ exports.select_order = async (req,res,next) => {
     if (req.oidc.isAuthenticated()){
 
         const user = new User(req.oidc.user.email);
+        const detailRows = await user.getDetails().catch(err=>console.log(err));
+        const details = detailRows.rows[0];
         const isEmp = await user.checkIsRequiredRole('Chef').catch(err=> console.log(err));
 
         if(isEmp){
@@ -15,6 +17,9 @@ exports.select_order = async (req,res,next) => {
 
     res.render('includes/allot.ejs', {
         pageTitle: 'Allot Orders',
+        isEmployee : isEmp,
+        image : req.oidc.user.picture,
+        email : req.oidc.user.email,
         path: '/current_orders',
         orders: ord_details.rows
     });
