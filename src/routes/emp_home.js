@@ -1,13 +1,10 @@
 const path = require('path');
 const express = require('express');
 
-const cartCon = require('../controllers/cart');
+const data_con = require('../controllers/emp_home');
 
 const router = express.Router();
 
 
-router.get('/',cartCon.get_cart);
-router.post('/delete',cartCon.delete_dish);
-
-
+router.get('/',data_con.route_emp);
 module.exports = router;

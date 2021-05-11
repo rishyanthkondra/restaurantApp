@@ -37,6 +37,9 @@ exports.get_user_details = async (req,res,next) => { // get details and addresse
             if(status == 'failed'){
                 msg = "Check input,action failed";
             }
+            if(status == 'noaddress'){
+                msg = "Add address to place order";
+            }
         }
         const result  = {
             pageTitle : 'User Details',

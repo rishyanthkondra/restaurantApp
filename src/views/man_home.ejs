@@ -1,14 +1,6 @@
-<%- include('../includes/end.ejs') %>
-
-
 <!DOCTYPE html>
 <html  >
 <head>
-    <link rel="stylesheet" href="/css/forms.css">
-    <link rel="stylesheet" href="/css/product.css">
-    <link rel="stylesheet" href="/css/cart.css">
-    <link rel="stylesheet" href="/css/dropdown.css">
-    <link rel="stylesheet" href="/css/main.css">
   <!-- Site made with Mobirise Website Builder v5.3.5, https://mobirise.com -->
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -57,28 +49,38 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav nav-dropdown nav-right" data-app-modern-menu="true">
                     <li class="nav-item">
-                		<a class="nav-link link text-primary display-4" href="/home">
+                		<a class="nav-link link text-primary display-4" href="/emp_home">
                 			Home
                 		</a>
                 	</li>
                     <li class="nav-item">
-            		    <a class="nav-link link text-primary display-4" href="http://localhost:3000/menu_customer">
+            		    <a class="nav-link link text-primary display-4" href="http://localhost:3000/menu_others">
             			    Menu
             		    </a>
             	    </li>
                 	<li class="nav-item">
-                	    <a class="nav-link link text-primary display-4" href="http://localhost:3000/cart">
-            			    Cart
+                	    <a class="nav-link link text-primary display-4" href="http://localhost:3000/transactions">
+            			    Transactions
             		    </a>
             	    </li>
             	    <li class="nav-item">
-                		<a class="nav-link link text-primary display-4" href="">
-                		    Orders
+                		<a class="nav-link link text-primary display-4" href="http://localhost:3000/purchases">
+                		    Purchases
                 	    </a>
             	    </li>
             	    <li class="nav-item">
-            		    <a class="nav-link link text-primary display-4" href="/bookings">
-            			    Bookings
+            		    <a class="nav-link link text-primary display-4" href="http://localhost:3000/statistics">
+            			    Statistics
+                		</a>
+                	</li>
+                    <li class="nav-item">
+            		    <a class="nav-link link text-primary display-4" href="http://localhost:3000/recruit">
+            			    Recruit
+                		</a>
+                	</li>
+                    <li class="nav-item">
+            		    <a class="nav-link link text-primary display-4" href="http://localhost:3000/employees">
+            			    Employees
                 		</a>
                 	</li>
                     <% if (isEmployee) {%>
@@ -87,10 +89,10 @@
                             Mode
                 		</a>
                 		<div class="dropdown-menu">
-                			<a class="text-primary dropdown-item display-4" href="http://localhost:3000/emp_home">
+                			<a class="text-primary dropdown-item display-4" href="">
                 				Employee
                 			</a>
-                			<a class="text-primary dropdown-item display-4" href="">
+                			<a class="text-primary dropdown-item display-4" href="http://localhost:3000/userHome">
                 				User
                 			</a>
                 		</div>
@@ -114,43 +116,20 @@
 
 <!--Content-->
 <section class="header11 cid-swZHoHlbUv mbr-fullscreen mbr-parallax-background" id="header11-o">
+
     <div class="mbr-overlay" style="opacity: 0.3; background-color: rgb(0, 0, 0);"></div>
-    <div class="container">
-        <div class="row">
-            <% for(var i=0; i < dishes.length; i++) { %>
-            <% if(i%3==0) {%>
-            </div> <div class="row">
-            <% } %>
-            <div class="col-4">
-                <div style="background-color: white; overflow-x:scroll">
-                    <article class="card product-item">                
-                        <header class="card__header">
-                            <h1 class="card__title"><%= dishes[i].name %></h1>
-                        </header>
-                        <div class="card__image">
-                            <img src="<%= dishes[i].image %>" height="150px" alt="<%= dishes[i].title %>">
-                            <p class="card__description" style="text-align:center;font-size:160%;background-color:powderblue;color:black;max-width: 500px;"><%= dishes[i].description  %></p>
-                        </div>
-                        <div class="card__content">
-                            <h3 class="product__price">Price: <%= dishes[i].price  %></h3>
-                        </div>
-                        <div class="card__content">
-                            <h3 class="product__price">Rating: <%= dishes[i].rating  %>/5</h3>
-                        </div>
-                        <div class="card__actions">
-                            <form action="/menu_customer/atc" method="post">
-                                <button class="btn" type="submit" style="background-color:rgb(36, 207, 219)">ATC</button>
-                                <input type="hidden" name="dish_id" value=<%= dishes[i].id %> >
-                            </form>
-                        </div>
-                    </article>
+
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-6 image-wrapper">
+                <img class="w-100" src="assets/images/logos-white-with-text-499x426.png" alt="Meæt and Eat">
+            </div>
+            <div class="col-12 col-md">
+                <div class="text-wrapper text-center">
+                    <h1 class="mbr-section-title mbr-fonts-style mb-3 display-1"><strong>Awesomeness of Fusion</strong><br><strong>is here !!!</strong></h1>
                 </div>
             </div>
-            <% } %>
         </div>
-
-
-
     </div>
 </section>
 
@@ -209,22 +188,3 @@
 <script src="assets/theme/js/script.js"></script>  
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

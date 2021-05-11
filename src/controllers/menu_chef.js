@@ -8,6 +8,8 @@ exports.get_menu = async (req,res,next) => {
 
         const user = new User(req.oidc.user.email);
         const isEmp = await user.checkIsEmployee().catch(err=> console.log(err));
+        const detailRows = await user.getDetails().catch(err=>console.log(err));
+        const details = detailRows.rows[0];
         if(isEmp){
             const isChef = await user.checkIsRequiredRole('Chef').catch(err=> console.log(err));
             const dishlist = await Menu.get_dishes();
@@ -15,6 +17,9 @@ exports.get_menu = async (req,res,next) => {
                 res.render('includes/menu_chef.ejs', {
                     pageTitle: 'Menu',
                     path: '/menu_chef',
+                    isEmployee : isEmp,
+                    userImage : req.oidc.user.picture,
+                    displayName : details.first_name,
                     dishes: dishlist.rows
                 });
             }
@@ -35,6 +40,8 @@ exports.post_update = async (req,res,next) => {
     if (req.oidc.isAuthenticated()){
         const user = new User(req.oidc.user.email);
         const isEmp = await user.checkIsEmployee().catch(err=> console.log(err));
+        const detailRows = await user.getDetails().catch(err=>console.log(err));
+        const details = detailRows.rows[0];
         if(isEmp){
             const isChef = await user.checkIsRequiredRole('Chef').catch(err=> console.log(err));
             if(isChef){
@@ -44,6 +51,9 @@ exports.post_update = async (req,res,next) => {
                 res.render('includes/dish_uform.ejs', {
                     pageTitle: 'DishUpdate',
                     path: '/menu_chef',
+                    isEmployee : isEmp,
+                    userImage : req.oidc.user.picture,
+                    displayName : details.first_name,
                     myid : dish_id
                 });
             }
@@ -123,12 +133,17 @@ exports.post_add = async(req,res,next) => {
     if (req.oidc.isAuthenticated()){
         const user = new User(req.oidc.user.email);
         const isEmp = await user.checkIsEmployee().catch(err=> console.log(err));
+        const detailRows = await user.getDetails().catch(err=>console.log(err));
+        const details = detailRows.rows[0];
         if(isEmp){
             const isChef = await user.checkIsRequiredRole('Chef').catch(err=> console.log(err));
             if(isChef){
                 res.render('includes/dish_aform1.ejs', {
                     pageTitle: 'dishAddForm1',
-                    path: '/menu_chef'
+                    path: '/menu_chef',
+                    isEmployee : isEmp,
+                    userImage : req.oidc.user.picture,
+                    displayName : details.first_name,
                 })
             }
             else{
@@ -148,6 +163,8 @@ exports.post_addit = async(req,res,next) => {
     if (req.oidc.isAuthenticated()){
         const user = new User(req.oidc.user.email);
         const isEmp = await user.checkIsEmployee().catch(err=> console.log(err));
+        const detailRows = await user.getDetails().catch(err=>console.log(err));
+        const details = detailRows.rows[0];
         if(isEmp){
             const isChef = await user.checkIsRequiredRole('Chef').catch(err=> console.log(err));
             if(isChef){
@@ -172,6 +189,9 @@ exports.post_addit = async(req,res,next) => {
                     pageTitle: 'dishAddForm2',
                     path: '/menu_chef',
                     dish_id : tempid,
+                    isEmployee : isEmp,
+                    userImage : req.oidc.user.picture,
+                    displayName : details.first_name,
                     ilist : inglist.rows
                 })
             }
@@ -224,12 +244,17 @@ exports.post_ingadd = async(req,res,next) => {
     if (req.oidc.isAuthenticated()){
         const user = new User(req.oidc.user.email);
         const isEmp = await user.checkIsEmployee().catch(err=> console.log(err));
+        const detailRows = await user.getDetails().catch(err=>console.log(err));
+        const details = detailRows.rows[0];
         if(isEmp){
             const isChef = await user.checkIsRequiredRole('Chef').catch(err=> console.log(err));
             if(isChef){
                 res.render('includes/ing_aform.ejs', {
                     pageTitle: 'ingAddForm',
-                    path: '/menu_chef'
+                    path: '/menu_chef',
+                    isEmployee : isEmp,
+                    userImage : req.oidc.user.picture,
+                    displayName : details.first_name,
                 })
             }
             else{
@@ -287,6 +312,8 @@ exports.post_recipe = async(req,res,next) =>{
     if (req.oidc.isAuthenticated()){
         const user = new User(req.oidc.user.email);
         const isEmp = await user.checkIsEmployee().catch(err=> console.log(err));
+        const detailRows = await user.getDetails().catch(err=>console.log(err));
+        const details = detailRows.rows[0];
         if(isEmp){
             const isChef = await user.checkIsRequiredRole('Chef').catch(err=> console.log(err));
             if(isChef){
@@ -297,6 +324,9 @@ exports.post_recipe = async(req,res,next) =>{
                     pageTitle: 'Recipe',
                     path: '/menu_chef',
                     dish_id : dish_id,
+                    isEmployee : isEmp,
+                    userImage : req.oidc.user.picture,
+                    displayName : details.first_name,
                     ilist : inglist.rows
                 })
             }
