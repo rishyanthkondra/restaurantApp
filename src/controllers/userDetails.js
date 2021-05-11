@@ -20,6 +20,24 @@ exports.get_user_details = async (req,res,next) => { // get details and addresse
         var yyyy = resDate.getFullYear();
         const dob= yyyy + '-' + mm + '-' + dd;
         const all_adresses = await user.getAddresses().catch(err => console.log(err));
+        const status = req.query.status;
+        var alert = false;
+        var msg = '';
+        if(status){
+            alert = true;
+            if(status == 'updated'){
+                msg = "updated succesfully!";
+            }
+            if(status == 'added'){
+                msg= "added succesfully!";
+            }
+            if(status == 'deleted'){
+                msg = "deleted succesfully!";
+            }
+            if(status == 'failed'){
+                msg = "Check input,action failed";
+            }
+        }
         const result  = {
             pageTitle : 'User Details',
             displayName : details.first_name,
@@ -31,9 +49,10 @@ exports.get_user_details = async (req,res,next) => { // get details and addresse
             date_of_birth : dob,
             phone_number : (details.phone_number)? details.phone_number : '0000000000',
             gender : (details.gender)? details.gender : 'male',
-            addresses : all_adresses.rows
+            addresses : all_adresses.rows,
+            pop : alert,
+            message: msg
         };
-        //console.log(JSON.stringify(result));
         res.render('userDetails.ejs',result);
     }else{
         res.redirect('/home');
@@ -54,8 +73,11 @@ exports.post_user_details = async (req,res,next) => { // update details
         await updatedDetails.updateDetails().
                         then(()=>{
                             console.log('Update successful');
-                            res.redirect('/userDetails');
-                        }).catch(err => console.log(err));
+                            res.redirect('/userDetails?status=updated');
+                        }).catch(err => {
+                            console.log(err);
+                            res.redirect('/userDetails?status=failed');
+                        });
     }else{
         res.redirect('/home');
     }
@@ -63,9 +85,7 @@ exports.post_user_details = async (req,res,next) => { // update details
 
 exports.post_address_details = async (req,res,next) => { //update single address
     if (req.oidc.isAuthenticated()){
-        console.log('reached here');
         const address = req.query.address_id;
-        console.log('reached here');
         if(!address){
             res.redirect('/userDetails');
         }
@@ -74,12 +94,16 @@ exports.post_address_details = async (req,res,next) => { //update single address
                                             req.body.house_num,
                                             req.body.region,
                                             req.body.alias,
-                                            req.body.symbol);
+                                            req.body.symbol,
+                                            req.body.area_code);
         updatedAddress.updateAddress().
                         then(()=>{
                             console.log(`Updated address : ${address}`);
-                            res.redirect('/userDetails');
-                        }).catch(err => console.log(err));
+                            res.redirect('/userDetails?status=updated');
+                        }).catch(err => {
+                            console.log(err);
+                            res.redirect('/userDetails?status=failed');
+                        });
     }else{
         res.redirect('/home');
     }
@@ -94,8 +118,11 @@ exports.delete_address = async (req,res,next) => { // delete exsting address
         }
         Address.deleteAddress(address).then(()=>{
             console.log(`deleted address : ${address}`);
-            res.redirect('/userDetails');
-        }).catch(err=> console.log(err));
+            res.redirect('/userDetails?status=deleted');
+        }).catch(err=> {
+            console.log(err);
+            res.redirect('/userDetails?status=failed');
+        });
     }else{
         res.redirect('/home');
     }
@@ -109,11 +136,15 @@ exports.put_address = async (req,res,next) => { // add new address
                                         req.body.house_num,
                                         req.body.region,
                                         req.body.alias,
-                                        req.body.symbol);
+                                        req.body.symbol,
+                                        req.body.area_code);
         newAddress.addAddress().
                         then(()=>{
-                            res.redirect('/userDetails');
-                        }).catch(err => console.log(err));
+                            res.redirect('/userDetails?status=added');
+                        }).catch(err => {
+                            console.log(err);
+                            res.redirect('/userDetails?status=failed');
+                        });
     }else{
         res.redirect('/home');
     }

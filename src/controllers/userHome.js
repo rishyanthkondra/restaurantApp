@@ -9,6 +9,7 @@ exports.get_user_home = async (req,res,next) => {
         //console.log(`Authenticated in user home : ${req.details_id}`);
         res.render('userHome.ejs',{
             pageTitle:'User Home',
+            path : '/userHome',
             alertMessage:false,
             isEmployee : isEmp,
             userImage : req.oidc.user.picture,

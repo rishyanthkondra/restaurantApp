@@ -94,7 +94,12 @@
     </nav>
 
 </section>
-
+<%if(pop) {%>
+    <script>
+        alert("<%=message%>");
+        window.location.href = "/booking";
+    </script>
+<%}%>
 <!--Content-->
 <section class="header11 cid-swZHoHlbUv mbr-fullscreen mbr-parallax-background" id="header11-o">
 
@@ -102,31 +107,150 @@
 
     <div class="mbr-overlay" style="opacity: 0.3; background-color: rgb(0, 0, 0);"></div>
 
-    <div class="container-fluid">
+    <% if(hasAct) {%>
+    <div class="container">
         <div class="row justify-content-center">
-            <div class="col-12 col-md-6 image-wrapper">
-                <img class="w-100" src="images/Tables.png" alt="Meæt and Eat">
-            </div>
-            <div class="col-12 col-md">
-                <form class="" 
-                        action="http://localhost:3000/bookings/"
-                        method="POST">
-                        <div class="form-control">
-                            <label for="date">Date</label>
-                            <input type="date" min="10-05-2021" name="date" id="date" required>
+            <div class="col" align="center">
+                <p class="mbr-text mbr-fonts-style display-7" align="top"><strong>Active Booking</strong></p>
+                <div align="center" style="background-color:rgba(0, 0, 0, 0.5);border-radius: 1vw;width: 70%;">
+                    <br>
+                    <div class="text-wrapper text-center">
+                        <p class="mbr-text mbr-fonts-style display-7">
+                            Booking id : <%=actBook.booking_id%>
+                        </p>
+                        <p class="mbr-text mbr-fonts-style display-7">
+                            Booked on : <%=actBook.booking_time%>
+                        </p>
+                        <p class="mbr-text mbr-fonts-style display-7">
+                            Start time : <%=actBook.start_time%>
+                        </p>
+                        <p class="mbr-text mbr-fonts-style display-7">
+                            Tables booked : <%for (var i=0; i<actBook.tables.rowCount;i++){%>
+                                &nbsp Table <%=actBook.tables.rows[i].table_id%> 
+                            <%}%>
+                        </p>
+                    </div>
+                    <form method="POST" action="/bookings?cancel=true">
+                        <div class="col-sm-10">
+                            <button class="btn btn-primary btn-block" type="submit"
+                            onclick="return confirm('Cancelling booking')">Cancel</button>
                         </div>
-                        <div class="form-control">
-                            <label for="time">Time</label>
-                            <input type="time" min="11:00" max="21:00" step=3600 name="time" id="time" required>
-                        </div>
-                        <button type="submit" 
-                            onclick="return confirm('Request free tables at selected time?')">
-                            Get Free Tables
-                        </button>
-                </form>
+                    </form>
+                    <br>
+                </div>
             </div>
         </div>
+        <br><br>
+        <div class="row">
+            <div class="col" align="center">
+                <p class="mbr-text mbr-fonts-style display-7" align="top"><strong>Table Layout</strong></p>
+                <div align="center" style="background-color:rgba(0, 0, 0, 0.5);border-radius: 1vw;width: 90%;">
+                    <br>
+                    <div style="width:90%;">
+                        <img src="/images/Tables.png">
+                    </div>
+                    <br>
+                </div>
+            </div>
+        </div>    
     </div>
+    <% }else{%>
+    <div class="container">
+        <div class="row">
+            <div class="col" align="center">
+                <p class="mbr-text mbr-fonts-style display-7" align="top"><strong>Table Layout</strong></p>
+                <div align="center" style="background-color:rgba(0, 0, 0, 0.5);border-radius: 1vw;width: 90%;">
+                    <br>
+                    <div style="width:90%;">
+                        <img src="/images/Tables.png">
+                    </div>
+                    <br>
+                </div>
+            </div>
+        </div>    
+        <br><br>
+        <div class="row justify-content-center">
+            <div class="col-12 col-md">
+                <div class="text-wrapper text-center">
+                    <p class="mbr-text mbr-fonts-style display-7">Book atleast one day in advance, from 11:00 AM to 9:00 PM</p>
+                    <p class="mbr-text mbr-fonts-style display-7">Select avialble tables using numbers based on your location preferences</p>
+                    <p class="mbr-text mbr-fonts-style display-7">You cannot exceed capaity of 20</p>
+                    <p class="mbr-text mbr-fonts-style display-7">You can have only one active booking</p>
+                </div>
+            </div>
+        </div>
+        <br><br>
+        <div class="row justify-content-center">
+            <div class="col" align="center">
+                <div align="center" style="background-color:rgba(0, 0, 0, 0.5);border-radius: 1vw;width: 90%;">
+                    <br>
+                    <form class="" 
+                        action="http://localhost:3000/bookings"
+                        method="POST">
+                        <div class="form-group row" style="width: 50%;">
+                            <label class="mbr-text mbr-fonts-style mb-2 display-7" for="date">Date</label>
+                            <div class="col-sm-10">
+                            <input type="date" class="form-control" min="<%=minDate%>"
+                                value="<%= dateVal %> " name="date" id="date" required>
+                            </div>
+                        </div>
+                        <div class="form-group row" style="width: 50%;">
+                            <label class="mbr-text mbr-fonts-style mb-2 display-7" for="time">Time</label>
+                            <div class="col-sm-10">
+                            <input type="time" class="form-control" min="<%=minTime%>" max="<%=maxTime%>" step=3600 
+                                value="<%= timeVal %> "name="time" id="time" required>
+                            </div>
+                        </div>
+                        <div class="form-group row" style="width: 50%;">
+                            <div class="col-sm-10">
+                            <button class="btn btn-primary btn-block" type="submit"
+                            onclick="return confirm('Requesting free table')">Get Free Tables</button>
+                            </div>
+                        </div>
+                    </form>
+                    <br>
+                </div>
+            </div>
+        </div>    
+        <div class="row justify-content-center">
+            <div class="col" align="center">
+                <div align="center" style="background-color:rgba(0, 0, 0, 0.5);border-radius: 1vw;width: 90%;">
+                    <br>
+                    <form class="" 
+                        action="http://localhost:3000/bookings?book=true"
+                        method="POST">
+                        <div class="form-group row" style="width: 50%;">
+                            <input type="checkbox" class="mbr-text mb-2" name="table1" id="table1" required>
+                            <label for="table1" style="color: white;"> &nbsp Table 1</label>
+                            &nbsp;&nbsp;
+                            <input type="checkbox" class="mbr-text mb-2" name="table2" id="table2" required>
+                            <label for="table1" style="color: white;"> &nbsp Table 2</label>
+                            &nbsp;&nbsp;
+                            <input type="checkbox" class="mbr-text mb-2" name="table3" id="table3" required>
+                            <label for="table1" style="color: white;"> &nbsp Table 3</label>
+                            &nbsp;&nbsp;
+                            <input type="checkbox" class="mbr-text mb-2" name="table4" id="table4" required>
+                            <label for="table1" style="color: white;"> &nbsp Table 4</label>
+                            &nbsp;&nbsp;
+                        </div>
+                        <div class="form-group row" style="width: 50%;">
+                            <input type="checkbox" class="mbr-text mb-2" name="table5" id="table5" required>
+                            <label for="table5" style="color: white;"> &nbsp Table 5</label>
+                            &nbsp;&nbsp;
+                        </div>
+                        <div class="form-group row" style="width: 50%;">
+                            <div class="col-sm-10">
+                            <button class="btn btn-primary btn-block" type="submit"
+                            onclick="return confirm('Booking Selected Tables')">Book Now</button>
+                            </div>
+                        </div>
+                    </form>
+                    <br>
+                </div>
+            </div>
+        </div>    
+    </div>
+    <% }%>
 </section>
 
 <!--Footer-->

@@ -20,11 +20,15 @@
   <link rel="preload" href="https://fonts.googleapis.com/css?family=Jost:100,200,300,400,500,600,700,800,900,100i,200i,300i,400i,500i,600i,700i,800i,900i&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Jost:100,200,300,400,500,600,700,800,900,100i,200i,300i,400i,500i,600i,700i,800i,900i&display=swap"></noscript>
   <link rel="preload" as="style" href="assets/mobirise/css/mbr-additional.css"><link rel="stylesheet" href="assets/mobirise/css/mbr-additional.css" type="text/css">
-  
 </head>
 <body>
-
 <!--header-->
+<%if(pop) {%>
+    <script>
+        alert("<%=message%>");
+        window.location.href = "/userDetails";
+    </script>
+<%}%>
 <section class="menu cid-s48OLK6784" once="menu" id="menu1-h">    
     <nav class="navbar navbar-dropdown navbar-fixed-top navbar-expand-lg">
         <div class="container">
@@ -54,25 +58,25 @@
                 		</a>
                 	</li>
                     <li class="nav-item">
-                		<a class="nav-link link text-primary display-4" href="">
-                			Menu
-                		</a>
-                	</li>
+                	    <a class="nav-link link text-primary display-4" href="">
+            			    Menu
+            		    </a>
+            	    </li>
                 	<li class="nav-item">
-                		<a class="nav-link link text-primary display-4" href="">
-                			Cart
-                		</a>
-                	</li>
+                	    <a class="nav-link link text-primary display-4" href="">
+            			    Cart
+            		    </a>
+            	    </li>
                 	<li class="nav-item">
-                		<a class="nav-link link text-primary display-4" href="">
-                			Orders
-                		</a>
-                	</li>
+                	    <a class="nav-link link text-primary display-4" href="">
+            			    Orders
+            		    </a>
+            	    </li>
                 	<li class="nav-item">
-                		<a class="nav-link link text-primary display-4" href="/bookings">
-                			Bookings
-                		</a>
-                	</li>
+                	    <a class="nav-link link text-primary display-4" href="/bookings">
+            			    Bookings
+            		    </a>
+            	    </li>
                     <% if (isEmployee) {%>
                 	<li class="nav-item dropdown">
                 		<a class="nav-link link text-primary dropdown-toggle display-4" href="#" data-toggle="dropdown-submenu" aria-expanded="false">
@@ -101,50 +105,63 @@
 </section>
 
 <!--Content-->
-<section class="header11 cid-swZHoHlbUv mbr-fullscreen mbr-parallax-background" id="header11-o">
 
+<div class="header11 cid-swZHoHlbUv mbr-fullscreen mbr-parallax-background" id="header11-o">
     
 
     <div class="mbr-overlay" style="opacity: 0.3; background-color: rgb(0, 0, 0);"></div>
-
-    <div class="container-fluid">
-        <div class="row justify-content-center">
-            <div class="col-12 col-md-6 image-wrapper">
-                    <form class="product-form" 
-                    action="userDetails/edit-details"
-                     method="POST">
-                        <fieldset>
-                            <legend>Personal Details : </legend>
-                            <div class="grid">
-                                <div class="card__image">
-                                        <img src="<%=userImage%>" height="160vp" alt="<%=first_name%>">
+    
+    <div class="container">
+        <div class="row">
+            <div class="col" align="center" id="personaldetails">
+                <p class="mbr-text mbr-fonts-style display-7" align="top"><strong>Personal Details</strong></p>
+                <div align="center" style="background-color:rgba(0, 0, 0, 0.5);border-radius: 1vw;width: 80%;">
+                    <br>
+                    <div style="width:15vw;height:15vw;border-radius:7.5vw;
+                        overflow:hidden;">
+                        <img src="<%=userImage%>" style="width:12vw;height:14.5vw">
+                    </div>
+                    <br>
+                    <div align="center" style="width: 50%;">
+                        <form action="userDetails/edit-details%>" 
+                            method="POST">
+                            <div class="form-group row">
+                                <label class="mbr-text mbr-fonts-style mb-2 display-7" for="first_name">First Name</label>
+                                <div class="col-sm-10">
+                                <input type="text" class="form-control" name="first_name" id="first_name" value="<%= first_name %>" required>
                                 </div>
                             </div>
-                            <div class="form-control">
-                                <label for="first_name">First Name</label>
-                                <input type="text" name="first_name" id="first_name" value="<%= first_name %>" required>
+                            <div class="form-group row">
+                                <label class="mbr-text mbr-fonts-style mb-2 display-7" for="last_name">Last Name</label>
+                                <div class="col-sm-10">
+                                <input type="text" class="form-control" name="last_name" id="last_name" value="<%= last_name %>" required>
+                                </div>
                             </div>
-                            <div class="form-control">
-                                <label for="last_name">Last Name</label>
-                                <input type="text" name="last_name" id="last_name" value="<%= last_name %>" required>
+                            <div class="form-group row">
+                                <label class="mbr-text mbr-fonts-style mb-4 display-7" for="email">Email Address</label>
+                                <br>
+                                <div class="col-sm-10">
+                                <input type="text" class="form-control" name="email" id="email" value="<%= email %>" readonly>
+                                </div>
                             </div>
-                            <div class="form-control">
-                                <label for="email">Email </label>
-                                <input type="text" name="email" id="email" value="<%= email %>" readonly>
-                            </div>
-                            <div class="form-control">
-                                <label for="phone_number">Phone Number</label>
-                                <input type="number" maxlength="15" minlength="10" 
+                            <div class="form-group row">
+                                <label class="mbr-text mbr-fonts-style mb-2 display-7" for="phone_number">Phone Number</label>
+                                <div class="col-sm-10">
+                                <input type="number" class="form-control"  maxlength="15" minlength="10" 
                                 id="phone_number" name="phone_number" value= <%= phone_number %> required>
+                                </div>
                             </div>
-                            <div class="form-control">
-                                <label for="date_of_birth">Date of Birth</label>
-                                <input type="date" max = "2016-01-01" id="date_of_birth" name="date_of_birth" value= <%= date_of_birth %> required>
+                            <div class="form-group row">
+                                <label class="mbr-text mbr-fonts-style mb-2 display-7" for="date_of_birth">Date of Birth</label>
+                                <div class="col-sm-10">
+                                <input type="date" class="form-control" max="2016-01-01" id="date_of_birth" name="date_of_birth" value= <%= date_of_birth %> required>
+                                </div>
                             </div>
-                            <div class="form-control">
-                                <label for="gender">Gender</label>
-                                <select id="gender" name="gender">
-                                    <% if(gender == "male"){%>
+                            <div class="form-group row">
+                                <label class="mbr-text mbr-fonts-style mb-2 display-7" for="gender">Select Gender</label>
+                                <div class="col-sm-10">
+                                <select class="form-control" id="gender" name="gender">
+                                     <% if(gender == "male"){%>
                                     <option value="male" selected>male</option>
                                     <%}else{%>
                                     <option value="male">male</option>
@@ -158,95 +175,160 @@
                                     <option value="other">other</option>
                                     <%}%>
                                 </select>
+                                </div>
                             </div>
-                            <button type="submit"
-                                onclick="return confirm('Updating Details')"> 
-                                Update Details</button>
-                            </fieldset>
-                        </form>
+                            <div class="form-group row">
+                                <div class="col-sm-10">
+                                <button class="btn btn-primary btn-block" type="submit"
+                                onclick="return confirm('Updating Details')">Update Details</button>
+                                </div>
+                            </div>
+                            </form>
+                            <br>
+                    </div>
                 </div>
             </div>
-            <div class="col-12 col-md">
-                <div class="grid">
-                    <% for(var i=0; i < addresses.length; i++) { %>
-                        <form class="product-form" 
-                            action="userDetails/edit-address/?address_id=<%=addresses[i].address_id%>" 
-                            method="POST">
-                                <p class="mbr-text mbr-fonts-style display-7">Address Details</p>
-                                <div class="form-control">
-                                    <label for="alias">Name</label>
-                                    <input type="text" name="alias" minlength="5" id="alias" value="<%= addresses[i].alias %>">
+        </div>    
+        <br><br>
+        <div class="row" id="addressDetails">
+            <% for(var i=0; i < addresses.length; i++) { %>
+            <% if(i%2 == 0 && i>0){%>
+                </div><br><br>
+                <div class="row">
+            <%}%>
+            <div class="col" align="center">
+                <div align="center" style="background-color:rgba(0, 0, 0, 0.5);border-radius: 1vw;">
+                    <div align="center" style="width: 80%;">
+                        <p class="mbr-text mbr-fonts-style display-7" align="top">
+                            <span>
+                                <%if(addresses[i].symbol=='home'){%>
+                                    <i class="fas fa-home"></i>
+                                <%}else if(addresses[i].symbol=='work'){%>
+                                    <i class="fas fa-briefcase"></i>
+                                <%}else{%>
+                                    <i class="fas fa-user"></i>
+                                <%}%>
+                            </span>
+                            <strong><br>Address Details</strong>
+                        </p>
+                        <form action="userDetails/edit-address/?address_id=<%=addresses[i].address_id%>" method="POST">
+                            <div class="form-group row">
+                                <label class="mbr-text mbr-fonts-style mb-2 display-7" for="alias">Place Name</label>
+                                <div class="col-sm-10">
+                                <input class= "form-control" type="text" name="alias" minlength="5" id="alias" value="<%= addresses[i].alias %>">
                                 </div>
-                                <div class="form-control">
-                                    <label for="symbol">Symbol</label>
-                                    <select id="symbol" name="symbol">
-                                        <% if(addresses[i].symbol == "home"){%>
-                                        <option value="home" selected>home</option>
-                                        <%}else{%>
-                                        <option value="home">home</option>
-                                        <%}%><% if(addresses[i].symbol == "work"){%>
-                                        <option value="work" selected>work</option>
-                                        <%}else{%>
-                                        <option value="work">work</option>
-                                        <%}%><% if(addresses[i].symbol == "other"){%>
-                                        <option value="other" selected>other</option>
-                                        <%}else{%>
-                                        <option value="other">other</option>
-                                        <%}%>
-                                    </select>
-                                </div>
-                                <div class="form-control">
-                                    <label for="house_num">House Number</label>
-                                    <input type="text" name="house_num" minlength="5" id="alias" value="<%= addresses[i].house_num %>">
-                                </div>
-                                <div class="form-control">
-                                    <label for="region">Region</label>
-                                    <input type="text" name="region" minlength="5" id="region" value="<%= addresses[i].region %>">
-                                </div>
-                                <button type="submit" 
-                                    onclick="return confirm('Are you sure you want to update <%= addresses[i].alias%>?')"> 
-                                Update Address</button>
-                                <button  type="submit" 
-                                    onclick="return confirm('Are you sure you want to delete <%= addresses[i].alias%>?')"
-                                    formaction="userDetails/delete-address/?address_id=<%=addresses[i].address_id%>" >
-                                 Delete Address</button>
-                        </form>
-                    <% } %>
-                    <form class="product-form" 
-                        action="userDetails/add-address"
-                        method="POST">
-                        <fieldset>
-                            <p class="mbr-text mbr-fonts-style display-7">Add Address details</p>
-                            <div class="form-control">
-                                <label for="alias">Name</label>
-                                <input type="text" minlength="5" name="alias" id="alias" required>
                             </div>
-                            <div class="form-control">
-                                <label for="symbol">Symbol</label>
-                                <select id="symbol" name="symbol">
+                            <div class="form-group row">
+                                <label class="mbr-text mbr-fonts-style mb-2 display-7" for="symbol">Select Symbol</label>
+                                <div class="col-sm-10">
+                                <select class= "form-control" id="symbol" name="symbol">
+                                    <% if(addresses[i].symbol == "home"){%>
+                                    <option value="home" selected>home</option>
+                                    <%}else{%>
                                     <option value="home">home</option>
+                                    <%}%><% if(addresses[i].symbol == "work"){%>
+                                    <option value="work" selected>work</option>
+                                    <%}else{%>
+                                    <option value="work">work</option>
+                                    <%}%><% if(addresses[i].symbol == "other"){%>
+                                    <option value="other" selected>other</option>
+                                    <%}else{%>
+                                    <option value="other">other</option>
+                                    <%}%>
+                                </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="mbr-text mbr-fonts-style mb-2 display-7" for="house_num">House Number</label>
+                                <div class="col-sm-10">
+                                <input class= "form-control" type="text" name="house_num" minlength="5" id="alias" value="<%= addresses[i].house_num %>">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="mbr-text mbr-fonts-style mb-2 display-7" for="region">Region/Locality</label>
+                                <div class="col-sm-10">
+                                <input class= "form-control" type="text" name="region" minlength="5" id="region" value="<%= addresses[i].region %>">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="mbr-text mbr-fonts-style mb-2 display-7" for="area_code">Primary Code</label>
+                                <div class="col-sm-10">
+                                <input type="number" class="form-control" min = 0 max = 5 
+                                id="area_code" name="area_code"  <% if(addresses[i].primarycode!=null){ %> value="<%=addresses[i].primarycode%>" <%}%> required>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <button class="btn btn-primary btn-block" type="submit"
+                                onclick="return confirm('Are you sure you want to update <%= addresses[i].alias%>?')">
+                                Update</button>
+                                <button class="btn btn-primary btn-block" type="submit"
+                                onclick="return confirm('Are you sure you want to delete <%= addresses[i].alias%>?')"
+                                formaction="userDetails/delete-address/?address_id=<%=addresses[i].address_id%>">
+                                Delete</button>
+                            </div>
+                        </form>
+                        <br>
+                    </div>
+                </div>
+            </div>
+            <% } %>
+        </div>
+        <br>
+        <div class="row" id="addAddress">
+            <div class="col" align="center">
+                <div align="center" style="background-color:rgba(0, 0, 0, 0.5);border-radius: 1vw;">
+                    <div align="center" style="width: 50%;">
+                        <p class="mbr-text mbr-fonts-style display-7" align="top"><strong><br>Add Address</strong></p>
+                        <form action="userDetails/add-address" method="POST">
+                            <div class="form-group row">
+                                <label class="mbr-text mbr-fonts-style mb-2 display-7" for="alias">Place Name</label>
+                                <div class="col-sm-10">
+                                <input class= "form-control" type="text" name="alias" minlength="5" id="alias" required>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="mbr-text mbr-fonts-style mb-2 display-7" for="symbol">Select Symbol</label>
+                                <div class="col-sm-10">
+                                <select class= "form-control" id="symbol" name="symbol">
+                                    <option value="home" selected>home</option>
                                     <option value="work">work</option>
                                     <option value="other">other</option>
                                 </select>
+                                </div>
                             </div>
-                            <div class="form-control">
-                                <label for="house_num">House Number</label>
-                                <input type="text" minlength="5" name="house_num" id="alias" required>
+                            <div class="form-group row">
+                                <label class="mbr-text mbr-fonts-style mb-2 display-7" for="house_num">House Number</label>
+                                <div class="col-sm-10">
+                                <input class= "form-control" type="text" name="house_num" minlength="5" id="alias" required>
+                                </div>
                             </div>
-                            <div class="form-control">
-                                <label for="region">Region</label>
-                                <input type="text" minlength="5" name="region" id="region" required>
+                            <div class="form-group row">
+                                <label class="mbr-text mbr-fonts-style mb-2 display-7" for="region">Region/Locality</label>
+                                <div class="col-sm-10">
+                                <input class= "form-control" type="text" name="region" minlength="5" id="region" required>
+                                </div>
                             </div>
-                            <button type="submit" 
+                            <div class="form-group row">
+                                <label class="mbr-text mbr-fonts-style mb-2 display-7" for="area_code">Primary Code</label>
+                                <div class="col-sm-10">
+                                <input type="number" class="form-control" min = 0 max = 5 
+                                id="area_code" name="area_code" required>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <button class="btn btn-primary btn-block" type="submit"
                                 onclick="return confirm('Adding new address')">
-                            Add Address</button>
-                        </fieldset>
-                    </form>
+                                Add</button>
+                            </div>
+                        </form>
+                        <br>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</section>
+</div>
+
 
 <!--Footer-->
 <section class="footer6 cid-swZIImfDHv" once="footers" id="footer6-p">
@@ -301,5 +383,6 @@
 <script src="assets/touchswipe/jquery.touch-swipe.min.js"></script>
 <script src="assets/parallax/jarallax.min.js"></script>
 <script src="assets/theme/js/script.js"></script>  
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </body>
 </html>
