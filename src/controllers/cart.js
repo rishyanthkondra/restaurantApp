@@ -1,6 +1,7 @@
 const e = require('express');
 const Cart = require('../models/cart');
 const User = require("../models/user");
+const Menu = require('../models/menu');
 // const Prod = require('../models/prod');
 
 
@@ -23,7 +24,7 @@ exports.get_cart = async (req,res,next) => {
         if(addritems.rowCount == 0){
             res.redirect('/userDetails?status=noaddress');
         }
-        console.log(addritems);
+        // console.log(addritems);
         res.render('includes/cart.ejs', {
             pageTitle: 'Cart',
             path: '/cart',
@@ -45,21 +46,21 @@ exports.get_cart = async (req,res,next) => {
     }
 };
 
-// exports.post_cart = async (req,res,next) => {
-//     const prodId = req.body.product_id;
-//     const proditem = new Prod();
-//     const cartitem = new Cart();
-//     const available = await proditem.check(prodId).catch(err => console.log(err));
-//     const present = await cartitem.check(prodId).catch(err => console.log(err));
-//     if(!available){
-//         res.redirect('/prods');
-//     }else if(present){
-//         await cartitem.update_cart(prodId,1).catch(err => console.log(err));
-//         await proditem.update_count(prodId).catch(err => console.log(err));
-//         res.redirect('/cart');
-//     }else{
-//         await cartitem.add_to_cart(prodId,1).catch(err => console.log(err));
-//         await proditem.update_count(prodId).catch(err => console.log(err));
-//         res.redirect('/cart');
-//     }
-// };
+exports.delete_dish = async (req,res,next) => {
+    if(req.oidc.isAuthenticated()){
+        const user = new User(req.oidc.user.email);
+        var dish_id = req.body.dish_id;
+        var details_id = await user.getDetailsId();
+        // console.log(currdish);
+        await Menu.delete_from_cart(dish_id,details_id).catch(err=>console.log(err));
+        res.redirect('/cart');
+    }
+    else{
+        //unauthenticated  home page
+        res.send(JSON.stringify({
+            pageTitle:'Home',
+            alertMessage:false,
+            debugString : 'In get_home,unauthenticated'
+        }));
+    }
+};
