@@ -37,6 +37,9 @@ exports.get_bookings = async (req,res,next)=>{
             if(status == 'notselected'){
                 msg = "select atleast one";
             }
+            if(status == 'capacity'){
+                msg = "capacity exceeded 20!";
+            }
             if(status == 'failed'){
                 msg = "Booking failed,check input or someone has booked in mean time";
             }
@@ -112,7 +115,8 @@ exports.book_tables= async (req,res,next)=>{
             const start_date = req.body.date;
             const start_time = req.body.time;
             var table_arr = [];
-            counter = 0;
+            var counter = 0;
+            var capacity = 0;
             const table1 = req.body.table1;
             const table2 = req.body.table2;
             const table3 = req.body.table3;
@@ -136,85 +140,107 @@ exports.book_tables= async (req,res,next)=>{
             if(table1){
                 table_arr[counter] = 1;
                 counter++;
+                capacity+=2;
             }
             if(table2){
                 table_arr[counter] = 2;
                 counter++;
+                capacity+=2;
             }
             if(table3){
                 table_arr[counter] = 3;
                 counter++;
+                capacity+=2;
             }
             if(table4){
                 table_arr[counter] = 4;
                 counter++;
+                capacity+=2;
             }
             if(table5){
                 table_arr[counter] = 5;
                 counter++;
+                capacity+=2;
             }
             if(table6){
                 table_arr[counter] = 6;
                 counter++;
+                capacity+=2;
             }
             if(table7){
                 table_arr[counter] = 7;
                 counter++;
+                capacity+=4;
             }
             if(table8){
                 table_arr[counter] = 8;
                 counter++;
+                capacity+=4;
             }
             if(table9){
                 table_arr[counter] = 9;
                 counter++;
+                capacity+=4;
             }
             if(table10){
                 table_arr[counter] = 10;
                 counter++;
+                capacity+=4;
             }
             if(table11){
                 table_arr[counter] = 11;
                 counter++;
+                capacity+=4;
             }
             if(table12){
                 table_arr[counter] = 12;
                 counter++;
+                capacity+=4;
             }
             if(table13){
                 table_arr[counter] = 13;
                 counter++;
+                capacity+=6;
             }
             if(table14){
                 table_arr[counter] = 14;
                 counter++;
+                capacity+=6;
             }
             if(table15){
                 table_arr[counter] = 15;
                 counter++;
+                capacity+=6;
             }
             if(table16){
                 table_arr[counter] = 16;
                 counter++;
+                capacity+=6;
             }
             if(table17){
                 table_arr[counter] = 17;
                 counter++;
+                capacity+=10;
             }
             if(table18){
                 table_arr[counter] = 18;
                 counter++;
+                capacity+=10;
             }
             if(table19){
                 table_arr[counter] = 19;
                 counter++;
+                capacity+=10;
             }
             if(table20){
                 table_arr[counter] = 20;
                 counter++;
+                capacity+=10;
             }
             if(table_arr.length == 0){
                 res.redirect("/bookings?status=notselected");
+            }else if(capacity>20){
+                res.redirect("/bookings?status=capacity");
             }else{
                 //console.log(table_arr);
                 const booker = new Bookings(req.oidc.user.email,start_date,start_time,table_arr);
