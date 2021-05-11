@@ -6,19 +6,12 @@ const User = require("../models/user");
 exports.get_menu = async (req,res,next) => {
     if (req.oidc.isAuthenticated()){
 
-        const user = new User(req.oidc.user.email);
-        const isEmp = await user.checkIsEmployee().catch(err=> console.log(err));
-        if(isEmp){
-            res.redirect('/home');
-        }
-        else{
             const dishlist = await Menu.get_dishes();
             res.render('includes/menu_customer.ejs', {
                 pageTitle: 'Menu',
                 path: '/menu_customer',
                 dishes: dishlist.rows
             });
-        }
     }
     else{
         res.redirect('/home');
@@ -29,8 +22,6 @@ exports.get_menu = async (req,res,next) => {
 exports.get_dishcart = async (req,res,next) => {
     if (req.oidc.isAuthenticated()){
         const user = new User(req.oidc.user.email);
-        const isEmp = await user.checkIsEmployee().catch(err=> console.log(err));
-        if(!isEmp){
             var dish_id = req.params.dish_id;
             var details_id = await user.getDetailsId();
             var currdish = await Menu.get_cartdish(dish_id,details_id); //// change this using user_id
@@ -44,10 +35,6 @@ exports.get_dishcart = async (req,res,next) => {
                 path: '/menu_customer/'+dish_id,
                 dishes: currdish.rows
             });
-        }
-        else{
-            res.redirect('/home');
-        }
     }
     else{
         res.redirect('/home');
@@ -57,14 +44,8 @@ exports.get_dishcart = async (req,res,next) => {
 exports.post_dishcart = async (req,res,next) => {
     if (req.oidc.isAuthenticated()){
         const user = new User(req.oidc.user.email);
-        const isEmp = await user.checkIsEmployee().catch(err=> console.log(err));
-        if(!isEmp){
             const item_id = req.body.dish_id
             res.redirect('/menu_customer/'+item_id);
-        }
-        else{
-            res.redirect('/home');
-        }
     }
     else{
         res.redirect('/home');
@@ -74,8 +55,6 @@ exports.post_dishcart = async (req,res,next) => {
 exports.post_increment = async (req,res,next) => {
     if (req.oidc.isAuthenticated()){
         const user = new User(req.oidc.user.email);
-        const isEmp = await user.checkIsEmployee().catch(err=> console.log(err));
-        if(!isEmp){
             var dish_id = req.body.dish_id;
             var details_id = await user.getDetailsId();
             var currdish = await Menu.get_cartdish(dish_id,details_id); //// change this using user_id
@@ -87,10 +66,7 @@ exports.post_increment = async (req,res,next) => {
                 await Menu.cart_inc(dish_id,details_id); //// change this using user_id
             }
             res.redirect('/menu_customer/'+dish_id);
-        }
-        else{
-            res.redirect('/home');
-        }
+        
     }
     else{
         res.redirect('/home');
@@ -100,8 +76,6 @@ exports.post_increment = async (req,res,next) => {
 exports.post_decrement = async (req,res,next) => {
     if (req.oidc.isAuthenticated()){
         const user = new User(req.oidc.user.email);
-        const isEmp = await user.checkIsEmployee().catch(err=> console.log(err));
-        if(!isEmp){
             var dish_id = req.body.dish_id;
             var details_id = await user.getDetailsId();
             var currdish = await Menu.get_cartdish(dish_id,details_id); //// change this using user_id
@@ -119,10 +93,7 @@ exports.post_decrement = async (req,res,next) => {
                 }
             }
             res.redirect('/menu_customer/'+dish_id);
-        }
-        else{
-            res.redirect('/home');
-        }
+        
     }
     else{
         res.redirect('/home');
