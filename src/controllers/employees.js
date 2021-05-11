@@ -6,6 +6,8 @@ exports.get_emp = async (req,res,next) => {
     if (req.oidc.isAuthenticated()){
 
         const user = new User(req.oidc.user.email);
+        const detailRows = await user.getDetails().catch(err=>console.log(err));
+        const details = detailRows.rows[0];
         const isEmp = await user.checkIsRequiredRole('Manager').catch(err=> console.log(err));
 
         if(isEmp){
@@ -13,8 +15,9 @@ exports.get_emp = async (req,res,next) => {
     var empitem = new Data_screen();
     const emps = await empitem.get_emps();
 
-    if(req.params.empid){
-        const current_data = await empitem.get_emp(req.params.empid);
+    if(req._parsedOriginalUrl.query){
+        const emp_id = parseInt((req._parsedOriginalUrl.query).split('=')[1]);
+        const current_data = await empitem.get_emp(emp_id);
         const roles = await empitem.get_roles();
         var work_status = ['suspended','active','leave','vacation','fired','reserve'];
         const work_types = ['permanent','temporary','internship'];
@@ -37,6 +40,10 @@ exports.get_emp = async (req,res,next) => {
             emp_data: current_data.rows[0],
             roles: roles.rows,
             work_types: work_types,
+            isEmployee : isEmp,
+            userImage : req.oidc.user.picture,
+            email : req.oidc.user.email,
+            displayName : details.first_name,
             dob: start_date
         });
     }
@@ -45,6 +52,10 @@ exports.get_emp = async (req,res,next) => {
         pageTitle: 'Employees',
         path: '/employees',
         emps: emps.rows,
+        isEmployee : isEmp,
+        userImage : req.oidc.user.picture,
+        email : req.oidc.user.email,
+        displayName : details.first_name,
         editing: false
     });
     }
@@ -82,7 +93,8 @@ exports.post_emp = async (req,res,next) => {
     if(!email){
         email = null;
     }
-    await recitem.update_employee(req.params.empid,first_name,last_name,phone,email,dob,role,wage,gender,work_type,work_status);
+    const emp_id = parseInt(req.query.emp_id)
+    await recitem.update_employee(emp_id,first_name,last_name,phone,email,dob,role,wage,gender,work_type,work_status);
     res.redirect('/employees');
 }
 else{
