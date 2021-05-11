@@ -18,9 +18,12 @@ exports.get_cart = async (req,res,next) => {
 
         const cartitems = await cartitem.get_all(details_id);
         const addritems = await usr.getAddressesUsingDetailsId(details_id);
-        console.log(cartitems.rows);
+        // console.log(cartitems.rows);
         // console.log(req.details_id);
-        // console.log(addritems);
+        if(addritems.rowCount == 0){
+            res.redirect('/userDetails?status=noaddress');
+        }
+        console.log(addritems);
         res.render('includes/cart.ejs', {
             pageTitle: 'Cart',
             path: '/cart',
