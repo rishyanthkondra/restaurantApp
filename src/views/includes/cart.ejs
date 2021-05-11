@@ -137,6 +137,12 @@
                     <div class="card__content">
                         <p class="product__description">Qt Ord: <%=items[i].quantity%></p>
                     </div>
+                    <form action="/menu_customer/increment" method="post">
+                        <center>
+                        <button class="btn" type="submit" style="background-color: brown;">delete</button>
+                        </center>
+                        <input type="hidden" name="dish_id" value=2 >
+                    </form>
                 </article>
                 </div>
             </div>
@@ -145,6 +151,7 @@
 
         <br>
         <form action="http://localhost:3000/orders" method="POST">
+            <h3 style="color: white"> Select Address </h3>
             <select name="address_id" class="form-control">
                 <% for(var i=0; i < addrs.length; i++) { %>
                     <div  class="dropdown-content">
