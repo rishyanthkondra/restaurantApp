@@ -24,6 +24,11 @@ exports.get_user_home = async (req,res,next) => {
                 class3.push(orders[i]);
             }
         }
+        var recommend = [];
+        recommend.push(class1[0]);
+        recommend.push(class2[0]);
+        recommend.push(class3[0]);
+
         var prevord = await Menu.get_prev_orders(details.details_id);
         prevord = prevord.rows;
         for(var i=0;i<prevord.length;i++){
@@ -40,7 +45,7 @@ exports.get_user_home = async (req,res,next) => {
               });
         }
 
-        var recommend = [];
+        
 
         if(Math.min(class1.length,class2.length,class3.length) == class1.length && class1.length >=3){
             recommend = class1;
@@ -50,11 +55,6 @@ exports.get_user_home = async (req,res,next) => {
         }
         else if(Math.min(class1.length,class2.length,class3.length) == class3.length && class3.length >=3){
             recommend = class3;
-        }
-        else{
-            recommend.push(class1[0]);
-            recommend.push(class2[0]);
-            recommend.push(class3[0]);
         }
 
         //console.log(`Authenticated in user home : ${req.details_id}`);
@@ -66,7 +66,7 @@ exports.get_user_home = async (req,res,next) => {
             userImage : req.oidc.user.picture,
             displayName : details.first_name,
             debugString : 'In get_home,unauthenticated',
-            recommend: recommend
+            items: recommend
         });
     }else{
         res.redirect('/home');

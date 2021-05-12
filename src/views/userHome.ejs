@@ -106,21 +106,33 @@
 
 <!--Content-->
 <section class="header11 cid-swZHoHlbUv mbr-fullscreen mbr-parallax-background" id="header11-o">
-
     <div class="mbr-overlay" style="opacity: 0.3; background-color: rgb(0, 0, 0);"></div>
-
-    <div class="container-fluid">
-        <div class="row justify-content-center">
-            <div class="col-12 col-md-6 image-wrapper">
-                <img class="w-100" src="assets/images/logos-white-with-text-499x426.png" alt="Meæt and Eat">
-            </div>
-            <div class="col-12 col-md">
-                <div class="text-wrapper text-center">
-                    <h1 class="mbr-section-title mbr-fonts-style mb-3 display-1"><strong>Awesomeness of Fusion</strong><br><strong>is here !!!</strong></h1>
-                    <p class="mbr-text mbr-fonts-style display-7">Click here to avail our services</p>
-                    <div class="mbr-section-btn mt-3"><a class="btn btn-primary display-7" href="http://localhost:3000/login">Login</a></div>
+    <div class="container">  
+        <h2 class="mbr-section-subtitle mbr-fonts-style mb-2 mt-4 display-100" style="color: yellow;">Recommended based on your orders</h2>  
+        <div class="row">
+            <% for(var i=0; i < 3; i++) { %>
+                <% if(i%3==0) {%>
+                </div> <div class="row">
+            <% } %>
+            <div class="col-4">
+                <div style="background-color: white; overflow-x:scroll">
+                    <article class="card product-item">                
+                        <header class="card__header">
+                            <h1 class="card__title"><%= items[i].dish_name %></h1>
+                        </header>
+                        <div class="card__image">
+                            <img src="<%= items[i].image_url %>" width="100" height="400" alt="<%=items[i].title%>">
+                        </div>
+                        <div class="card__content">
+                            <h3 class="product__price">Price: <%= items[i].cost_per_unit %></h3>
+                        </div>
+                        <div class="card__content">
+                            <p class="product__description"><%=items[i].dish_description%></p>
+                        </div>
+                    </article>
                 </div>
             </div>
+            <% } %>
         </div>
     </div>
 </section>
