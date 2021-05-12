@@ -74,7 +74,7 @@ exports.post_emp = async (req,res,next) => {
 
     if (req.oidc.isAuthenticated()){
 
-        const user = new User(req.oidc.user.email);
+        var user = new User(req.oidc.user.email);
         const isEmp = await user.checkIsRequiredRole('Manager').catch(err=> console.log(err));
 
         if(isEmp){
@@ -93,8 +93,13 @@ exports.post_emp = async (req,res,next) => {
     if(!email){
         email = null;
     }
-    const emp_id = parseInt(req.query.emp_id)
+    const emp_id = parseInt(req.query.emp_id);
+    user = new User(req.body.email);
+    const isdel = await user.checkIsRequiredRole('Delivery').catch(err=> console.log(err));
     await recitem.update_employee(emp_id,first_name,last_name,phone,email,dob,role,wage,gender,work_type,work_status);
+    if(parseInt(role)==4&&!isdel){
+        await recitem.updatedel(emp_id);
+    }
     res.redirect('/employees');
 }
 else{

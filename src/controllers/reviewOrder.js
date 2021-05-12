@@ -16,6 +16,7 @@ exports.post_review = async (req,res,next) => {
         const editedOrder = req.query.editedOrder;
         const editedDish = req.query.editedDish;
         const order_id = req.body.order_id;
+
         //var alert = false;
         //var msg = '';
         if(editedOrder){
@@ -45,7 +46,7 @@ exports.post_review = async (req,res,next) => {
             const dish_id = req.body.dish_id;
             const rate = req.body.rating;
             const rev = req.body.review;
-            const y = user.insertDishRating(dish_id,rate,rev).catch(err=>{
+            const y = await user.insertDishRating(dish_id,rate,rev).catch(err=>{
                 console.log(err);
                 res.redirect('/prevOrders?status=invalid');
             });

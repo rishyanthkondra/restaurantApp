@@ -187,6 +187,7 @@
                             <div class="card__actions">
                                 <form action="/reviewOrder?editedDish=true" method="POST">
                                     <input type="hidden" name="dish_id" value=<%=dishes.rows[i].dish_id%>>
+                                    <input type="hidden" name="order_id" value=<%=order.order_id%>>
                                     <tr>
                                         <td>Your Rating </td><td> 
                                             <input type="number" class="form-control"  min=0 max=5 step=1

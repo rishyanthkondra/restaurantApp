@@ -33,6 +33,7 @@ exports.get_previous_orders = async (req,res,next) => {
             }
             if(status == 'payment'){
                 msg = "Your payment failed, please try again";
+            }
             if(status == 'invalid'){
                 msg = "Failed to review and rate!";
             }
@@ -66,9 +67,9 @@ exports.get_previous_orders = async (req,res,next) => {
         };
         // console.log(result);
         res.render('prevOrders.ejs',result);
-    }else{
-        res.redirect('/home');
     }
+    else{
+        res.redirect('/home');
     }
 };
 

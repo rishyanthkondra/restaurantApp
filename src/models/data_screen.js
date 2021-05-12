@@ -41,6 +41,9 @@ module.exports = class Data_screen{
 
     async new_employee(details_id,role,wage,work_type,work_status='active'){
          var emp = await pool.query("INSERT INTO employee(employee_id, work_status,work_type,current_wage,role_id) VALUES($5,$1,$2,$3,$4)",[work_status,work_type,wage,role,details_id]);
+         if(parseInt(role)==4){
+            emp = await pool.query("INSERT INTO delivery_boy VALUES($1,$2,$3,$4)",['Free',1,2,details_id]);
+         }
     }
 
     get_emps(){
@@ -56,5 +59,11 @@ module.exports = class Data_screen{
          WHERE details_id = $7`,[first_name,last_name,email,phone,dob,gender,empid]);
         var emp = await pool.query("UPDATE employee SET work_status=$1,work_type=$2,current_wage=$3,role_id=$4 WHERE employee_id=$5",[work_status,work_type,wage,role,empid]);
    }
+
+   async updatedel(empid){
+    var emp = await pool.query("INSERT INTO delivery_boy VALUES($1,$2,$3,$4)",['Free',1,2,empid]);
+}
+
+
 
 };

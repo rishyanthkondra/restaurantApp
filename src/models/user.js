@@ -57,7 +57,7 @@ module.exports = class User{
         var cus = await pool.query("SELECT customer_id from orders where order_id = $1",[order_id]);
         var dish = await pool.query("SELECT dish_id from order_has_dish where order_id = $1",[order_id]);
         for(var i=0;i<dish.rows.length;i++){
-        var emp = await pool.query(`INSERT INTO rates values($1,$2,null,null)`,[cus.rows[0].customer_id,dish.rows[i].dish_id]);
+        var emp = await pool.query(`INSERT INTO rates VALUES($1,$2,$3,$4) ON CONFLICT(customer_customer_id,dish_dish_id) DO NOTHING;`,[cus.rows[0].customer_id,dish.rows[i].dish_id,null,null]);
         }
     }
 
@@ -245,8 +245,7 @@ module.exports = class User{
     async insertDishRating(dish_id,rating,review){
         const details_id = await this.getDetailsId().catch(err=>console.log(err));
         return pool.query(
-            "INSERT INTO rates VALUES($1,$2,$3,$4) "+
-            "ON CONFLICT(rates_pkey) DO UPDATE rating=$3,review=$4;",
+            "UPDATE rates SET rating=$3,review=$4 where dish_dish_id = $2 and customer_customer_id = $1;",
             [details_id,dish_id,rating,review]
         );
     }
