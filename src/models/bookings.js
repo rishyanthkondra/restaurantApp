@@ -31,6 +31,12 @@ module.exports = class Bookings{
             [details_id,new Date().toISOString()]);
     }
 
+    async getallActiveBooking(){
+        return pool.query(
+            "SELECT booking_id,start_time, booking_time,first_name,last_name FROM (booking NATURAL JOIN customer) INNER join details on details.details_id = customer.customer_id WHERE start_time > $1;",
+            [new Date().toISOString()]);
+    }
+
     static cancelBooking(booking_id){
         pool.query('DELETE FROM  booking_has_tables WHERE booking_id = $1',[booking_id])
         .catch(err=>console.log(err));

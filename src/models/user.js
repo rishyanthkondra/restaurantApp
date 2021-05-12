@@ -41,6 +41,18 @@ module.exports = class User{
         }
     }
 
+    async getDeliveries(employee_id){
+        const inEmployee = await pool.query(
+            `select * from (online_order inner join address on online_order.delivery_address_id = address.address_id) 
+            inner join details on details.details_id = address.belongs_to where order_status = 'on_way' and delivery_boy_employee_id = $1;`,
+            [employee_id]);
+        return inEmployee;
+    }
+
+    async update_order_status(order_id,status){
+        var emp = await pool.query(`Update online_order set order_status = $1 where online_order.order_id = $2`,[status,order_id]);
+    }
+
     async getRole(){
         if (!this.inDb()){
             console.warn("Tried checking employee records for an email not in database!");
