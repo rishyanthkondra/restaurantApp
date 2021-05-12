@@ -69,5 +69,6 @@ exports.get_previous_orders = async (req,res,next) => {
     }else{
         res.redirect('/home');
     }
+    }
 };
 
