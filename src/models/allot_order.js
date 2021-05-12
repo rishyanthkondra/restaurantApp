@@ -35,4 +35,9 @@ module.exports = class Allot_order{
         var emp = await pool.query(`Update online_order set delivery_boy_employee_id = $2, estimated_time = $3, order_status = 'on_way' where online_order.order_id = $1`,[order_id, employee_id, dt]);
    }
 
+   async update_trans(order_id){
+       var tr_id = await pool.query('select transaction_id from orders where order_id=$1',[order_id]);
+       var tr_up = await pool.query(`update transactions set trans_status = 'failed' where transaction_id=$1`,[tr_id.rows[0].transaction_id]);
+   }
+
 };

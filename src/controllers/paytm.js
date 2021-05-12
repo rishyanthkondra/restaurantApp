@@ -7,8 +7,8 @@ const qs = require("querystring");
 const Cart = require('../models/cart');
 const User = require("../models/user");
 const Onlineorders = require('../models/onlineorder');
-const Transaction = require("../models/transactions") 
-
+const Transaction = require("../models/transactions"); 
+const Allot_order = require("../models/allot_order");
 
 
 exports.paytmpaynow = async (req,res) => {
@@ -16,6 +16,11 @@ exports.paytmpaynow = async (req,res) => {
     const usr = new User(email);
     const details_id = await usr.getDetailsId().catch(err=>console.log(err));
     const details = await usr.getDetailsUsingDetailsId(details_id);
+
+    if(details.rows[0].phone_number==null){
+        res.redirect('/userDetails?status=phone');
+    }
+    else{
 
     var paymentDetails = {
         amount: req.body.trans_cost.toString(),
@@ -55,6 +60,7 @@ exports.paytmpaynow = async (req,res) => {
             res.end();
         });
     }
+}
 
 }
 
@@ -72,7 +78,7 @@ exports.paytmcallback = async (req, res) => {
     var post_data = req.body;
     var checksumhash = post_data.CHECKSUMHASH;
     var result = checksum_lib.verifychecksum(post_data, config.PaytmConfig.key, checksumhash);
-    // console.log(req);
+     console.log(req);
     if (result && post_data.STATUS == "TXN_SUCCESS"){
         var details_id = req.params.did;
         var trans_id = req.params.trans_id;
@@ -86,6 +92,9 @@ exports.paytmcallback = async (req, res) => {
         
     }
     else{
+        var allot_order = new Allot_order();
+        var x = await allot_order.get_acc(req.body.ORDERID,'rejected');
+        x = await allot_order.update_trans(req.body.ORDERID);
         res.redirect('/prevOrders?status=payment');
     }
 }

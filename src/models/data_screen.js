@@ -7,32 +7,32 @@ module.exports = class Data_screen{
 
     get_dish_stats(start_date,end_date){
         return pool.query(`With stat(dish_id,count)  as (select dish_id, sum(servings) from order_has_dish NATURAL JOIN orders where
-        orders.order_time <= $1::date and orders.order_time >= $2::date group by dish_id)
+        orders.order_time::date <= $1 and orders.order_time::date >= $2 group by dish_id)
         select * from stat NATURAL JOIN dish where stat.dish_id = dish.dish_id`,[end_date,start_date]);
     }
 
     get_ingredient_stats(start_date,end_date){
         return pool.query(`With dish_stat(dish_id,count)  as  (select dish_id, sum(servings) from order_has_dish, orders where orders.order_id = order_has_dish.order_id and
-        orders.order_time <= $1::date and orders.order_time >= $2::date group by dish_id),
+        orders.order_time::date <= $1 and orders.order_time::date >= $2 group by dish_id),
         ingredient_stat(id, count) as (select ingredient_id, sum(count*quantity) from dish_stat, dish_has_ingredients where dish_stat.dish_id = dish_has_ingredients.dish_id group by ingredient_id)
         select * from ingredient_stat INNER JOIN ingredients ON ingredients.ingredient_id = ingredient_stat.id`,[end_date,start_date]);
     }
 
     get_pur(start_date,end_date,status){
         return pool.query(`with purchases(id,count) as (select ingredient_id, sum(quantity) from supply_order,transactions where transactions.transaction_id = supply_order.transaction_id 
-        and start_time >= $1::date and start_time <= $2::date and transactions.trans_status = $3 group by ingredient_id)
+        and start_time::date >= $1 and start_time::date <= $2 and transactions.trans_status = $3 group by ingredient_id)
         select *  from purchases,ingredients where ingredients.ingredient_id = purchases.id`,[start_date,end_date,status]);
     }
 
     get_pur(start_date,end_date,status){
         return pool.query(`with purchases(id,count) as (select ingredient_id, sum(quantity) from supply_order,transactions where transactions.transaction_id = supply_order.transaction_id 
-        and start_time >= $1::date and start_time <= $2::date and transactions.trans_status = $3 group by ingredient_id)
+        and start_time::date >= $1 and start_time::date <= $2 and transactions.trans_status = $3 group by ingredient_id)
         select *  from purchases,ingredients where ingredients.ingredient_id = purchases.id`,[start_date,end_date,status]);
     }
 
     get_trans(start_date,end_date){
-        return pool.query(`select * from (transactions INNER JOIN employee ON transactions.supervising_employee_id = employee.employee_id) INNER JOIN details ON details.details_id = employee.employee_id
-        where start_time >= $1::date and start_time <= $2::date`,[start_date,end_date]);
+        return pool.query(`select * from transactions 
+        where start_time::date >= $1 and start_time::date <= $2`,[start_date,end_date]);
     }
 
     get_roles(){
