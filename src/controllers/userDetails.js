@@ -40,6 +40,9 @@ exports.get_user_details = async (req,res,next) => { // get details and addresse
             if(status == 'noaddress'){
                 msg = "Add address to place order";
             }
+            if(status=='phone'){
+                msg= "Add phone number for payment";
+            }
         }
         const result  = {
             pageTitle : 'User Details',

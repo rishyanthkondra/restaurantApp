@@ -157,8 +157,6 @@
                 <th>Description</th>
                 <th>Time</th>
                 <th>Amount</th>
-                <th>Supervising Employee</th>
-                <th>Employee Name</th>
               </tr>
             <% for(var i=0; i < s_trans.length; i++) { total = total+s_trans[i].cost; %>
                 <tr>
@@ -166,8 +164,6 @@
                     <td> <%= s_trans[i].transaction_description %> </td>
                     <td> <%= s_trans[i].start_time %> </td>
                     <td> <%= s_trans[i].cost %> </td>
-                    <td> <%= s_trans[i].supervising_employee_id %> </td>
-                    <td> <%= s_trans[i].first_name %> <%= s_trans[i].middle_name %> <%= s_trans[i].last_name %> </td>
                 </tr>
              <% } %>
         </table>
@@ -188,8 +184,6 @@
                     <th>Description</th>
                     <th>Time</th>
                     <th>Amount</th>
-                    <th>Supervising Employee</th>
-                    <th>Employee Name</th>
                   </tr>
                 <% for(var i=0; i < p_trans.length; i++) { total = total+p_trans[i].cost; %>
                     <tr>
@@ -197,8 +191,6 @@
                         <td> <%= p_trans[i].transaction_description %> </td>
                         <td> <%= p_trans[i].start_time %> </td>
                         <td> <%= p_trans[i].cost %> </td>
-                        <td> <%= p_trans[i].supervising_employee_id %> </td>
-                        <td> <%= p_trans[i].first_name %> <%= p_trans[i].middle_name %> <%= p_trans[i].last_name %> </td>
                     </tr>
                  <% } %>
             </table>
@@ -219,8 +211,6 @@
                     <th>Description</th>
                     <th>Time</th>
                     <th>Amount</th>
-                    <th>Supervising Employee</th>
-                    <th>Employee Name</th>
                   </tr>
                 <% for(var i=0; i < f_trans.length; i++) { total = total+f_trans[i].cost; %>
                     <tr>
@@ -228,8 +218,6 @@
                         <td> <%= f_trans[i].transaction_description %> </td>
                         <td> <%= f_trans[i].start_time %> </td>
                         <td> <%= f_trans[i].cost %> </td>
-                        <td> <%= f_trans[i].supervising_employee_id %> </td>
-                        <td> <%= f_trans[i].first_name %> <%= f_trans[i].middle_name %> <%= f_trans[i].last_name %> </td>
                     </tr>
                  <% } %>
             </table>
