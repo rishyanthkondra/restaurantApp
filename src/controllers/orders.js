@@ -13,38 +13,43 @@ exports.order = async (req,res,next)=> {
         const usr = new User(email);
         const details_id = await usr.getDetailsId().catch(err=>console.log(err));
         
-        const orderitem = new Orders();
-        const items = await orderitem.order_cond(details_id).catch(err=>console.log(err));
-        // console.log(items);
-
-        if(items.rows.length > 0){
-            const cartvalue_resp = await orderitem.get_cartvalue(details_id).catch(err => console.log(err));
-            const cartvalue = cartvalue_resp.rows[0].cartvalue
-
-            const trans = new Transaction();
-            trans_id = await trans.add_transaction(cartvalue,'pending',"order from restaurant").catch(err=>console.log(err));
-
-            const order = new Orders();
-            order_id = await order.add_order(cartvalue,details_id,trans_id).catch(err=>console.log(err));
-            
-            const order_has_dish = new Order_has_dish();
-            for( var i=0;i<items.rows.length;i++){
-                order_has_dish.add_order_has_dish(items.rows[i].dish_dish_id,order_id,items.rows[i].quantity).catch(err=>console.log(err));
-            }
-
-            const onlineorder = new Onlineorders();
-            var address_id = req.body.address_id;
-            var delivery_charge = Math.max(Math.round(cartvalue * 0.1),50);
-            await onlineorder.add_onlineorder(order_id,'pending',address_id,delivery_charge).catch(err=>console.log(err)); //change 1 to address_id, 20 delivery charges
-            // console.log(trans_id);
-            // console.log(order_id);
-            const cart = new Cart();
-            await cart.empty_all(details_id).catch(err=>console.log(err));
-            res.redirect('/cart');
-
+        const hasorder = await usr.hasActiveOrders();
+        if(hasorder){
+            res.redirect('/prevOrders?status=hasactive');
         }
         else{
-            res.redirect('/cart');
+            const orderitem = new Orders();
+            const items = await orderitem.order_cond(details_id).catch(err=>console.log(err));
+            // console.log(items);
+            if(items.rows.length > 0){
+                const cartvalue_resp = await orderitem.get_cartvalue(details_id).catch(err => console.log(err));
+                const cartvalue = cartvalue_resp.rows[0].cartvalue
+
+                const trans = new Transaction();
+                trans_id = await trans.add_transaction(cartvalue,'pending',"order from restaurant").catch(err=>console.log(err));
+
+                const order = new Orders();
+                order_id = await order.add_order(cartvalue,details_id,trans_id).catch(err=>console.log(err));
+                
+                const order_has_dish = new Order_has_dish();
+                for( var i=0;i<items.rows.length;i++){
+                    order_has_dish.add_order_has_dish(items.rows[i].dish_dish_id,order_id,items.rows[i].quantity).catch(err=>console.log(err));
+                }
+
+                const onlineorder = new Onlineorders();
+                var address_id = req.body.address_id;
+                var delivery_charge = Math.max(Math.round(cartvalue * 0.1),50);
+                await onlineorder.add_onlineorder(order_id,'pending',address_id,delivery_charge).catch(err=>console.log(err)); //change 1 to address_id, 20 delivery charges
+                // console.log(trans_id);
+                // console.log(order_id);
+                const cart = new Cart();
+                await cart.empty_all(details_id).catch(err=>console.log(err));
+                res.redirect('/prevOrders');
+
+            }
+            else{
+                res.redirect('/cart');
+            }
         }
     }
     else{

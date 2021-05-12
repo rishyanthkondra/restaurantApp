@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
   <link rel="shortcut icon" href="<%=userImage%>" type="image/x-icon">
   <meta name="description" content="">
-  
+  <meta http-equiv="refresh" content="3" />
   
   <title><%=pageTitle%></title>
   <link rel="stylesheet" href="css/prevOrders.css">
@@ -24,7 +24,12 @@
   
 </head>
 <body>
-
+    <%if(pop) {%>
+        <script>
+            alert("<%=message%>");
+            window.location.href = "/prevOrders";
+        </script>
+    <%}%>
 <!--header-->
 <section class="menu cid-s48OLK6784" once="menu" id="menu1-h">    
     <nav class="navbar navbar-dropdown navbar-fixed-top navbar-expand-lg">
@@ -122,7 +127,7 @@
                             <tbody>
                                 <tr>
                                     <td>Order id </td><td> <%=onWay.rows[i].order_id%></td>
-                                </tr>>
+                                </tr>
                                 <tr>
                                     <td>Ordered at </td><td> <%=onWay.rows[i].order_time.toLocaleString({month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit' });%></td>
                                 </tr>
@@ -133,17 +138,17 @@
                                     <td>Delivery by </td><td> <%=onWay.rows[i].first_name%></td>
                                 </tr>
                                 <tr>
-                                    <td>Contact </td><td> <%=onWay.rows[i].phone_number%></td>>
+                                    <td>Contact </td><td> <%=onWay.rows[i].phone_number%></td>
                                 </tr>
                                 <tr style="background-color: teal;">
-                                    <td>Status </td><td> on the way</td>>
-                                </tr>>
+                                    <td>Status </td><td> on the way</td>
+                                </tr>
                                 <tr>
-                                    <td>Cost </td><td> <%=onWay.rows[i].cost%></td>>
-                                </tr>>
+                                    <td>Cost </td><td> <%=onWay.rows[i].cost%></td>
+                                </tr>
                                 <tr>
-                                    <td>Delivery Charges </td><td> <%=onWay.rows[i].delivery_charges%></td>>
-                                </tr>>
+                                    <td>Delivery Charges </td><td> <%=onWay.rows[i].delivery_charges%></td>
+                                </tr>
                             </tbody>
                         </table>
                         <br>
@@ -151,6 +156,41 @@
                 </div>
             </div>
             <%}%>
+            <%}%>
+            <% if(paidPresent){%>
+                <p class="mbr-text mbr-fonts-style display-7" align="top"><strong>Paid orders</strong></p>
+                <%for(var i=0;i<paid.rowCount;i++){%>
+                <div class="row justify-content-center">
+                    <div class="col" align="center">
+                        <div align="center" style="background-color:rgba(0, 0, 0, 0.5);border-radius: 1vw;width: 70%;">
+                            <br>
+                            <table class="table" style="color: white;">
+                                <tbody>
+                                    <tr>
+                                        <td>Order id </td><td> <%=paid.rows[i].order_id%></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Ordered at </td><td> <%=paid.rows[i].order_time.toLocaleString({month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit' });%></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Delivery to </td><td> <%=paid.rows[i].alias + ' '+paid.rows[i].house_num%></td>
+                                    </tr>
+                                    <tr style="background-color:lawngreen;">
+                                        <td>Status </td><td> Paid, waiting for delivery boy  </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Cost </td><td> <%=paid.rows[i].cost%></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Delivery Charges </td><td> <%=paid.rows[i].delivery_charges%></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+                <%}%>
             <%}%>
             <% if(confmPresent){%>
             <p class="mbr-text mbr-fonts-style display-7" align="top"><strong>Confirmed orders</strong></p>
@@ -168,22 +208,25 @@
                                     <td>Ordered at </td><td> <%=confm.rows[i].order_time.toLocaleString({month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit' });%></td>
                                 </tr>
                                 <tr>
-                                    <td>Delivery to </td><td> <%=confm.rows[i].alias + ' '+onWay.rows[i].house_num%></td>
+                                    <td>Delivery to </td><td> <%=confm.rows[i].alias + ' '+confm.rows[i].house_num%></td>
                                 </tr>
                                 <tr style="background-color:violet;">
-                                    <td>Status </td><td> "Confirmed, waiting for payment "</td>
+                                    <td>Status </td><td> Confirmed, waiting for payment </td>
                                 </tr>
                                 <tr>
-                                    <td>Cost </td><td> <%=confm.rows[i].cost%></td>>
+                                    <td>Cost </td><td> <%=confm.rows[i].cost%></td>
                                 </tr>
                                 <tr>
-                                    <td>Delivery Charges </td><td> <%=confm.rows[i].delivery_charges%></td>>
+                                    <td>Delivery Charges </td><td> <%=confm.rows[i].delivery_charges%></td>
                                 </tr>
-                                    <!-- put pay button here <tr>
-                                        <td>
-                                        
-                                        </td>
-                                    </tr> -->
+                                <tr>
+                                    <td>
+                                        <form method="POST" action="">
+                                            <button class="btn btn-primary btn-block" type="submit"
+                                            onclick="return confirm('Pay pending order')">Pay</button>
+                                        </form>    
+                                    </td>
+                                </tr> 
                             </tbody>
                         </table>
                         <br>
@@ -214,11 +257,81 @@
                                         <td>Status </td><td>pending waiting for chefs approval</td>
                                     </tr>
                                     <tr>
-                                        <td>Cost </td><td> <%=pend.rows[i].cost%></td>>
+                                        <td>Cost </td><td> <%=pend.rows[i].cost%></td>
                                     </tr>
                                     <tr>
-                                        <td>Delivery Charges </td><td> <%=pend.rows[i].delivery_charges%></td>>
+                                        <td>Delivery Charges </td><td> <%=pend.rows[i].delivery_charges%></td>
                                     </tr>
+                                </tbody>
+                            </table>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+            <%}%>
+            <%}%>
+            <% if(rejPresent){%>
+                <p class="mbr-text mbr-fonts-style display-7" align="top"><strong>Rejected orders</strong></p>
+                <%for(var i=0;i<rej.rowCount;i++){%>
+                <div class="row justify-content-center">
+                    <div class="col" align="center">
+                        <div align="center" style="background-color:rgba(0, 0, 0, 0.5);border-radius: 1vw;width: 70%;">
+                            <br>
+                            <table class="table" style="color: white;">
+                                <tbody>
+                                    <tr>
+                                        <td>Order id </td><td> <%=rej.rows[i].order_id%></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Ordered at </td><td> <%=rej.rows[i].order_time.toLocaleString({month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit' });%></td>
+                                    </tr>
+                                    <tr style="background-color: maroon;">
+                                        <td>Status </td><td>Sorry, Rejected! Some problem at our side</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Cost </td><td> <%=rej.rows[i].cost%></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+            <%}%>
+            <%}%>
+            <% if(compPresent){%>
+                <p class="mbr-text mbr-fonts-style display-7" align="top"><strong>Previous orders</strong></p>
+                <%for(var i=0;i<comp.rowCount;i++){%>
+                <div class="row justify-content-center">
+                    <div class="col" align="center">
+                        <div align="center" style="background-color:rgba(0, 0, 0, 0.5);border-radius: 1vw;width: 70%;">
+                            <br>
+                            <table class="table" style="color: white;">
+                                <tbody>
+                                    <tr>
+                                        <td>Order id </td><td> <%=comp.rows[i].order_id%></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Ordered at </td><td> <%=comp.rows[i].order_time.toLocaleString({month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit' });%></td>
+                                    </tr>
+                                    <tr style="background-color: lightslategray;">
+                                        <td>Status </td><td>Delivered successfully!!</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Spent </td><td> <%=comp.rows[i].cost+comp.rows[i].delivery_charges%></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Delivered to </td><td> <%=comp.rows[i].alias + ' '+comp.rows[i].house_num%></td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <form method="POST" action="/reviewOrder">
+                                                <input type="hidden" name="order_id" id="order_id" value=<%=comp.rows[i].order_id%>>
+                                                <button class="btn btn-primary btn-block" type="submit"
+                                                onclick="return confirm('Review Previous order')">Review</button>
+                                            </form>    
+                                        </td>
+                                    </tr> 
                                 </tbody>
                             </table>
                             <br>

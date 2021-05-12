@@ -1,4 +1,5 @@
 const pool = require('../utils/database');
+const Orders = require('./orders');
 module.exports = class User{
 
 /////////////////// Constructors ////////////////////////
@@ -116,37 +117,59 @@ module.exports = class User{
         const details_id = await this.getDetailsId().catch(err=>console.log(err));
         return pool.query(
             "SELECT o.order_id,o.order_time,o.cost,oo.delivery_charges,oo.order_status, "+
-            "ad.alias,ad.house_num "+
-            "FROM "+
+            "ad.alias,ad.house_num FROM "+
             "orders o INNER JOIN "+
             "online_order oo ON o.order_id = oo.order_id INNER JOIN "+
             "address ad ON oo.delivery_address_id = ad.address_id "+
-            "WHERE o.customer_id = $1 AND oo.order_status = 'pending';"
+            "WHERE o.customer_id = $1 AND oo.order_status = 'pending' "+
+            "ORDER BY o.order_time DESC;"
         ,[details_id]);
     }
     async getOnWayOrders(){
         const details_id = await this.getDetailsId().catch(err=>console.log(err));
         return pool.query(
             "SELECT o.order_id,o.order_time,o.cost,oo.delivery_charges,oo.order_status, "+
-            "ad.alias,ad.house_num,d.first_name,d.phone_number "+
-            "FROM "+
+            "ad.alias,ad.house_num,d.first_name,d.phone_number FROM "+
             "orders o INNER JOIN "+
             "online_order oo ON o.order_id = oo.order_id INNER JOIN "+
             "address ad ON oo.delivery_address_id = ad.address_id INNER JOIN "+
             "details d ON d.details_id = oo.delivery_boy_employee_id "+
-            "WHERE o.customer_id = $1 AND oo.order_status = 'on_way';"
+            "WHERE o.customer_id = $1 AND oo.order_status = 'on_way' "+
+            "ORDER BY o.order_time DESC;"
         ,[details_id]);
     }
     async getConfirmedOrders(){
         const details_id = await this.getDetailsId().catch(err=>console.log(err));
         return pool.query(
             "SELECT o.order_id,o.order_time,o.cost,oo.delivery_charges,oo.order_status, "+
-            "ad.alias,ad.house_num "+
-            "FROM "+
+            "ad.alias,ad.house_num FROM "+
             "orders o INNER JOIN "+
             "online_order oo ON o.order_id = oo.order_id INNER JOIN "+
             "address ad ON oo.delivery_address_id = ad.address_id "+
-            "WHERE o.customer_id = $1 AND oo.order_status = 'confirmed';"
+            "WHERE o.customer_id = $1 AND oo.order_status = 'confirmed' "+
+            "ORDER BY o.order_time DESC;"
+        ,[details_id]);
+    }
+    async getPaidOrders(){
+        const details_id = await this.getDetailsId().catch(err=>console.log(err));
+        return pool.query(
+            "SELECT o.order_id,o.order_time,o.cost,oo.delivery_charges,oo.order_status, "+
+            "ad.alias,ad.house_num FROM "+
+            "orders o INNER JOIN "+
+            "online_order oo ON o.order_id = oo.order_id INNER JOIN "+
+            "address ad ON oo.delivery_address_id = ad.address_id "+
+            "WHERE o.customer_id = $1 AND oo.order_status = 'paid' "+
+            "ORDER BY o.order_time DESC;"
+        ,[details_id]);
+    }
+    async getRejectedOrders(){
+        const details_id = await this.getDetailsId().catch(err=>console.log(err));
+        return pool.query(
+            "SELECT o.order_id,o.order_time,o.cost,oo.order_status FROM "+
+            "orders o INNER JOIN "+
+            "online_order oo ON o.order_id = oo.order_id "+
+            "WHERE o.customer_id = $1 AND oo.order_status = 'rejected' "+
+            "ORDER BY o.order_time DESC LIMIT 2;"
         ,[details_id]);
     }
     async getCompletedOrders(){
@@ -154,25 +177,69 @@ module.exports = class User{
         var res = await pool.query(
             "SELECT o.order_id,o.rating,o.review,o.order_time,o.cost,oo.delivery_charges,oo.order_status, "+
             "ad.alias,ad.house_num "+
-            "FROM "+
-            "orders o INNER JOIN "+
+            "FROM orders o INNER JOIN "+
             "online_order oo ON o.order_id = oo.order_id INNER JOIN "+
             "address ad ON oo.delivery_address_id = ad.address_id "+
-            "WHERE o.customer_id = $1 AND oo.order_status IN ('rejected','delivered') LIMIT 5;"
+            "WHERE o.customer_id = $1 AND oo.order_status = 'delivered' "+
+            "ORDER BY o.order_time DESC LIMIT 5;"
         ,[details_id]).catch(err=>console.log(err));
-        //fetch dishes too dish_id, name, image_url, rating
-        for(var i=0;i<res.rowCount;i++){
-            const oid = res.rows[i].order_id;
-            const dishRows = await pool.query(
-                "SELECT d.dish_id,d.dish_name,d.image_url,"+
-                "(SELECT rating from rates r WHERE r.dish_dish_id = d.dish_id "+
-                " AND r.customer_customer_id = $2) as rating "+
-                "FROM order_has_dish od INNER JOIN "+
-                "dish d ON od.dish_id = d.dish_id "+
-                "WHERE od.order_id = $1",[oid,details_id]).catch(err=>console.log(err));
-            res.rows[i].dishes = dishRows;
-        }
+        //fetch dishes too dish_id, name, image_url, rating !!!not req now
+        // for(var i=0;i<res.rowCount;i++){
+        //     const oid = res.rows[i].order_id;
+        //     const dishRows = await pool.query(
+        //         "SELECT d.dish_id,d.dish_name,d.image_url,"+
+        //         "(SELECT rating from rates r WHERE r.dish_dish_id = d.dish_id "+
+        //         " AND r.customer_customer_id = $2) as rating"+
+        //         "FROM order_has_dish od INNER JOIN "+
+        //         "dish d ON od.dish_id = d.dish_id"+
+        //         "WHERE od.order_id = $1",[oid,details_id]).catch(err=>console.log(err));
+        //     res.rows[i].dishes = dishRows;
+        // }
         return res;
+    }
+    async hasActiveOrders(){
+        const details_id = await this.getDetailsId().catch(err=>console.log(err));
+        const orders = await pool.query(
+                "SELECT 1 FROM " +
+                "orders o INNER JOIN "+
+                "online_order oo ON o.order_id = oo.order_id " +
+                "WHERE o.customer_id = $1 AND oo.order_status in ('pending','paid','on_way','confirmed');"
+            ,[details_id]).catch(err=>console.log(err));
+        return orders.rowCount>0;
+    }
+//////////////////////// Reviewing Orders//////////////////////////////////
+    async getOrderDetails(order_id){//rating,review,order_id,
+        const details_id = await this.getDetailsId().catch(err=>console.log(err));
+        return  pool.query(
+            "SELECT o.order_id,o.rating,o.review,o.order_time "+
+            "FROM orders o "+
+            "WHERE o.customer_id = $1 AND oo.order_status = 'delivered' AND o.order_id = $2;"
+        ,[details_id,order_id]);
+    }
+    async getDishesAndRatings(order_id){
+        return  pool.query(
+            "SELECT d.dish_id,d.dish_name,d.image_url,r.rating,r.review FROM "+
+            "dish d INNER JOIN "+
+            "order_has_dish od ON d.dish_id = od.dish_id INNER JOIN "+
+            "rates r ON od.dish_id = r.dish_dish_id "+
+            "WHERE od.order_id = $1;"
+        ,[order_id]);
+    }
+    async updateOrderReview(order_id,rating,review){
+        const details_id = await this.getDetailsId().catch(err=>console.log(err));
+        return pool.query(
+            "UPDATE orders SET "+
+            "rating=$3,review=$4 WHERE order_id = $2 AND customer_id = $1;",
+            [details_id,order_id,rating,review]
+        );
+    }
+    async insertDishRating(dish_id,rating,review){
+        const details_id = await this.getDetailsId().catch(err=>console.log(err));
+        return pool.query(
+            "INSERT INTO rates VALUES($1,$2,$3,$4) "+
+            "ON CONFLICT(rates_pkey) DO UPDATE rating=$3,review=$4;",
+            [details_id,dish_id,rating,review]
+        );
     }
 //////////////////////// Bookings /////////////////////////////////////////
 };
