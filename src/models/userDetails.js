@@ -1,5 +1,5 @@
-const pool = require('../utils/database')
-const User = require('../models/user')
+const pool = require('../utils/database');
+const User = require('../models/user');
 module.exports = class UserDetails{
     constructor(first_name,last_name,email,phone_number,date_of_birth,gender){
         this.first_name = first_name;

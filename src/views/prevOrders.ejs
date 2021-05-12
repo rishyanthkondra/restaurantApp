@@ -110,37 +110,67 @@
 
     <div class="mbr-overlay" style="opacity: 0.3; background-color: rgb(0, 0, 0);"></div>
 
-    <div class="container">
-        <div class="row">
-            <div class="col-md-6">
-                <div class="text-right">
-                    <a class="btn btn-success btn-primary" href="#reviews-anchor" id="open-review-box">Leave a Review</a>
-                </div>
-            
-                <div class="row" id="post-review-box" style="display:none;">
-                    <div class="col-md-12">
-                        <form accept-charset="UTF-8" action="" method="post">
-                            <input id="ratings-hidden" name="rating" type="hidden"> 
-                            <textarea class="form-control animated" cols="50" id="new-review" name="comment" placeholder="Enter your review here..." rows="5"></textarea>
-            
-                            <div class="text-right">
-                                <div class="stars starrr" data-rating="5">
-                                    <span class="glyphicon .glyphicon-star-empty glyphicon-star-empty"></span>
-                                    <span class="glyphicon .glyphicon-star-empty glyphicon-star-empty"></span>
-                                    <span class="glyphicon .glyphicon-star-empty glyphicon-star-empty"></span>
-                                    <span class="glyphicon .glyphicon-star-empty glyphicon-star-empty"></span>
-                                    <span class="glyphicon .glyphicon-star-empty glyphicon-star-empty"></span>
-                                </div>
-                                <a class="btn btn-danger btn-sm" href="#" id="close-review-box" style="display:none; margin-right: 10px;">
-                                <span class="glyphicon glyphicon-remove"></span>Cancel</a>
-                                <button class="btn btn-success btn-lg" type="submit">Save</button>
+    <% if(onWayPresent){%>
+        <div class="container">
+            <p class="mbr-text mbr-fonts-style display-7" align="top"><strong>On the way orders</strong></p>
+            <div class="row justify-content-center">
+                <div class="col" align="center">
+                    <div align="center" style="background-color:rgba(0, 0, 0, 0.5);border-radius: 1vw;width: 70%;">
+                        <br>
+                        <div class="text-wrapper text-center">
+                            <p class="mbr-text mbr-fonts-style display-7">
+                                Booking id : 
+                            </p>
+                            <p class="mbr-text mbr-fonts-style display-7">
+                                Booked on :
+                            </p>
+                            <p class="mbr-text mbr-fonts-style display-7">
+                                Start time :
+                            </p>
+                            <p class="mbr-text mbr-fonts-style display-7">
+                                Tables booked :
+                            </p>
+                        </div>
+                        <form method="POST" action="/bookings?cancel=true">
+                            <div class="col-sm-10">
+                                <button class="btn btn-primary btn-block" type="submit"
+                                onclick="return confirm('Cancelling booking')">Cancel</button>
                             </div>
                         </form>
+                        <br>
                     </div>
                 </div>
-            </div>  
+            </div><br>
+            <div class="row justify-content-center">
+                <div class="col" align="center">
+                    <div align="center" style="background-color:rgba(0, 0, 0, 0.5);border-radius: 1vw;width: 70%;">
+                        <br>
+                        <div class="text-wrapper text-center">
+                            <p class="mbr-text mbr-fonts-style display-7">
+                                Booking id : 
+                            </p>
+                            <p class="mbr-text mbr-fonts-style display-7">
+                                Booked on :
+                            </p>
+                            <p class="mbr-text mbr-fonts-style display-7">
+                                Start time :
+                            </p>
+                            <p class="mbr-text mbr-fonts-style display-7">
+                                Tables booked :
+                            </p>
+                        </div>
+                        <form method="POST" action="/bookings?cancel=true">
+                            <div class="col-sm-10">
+                                <button class="btn btn-primary btn-block" type="submit"
+                                onclick="return confirm('Cancelling booking')">Cancel</button>
+                            </div>
+                        </form>
+                        <br>
+                    </div>
+                </div>
+            </div><br>
         </div>
-    </div>
+    <%}%>
 </section>
 
 <!--Footer-->

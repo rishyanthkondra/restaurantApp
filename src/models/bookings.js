@@ -1,5 +1,5 @@
-const pool = require('../utils/database')
-const User = require('../models/user')
+const pool = require('../utils/database');
+const User = require('../models/user');
 module.exports = class Bookings{
     constructor(email,booking_date,booking_time,tableList){
         this.email = email;
