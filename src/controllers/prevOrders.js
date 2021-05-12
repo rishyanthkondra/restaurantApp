@@ -1,5 +1,4 @@
 const User = require("../models/user");
-const PO = require("../models/prevOrders");
 const url = require('url');
 const querystring = require('querystring');
 
@@ -31,6 +30,9 @@ exports.get_previous_orders = async (req,res,next) => {
             alert = true;
             if(status == 'hasactive'){
                 msg = "Have active order, cannot place order";
+            }
+            if(status == 'invalid'){
+                msg = "Failed to review and rate!";
             }
         }
 

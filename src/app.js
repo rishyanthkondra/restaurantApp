@@ -37,6 +37,7 @@ const userHomeRoute = require('./routes/userHome');
 const userDetailsRoute = require('./routes/userDetails');
 const bookingsRoute = require('./routes/bookings');
 const prevOrdersRoute = require('./routes/prevOrders');
+const reviewOrderRoute = require('./routes/reviewOrder');
 const data_screen = require('./routes/data_screen');
 const purchases = require('./routes/purchases');
 const transactions = require('./routes/transactions');
@@ -62,6 +63,7 @@ app.use('/userHome',userHomeRoute);
 app.use('/userDetails',userDetailsRoute);
 app.use('/bookings',bookingsRoute);
 app.use('/prevOrders',prevOrdersRoute);
+app.use('/reviewOrder',reviewOrderRoute);
 app.use('/emp_home',Emphome);
 
 app.use('/statistics',data_screen);
