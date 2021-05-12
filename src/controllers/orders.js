@@ -23,10 +23,11 @@ exports.order = async (req,res,next)=> {
             // console.log(items);
             if(items.rows.length > 0){
                 const cartvalue_resp = await orderitem.get_cartvalue(details_id).catch(err => console.log(err));
-                const cartvalue = cartvalue_resp.rows[0].cartvalue
-
+                var cartvalue = cartvalue_resp.rows[0].cartvalue
+                var delivery_charge = Math.max(Math.round(cartvalue * 0.1),50);
+                var amount = parseInt(cartvalue) + parseInt(delivery_charge);
                 const trans = new Transaction();
-                trans_id = await trans.add_transaction(cartvalue,'pending',"order from restaurant").catch(err=>console.log(err));
+                trans_id = await trans.add_transaction(amount,'pending',"order from restaurant").catch(err=>console.log(err));
 
                 const order = new Orders();
                 order_id = await order.add_order(cartvalue,details_id,trans_id).catch(err=>console.log(err));
@@ -36,10 +37,9 @@ exports.order = async (req,res,next)=> {
                     order_has_dish.add_order_has_dish(items.rows[i].dish_dish_id,order_id,items.rows[i].quantity).catch(err=>console.log(err));
                 }
 
-                const onlineorder = new Onlineorders();
                 var address_id = req.body.address_id;
-                var delivery_charge = Math.max(Math.round(cartvalue * 0.1),50);
-                await onlineorder.add_onlineorder(order_id,'pending',address_id,delivery_charge).catch(err=>console.log(err)); //change 1 to address_id, 20 delivery charges
+                
+                await Onlineorders.add_onlineorder(order_id,'pending',address_id,delivery_charge).catch(err=>console.log(err)); //change 1 to address_id, 20 delivery charges
                 // console.log(trans_id);
                 // console.log(order_id);
                 const cart = new Cart();

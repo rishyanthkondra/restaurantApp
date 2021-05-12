@@ -149,10 +149,12 @@ module.exports = class User{
     async getConfirmedOrders(){
         const details_id = await this.getDetailsId().catch(err=>console.log(err));
         return pool.query(
-            "SELECT o.order_id,o.order_time,o.cost,oo.delivery_charges,oo.order_status, "+
+            "SELECT o.order_id,o.order_time,o.cost,oo.delivery_charges,oo.order_status,"+
+            "t.cost as trans_cost,t.transaction_id as trans_id,"+
             "ad.alias,ad.house_num FROM "+
             "orders o INNER JOIN "+
             "online_order oo ON o.order_id = oo.order_id INNER JOIN "+
+            "transactions t ON t.transaction_id = o.transaction_id INNER JOIN "+
             "address ad ON oo.delivery_address_id = ad.address_id "+
             "WHERE o.customer_id = $1 AND oo.order_status = 'confirmed' "+
             "ORDER BY o.order_time DESC;"

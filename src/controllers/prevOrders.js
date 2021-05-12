@@ -31,6 +31,8 @@ exports.get_previous_orders = async (req,res,next) => {
             if(status == 'hasactive'){
                 msg = "Have active order, cannot place order";
             }
+            if(status == 'payment'){
+                msg = "Your payment failed, please try again";
             if(status == 'invalid'){
                 msg = "Failed to review and rate!";
             }
@@ -66,6 +68,7 @@ exports.get_previous_orders = async (req,res,next) => {
         res.render('prevOrders.ejs',result);
     }else{
         res.redirect('/home');
+    }
     }
 };
 

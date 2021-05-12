@@ -1,10 +1,11 @@
 const path = require('path');
 const express = require('express');
 
-const paytm_callback = require('../controllers/paytm');
+const paytm = require('../controllers/paytm');
 
 const router = express.Router();
 
-router.post('/callback/:did',paytm_callback.paytmcallback);
+router.post('/callback/:did/:trans_id',paytm.paytmcallback);
+router.post('/paynow',paytm.paytmpaynow);
 
 module.exports = router;

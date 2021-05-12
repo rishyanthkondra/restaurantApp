@@ -221,9 +221,12 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <form method="POST" action="">
+                                        <form method="POST" action="/paytm/paynow">
                                             <button class="btn btn-primary btn-block" type="submit"
                                             onclick="return confirm('Pay pending order')">Pay</button>
+                                            <input type="hidden" name="trans_id" value=<%=confm.rows[i].trans_id%>>
+                                            <input type="hidden" name="trans_cost" value=<%=confm.rows[i].trans_cost%>>
+                                            <input type="hidden" name="order_id" value=<%=confm.rows[i].order_id%>>
                                         </form>    
                                     </td>
                                 </tr> 
