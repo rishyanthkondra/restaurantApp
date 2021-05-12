@@ -104,37 +104,59 @@ module.exports = class User{
         const details_id = await this.getDetailsId().catch(err=>console.log(err));
         return pool.query(
             "SELECT o.order_id,o.order_time,o.cost,oo.delivery_charges,oo.order_status, "+
-            "ad.alias,ad.house_num "+
-            "FROM "+
+            "ad.alias,ad.house_num FROM "+
             "orders o INNER JOIN "+
             "online_order oo ON o.order_id = oo.order_id INNER JOIN "+
             "address ad ON oo.delivery_address_id = ad.address_id "+
-            "WHERE o.customer_id = $1 AND oo.order_status = 'pending';"
+            "WHERE o.customer_id = $1 AND oo.order_status = 'pending' "+
+            "ORDER BY o.order_time DESC;"
         ,[details_id]);
     }
     async getOnWayOrders(){
         const details_id = await this.getDetailsId().catch(err=>console.log(err));
         return pool.query(
             "SELECT o.order_id,o.order_time,o.cost,oo.delivery_charges,oo.order_status, "+
-            "ad.alias,ad.house_num,d.first_name,d.phone_number "+
-            "FROM "+
+            "ad.alias,ad.house_num,d.first_name,d.phone_number FROM "+
             "orders o INNER JOIN "+
             "online_order oo ON o.order_id = oo.order_id INNER JOIN "+
             "address ad ON oo.delivery_address_id = ad.address_id INNER JOIN "+
             "details d ON d.details_id = oo.delivery_boy_employee_id "+
-            "WHERE o.customer_id = $1 AND oo.order_status = 'on_way';"
+            "WHERE o.customer_id = $1 AND oo.order_status = 'on_way' "+
+            "ORDER BY o.order_time DESC;"
         ,[details_id]);
     }
     async getConfirmedOrders(){
         const details_id = await this.getDetailsId().catch(err=>console.log(err));
         return pool.query(
             "SELECT o.order_id,o.order_time,o.cost,oo.delivery_charges,oo.order_status, "+
-            "ad.alias,ad.house_num "+
-            "FROM "+
+            "ad.alias,ad.house_num FROM "+
             "orders o INNER JOIN "+
             "online_order oo ON o.order_id = oo.order_id INNER JOIN "+
             "address ad ON oo.delivery_address_id = ad.address_id "+
-            "WHERE o.customer_id = $1 AND oo.order_status = 'confirmed';"
+            "WHERE o.customer_id = $1 AND oo.order_status = 'confirmed' "+
+            "ORDER BY o.order_time DESC;"
+        ,[details_id]);
+    }
+    async getPaidOrders(){
+        const details_id = await this.getDetailsId().catch(err=>console.log(err));
+        return pool.query(
+            "SELECT o.order_id,o.order_time,o.cost,oo.delivery_charges,oo.order_status, "+
+            "ad.alias,ad.house_num FROM "+
+            "orders o INNER JOIN "+
+            "online_order oo ON o.order_id = oo.order_id INNER JOIN "+
+            "address ad ON oo.delivery_address_id = ad.address_id "+
+            "WHERE o.customer_id = $1 AND oo.order_status = 'paid' "+
+            "ORDER BY o.order_time DESC;"
+        ,[details_id]);
+    }
+    async getRejectedOrders(){
+        const details_id = await this.getDetailsId().catch(err=>console.log(err));
+        return pool.query(
+            "SELECT o.order_id,o.order_time,o.cost,oo.order_status FROM "+
+            "orders o INNER JOIN "+
+            "online_order oo ON o.order_id = oo.order_id "+
+            "WHERE o.customer_id = $1 AND oo.order_status = 'rejected' "+
+            "ORDER BY o.order_time DESC LIMIT 2;"
         ,[details_id]);
     }
     async getCompletedOrders(){
@@ -142,11 +164,11 @@ module.exports = class User{
         var res = await pool.query(
             "SELECT o.order_id,o.rating,o.review,o.order_time,o.cost,oo.delivery_charges,oo.order_status, "+
             "ad.alias,ad.house_num "+
-            "FROM "+
-            "orders o INNER JOIN "+
+            "FROM orders o INNER JOIN "+
             "online_order oo ON o.order_id = oo.order_id INNER JOIN "+
             "address ad ON oo.delivery_address_id = ad.address_id "+
-            "WHERE o.customer_id = $1 AND oo.order_status IN ('rejected','delivered') LIMIT 5;"
+            "WHERE o.customer_id = $1 AND oo.order_status = 'delivered' "+
+            "ORDER BY o.order_time DESC LIMIT 5;"
         ,[details_id]).catch(err=>console.log(err));
         //fetch dishes too dish_id, name, image_url, rating
         for(var i=0;i<res.rowCount;i++){

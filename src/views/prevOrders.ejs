@@ -152,6 +152,41 @@
             </div>
             <%}%>
             <%}%>
+            <% if(paidPresent){%>
+                <p class="mbr-text mbr-fonts-style display-7" align="top"><strong>Paid orders</strong></p>
+                <%for(var i=0;i<paid.rowCount;i++){%>
+                <div class="row justify-content-center">
+                    <div class="col" align="center">
+                        <div align="center" style="background-color:rgba(0, 0, 0, 0.5);border-radius: 1vw;width: 70%;">
+                            <br>
+                            <table class="table" style="color: white;">
+                                <tbody>
+                                    <tr>
+                                        <td>Order id </td><td> <%=paid.rows[i].order_id%></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Ordered at </td><td> <%=paid.rows[i].order_time.toLocaleString({month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit' });%></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Delivery to </td><td> <%=paid.rows[i].alias + ' '+paid.rows[i].house_num%></td>
+                                    </tr>
+                                    <tr style="background-color:lawngreen;">
+                                        <td>Status </td><td> Paid, waiting for delivery boy  </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Cost </td><td> <%=paid.rows[i].cost%></td>>
+                                    </tr>
+                                    <tr>
+                                        <td>Delivery Charges </td><td> <%=paid.rows[i].delivery_charges%></td>>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+                <%}%>
+            <%}%>
             <% if(confmPresent){%>
             <p class="mbr-text mbr-fonts-style display-7" align="top"><strong>Confirmed orders</strong></p>
             <%for(var i=0;i<confm.rowCount;i++){%>
@@ -168,10 +203,10 @@
                                     <td>Ordered at </td><td> <%=confm.rows[i].order_time.toLocaleString({month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit' });%></td>
                                 </tr>
                                 <tr>
-                                    <td>Delivery to </td><td> <%=confm.rows[i].alias + ' '+onWay.rows[i].house_num%></td>
+                                    <td>Delivery to </td><td> <%=confm.rows[i].alias + ' '+confm.rows[i].house_num%></td>
                                 </tr>
                                 <tr style="background-color:violet;">
-                                    <td>Status </td><td> "Confirmed, waiting for payment "</td>
+                                    <td>Status </td><td> Confirmed, waiting for payment </td>
                                 </tr>
                                 <tr>
                                     <td>Cost </td><td> <%=confm.rows[i].cost%></td>>
@@ -179,11 +214,14 @@
                                 <tr>
                                     <td>Delivery Charges </td><td> <%=confm.rows[i].delivery_charges%></td>>
                                 </tr>
-                                    <!-- put pay button here <tr>
-                                        <td>
-                                        
-                                        </td>
-                                    </tr> -->
+                                <tr>
+                                    <td>
+                                        <form method="POST" action="">
+                                            <button class="btn btn-primary btn-block" type="submit"
+                                            onclick="return confirm('Pay pending order')">Pay</button>
+                                        </form>    
+                                    </td>
+                                </tr> 
                             </tbody>
                         </table>
                         <br>
@@ -218,6 +256,35 @@
                                     </tr>
                                     <tr>
                                         <td>Delivery Charges </td><td> <%=pend.rows[i].delivery_charges%></td>>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+            <%}%>
+            <%}%>
+            <% if(rejPresent){%>
+                <p class="mbr-text mbr-fonts-style display-7" align="top"><strong>Rejected orders</strong></p>
+                <%for(var i=0;i<rej.rowCount;i++){%>
+                <div class="row justify-content-center">
+                    <div class="col" align="center">
+                        <div align="center" style="background-color:rgba(0, 0, 0, 0.5);border-radius: 1vw;width: 70%;">
+                            <br>
+                            <table class="table" style="color: white;">
+                                <tbody>
+                                    <tr>
+                                        <td>Order id </td><td> <%=rej.rows[i].order_id%></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Ordered at </td><td> <%=rej.rows[i].order_time.toLocaleString({month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit' });%></td>
+                                    </tr>
+                                    <tr style="background-color: maroon;">
+                                        <td>Status </td><td>Sorry, Rejected! Some problem at our side</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Cost </td><td> <%=rej.rows[i].cost%></td>>
                                     </tr>
                                 </tbody>
                             </table>
