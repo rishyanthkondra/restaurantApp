@@ -212,7 +212,7 @@ module.exports = class User{
         const details_id = await this.getDetailsId().catch(err=>console.log(err));
         return  pool.query(
             "SELECT o.order_id,o.rating,o.review,o.order_time "+
-            "FROM orders o "+
+            "FROM orders o NATURAL JOIN online_order oo "+
             "WHERE o.customer_id = $1 AND oo.order_status = 'delivered' AND o.order_id = $2;"
         ,[details_id,order_id]);
     }
@@ -226,11 +226,10 @@ module.exports = class User{
         ,[order_id]);
     }
     async updateOrderReview(order_id,rating,review){
-        const details_id = await this.getDetailsId().catch(err=>console.log(err));
         return pool.query(
             "UPDATE orders SET "+
-            "rating=$3,review=$4 WHERE order_id = $2 AND customer_id = $1;",
-            [details_id,order_id,rating,review]
+            "rating=$2,review=$3 WHERE order_id = $1;",
+            [order_id,rating,review]
         );
     }
     async insertDishRating(dish_id,rating,review){

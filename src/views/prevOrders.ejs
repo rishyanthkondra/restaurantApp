@@ -325,7 +325,7 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <form method="POST" action="/reviewOrder">
+                                            <form method="POST" action="/reviewOrder?editedOrder=true">
                                                 <input type="hidden" name="order_id" id="order_id" value=<%=comp.rows[i].order_id%>>
                                                 <button class="btn btn-primary btn-block" type="submit"
                                                 onclick="return confirm('Review Previous order')">Review</button>
