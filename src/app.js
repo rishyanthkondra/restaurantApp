@@ -52,6 +52,8 @@ const allot = require('./routes/allot_order');
 const deli = require('./routes/delboys');
 const conf = require('./routes/confirm');
 const Emphome = require('./routes/emp_home');
+const delo = require('./routes/del_orders');
+const recep = require('./routes/rec_book');
 
 //---------------------- Endpoint Baseurls ---------------------//
 
@@ -63,6 +65,8 @@ app.use('/userDetails',userDetailsRoute);
 app.use('/bookings',bookingsRoute);
 app.use('/prevOrders',prevOrdersRoute);
 app.use('/emp_home',Emphome);
+app.use('/del_orders',delo);
+app.use('/all_bookings',recep);
 
 app.use('/statistics',data_screen);
 app.use('/purchases',purchases);
