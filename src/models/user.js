@@ -1,4 +1,5 @@
 const pool = require('../utils/database');
+const Orders = require('./orders');
 module.exports = class User{
 
 /////////////////// Constructors ////////////////////////
@@ -175,14 +176,24 @@ module.exports = class User{
             const oid = res.rows[i].order_id;
             const dishRows = await pool.query(
                 "SELECT d.dish_id,d.dish_name,d.image_url,"+
-                "(SELECT rating from rates r WHERE r.dish_id = d.dish_id "+
-                " AND r.customer_id = $2) as rating"+
+                "(SELECT rating from rates r WHERE r.dish_dish_id = d.dish_id "+
+                " AND r.customer_customer_id = $2) as rating"+
                 "FROM order_has_dish od INNER JOIN "+
                 "dish d ON od.dish_id = d.dish_id"+
                 "WHERE od.order_id = $1",[oid,details_id]).catch(err=>console.log(err));
             res.rows[i].dishes = dishRows;
         }
         return res;
+    }
+    async hasActiveOrders(){
+        const details_id = await this.getDetailsId().catch(err=>console.log(err));
+        const orders = await pool.query(
+                "SELECT 1 FROM " +
+                "orders o INNER JOIN "+
+                "online_order oo ON o.order_id = oo.order_id " +
+                "WHERE o.customer_id = $1 AND oo.order_status in ('pending','paid','on_way','confirmed');"
+            ,[details_id]).catch(err=>console.log(err));
+        return orders.rowCount>0;
     }
 //////////////////////// Bookings /////////////////////////////////////////
 };

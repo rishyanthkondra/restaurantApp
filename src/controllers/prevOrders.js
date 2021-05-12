@@ -1,5 +1,7 @@
 const User = require("../models/user");
 const PO = require("../models/prevOrders");
+const url = require('url');
+const querystring = require('querystring');
 
 exports.get_previous_orders = async (req,res,next) => {
     if (req.oidc.isAuthenticated()){
@@ -20,6 +22,18 @@ exports.get_previous_orders = async (req,res,next) => {
         const rej = await user.getRejectedOrders().catch(err=>console.log(err));
         //get previous 5 orders (delivered and rejected)
         const comp = await user.getCompletedOrders().catch(err=>console.log(err));
+
+
+        const status = req.query.status;
+        var alert = false;
+        var msg = '';
+        if(status){
+            alert = true;
+            if(status == 'hasactive'){
+                msg = "Have active order, cannot place order";
+            }
+        }
+
         const onWayPresent = onWay.rowCount > 0;
         const confmPresent = confm.rowCount > 0;
         const pendPresent = pend.rowCount > 0;
@@ -42,9 +56,11 @@ exports.get_previous_orders = async (req,res,next) => {
             compPresent : compPresent,
             comp : comp,
             paidPresent : paidPresent,
-            paid : paid
+            paid : paid,
+            pop : alert,
+            message: msg
         };
-        //console.log(result);
+        // console.log(result);
         res.render('prevOrders.ejs',result);
     }else{
         res.redirect('/home');
