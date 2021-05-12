@@ -8,7 +8,7 @@ module.exports = class Allot_order{
     get_orders(){
         return pool.query(`select * from orders INNER JOIN online_order
         ON orders.order_id = online_order.order_id 
-        and online_order.order_status = 'confirmed'`);
+        and online_order.order_status = 'paid'`);
     }
 
     get_porders(){
