@@ -36,7 +36,7 @@ exports.get_previous_orders = async (req,res,next) => {
             comp : comp,
             debugString : 'In get_home,unauthenticated'
         };
-        //console.log(result);
+        console.log(result);
         res.render('prevOrders.ejs',result);
     }else{
         res.redirect('/home');

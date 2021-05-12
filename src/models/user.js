@@ -153,10 +153,10 @@ module.exports = class User{
             const oid = res.rows[i].order_id;
             const dishRows = await pool.query(
                 "SELECT d.dish_id,d.dish_name,d.image_url,"+
-                "(SELECT rating from rates r WHERE r.dish_id = d.dish_id "+
-                " AND r.customer_id = $2) as rating"+
+                "(SELECT rating from rates r WHERE r.dish_dish_id = d.dish_id "+
+                " AND r.customer_customer_id = $2) as rating "+
                 "FROM order_has_dish od INNER JOIN "+
-                "dish d ON od.dish_id = d.dish_id"+
+                "dish d ON od.dish_id = d.dish_id "+
                 "WHERE od.order_id = $1",[oid,details_id]).catch(err=>console.log(err));
             res.rows[i].dishes = dishRows;
         }
