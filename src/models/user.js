@@ -53,6 +53,14 @@ module.exports = class User{
         var emp = await pool.query(`Update online_order set order_status = $1 where online_order.order_id = $2`,[status,order_id]);
     }
 
+    async null_insert(order_id){
+        var cus = await pool.query("SELECT customer_id from orders where order_id = $1",[order_id]);
+        var dish = await pool.query("SELECT dish_id from order_has_dish where order_id = $1",[order_id]);
+        for(var i=0;i<dish.rows.length;i++){
+        var emp = await pool.query(`INSERT INTO rates values($1,$2,null,null)`,[cus.rows[0].customer_id,dish.rows[i].dish_id]);
+        }
+    }
+
     async getRole(){
         if (!this.inDb()){
             console.warn("Tried checking employee records for an email not in database!");

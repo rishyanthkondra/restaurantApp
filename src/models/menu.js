@@ -40,6 +40,10 @@ module.exports = class Menu{
         return pool.query('select dish_id from dish order by dish_id;');
     }
 
+    static get_all_total_dishes(){
+        return pool.query('select * from dish order by dish_id;');
+    }
+
     static add_to_cart(dish_id,user_id,quantity){
         return pool.query('Insert into cart(dish_dish_id,customer_customer_id,quantity) values ($1,$2,$3)',[dish_id,user_id,quantity]);
     }
@@ -55,4 +59,9 @@ module.exports = class Menu{
     static delete_from_cart(dish_id,user_id){
         return pool.query('delete from cart where dish_dish_id = $1 and customer_customer_id = $2',[dish_id,user_id]);
     }
+
+    static get_prev_orders(user_id){
+        return pool.query('select dish_id from orders natural join order_has_dish natural join dish where customer_id = $1',[user_id]);
+    }
+
 };

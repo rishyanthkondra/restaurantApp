@@ -48,7 +48,8 @@ exports.get_all_orders= async (req,res,next)=>{
         if(order_id){
         
         order_id = parseInt(order_id.split("=")[1]);
-        const x = user.update_order_status(order_id,'delivered');
+        var x = await user.update_order_status(order_id,'delivered');
+        x = await user.null_insert(order_id);
         res.redirect('/del_orders');
         
     }
