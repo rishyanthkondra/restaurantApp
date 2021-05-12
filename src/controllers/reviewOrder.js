@@ -22,10 +22,17 @@ exports.post_review = async (req,res,next) => {
             const rate = req.body.rating;
             const rev = req.body.review;
             if(rate!=null){
-                const y = await user.updateOrderReview(order_id,rate,rev);
+                const y = await user.updateOrderReview(order_id,rate,rev).catch(err=>{
+                    console.log(err);
+                    res.redirect('/prevOrders?status=invalid');
+                });
             }
-            const order = await user.getOrderDetails(order_id).catch(err=>console.log(err));
-            const dishes = await user.getDishesAndRatings(order_id).catch(err=>console.log(err));
+            const order = await user.getOrderDetails(order_id).catch(err=>{
+                console.log(err);
+            });
+            const dishes = await user.getDishesAndRatings(order_id).catch(err=>{
+                console.log(err);
+            });
             res.render('reviewOrder.ejs',{
                 pageTitle:'Rating Orders',
                 isEmployee : isEmp,
@@ -38,20 +45,23 @@ exports.post_review = async (req,res,next) => {
             const dish_id = req.body.dish_id;
             const rate = req.body.rating;
             const rev = req.body.review;
-            user.insertDishRating(dish_id,rate,rev).then(()=>{
-                const order = user.getOrderDetails(order_id).catch(err=>console.log(err));
-                const dishes = user.getDishesAndRatings(order_id).catch(err=>console.log(err));
-                res.render('reviewOrder.ejs',{
-                    pageTitle:'Rating Orders',
-                    isEmployee : isEmp,
-                    userImage : req.oidc.user.picture,
-                    displayName  : details.first_name,
-                    order : order,
-                    dishes: dishes
-                });
-            }).catch(err=>{
+            const y = user.insertDishRating(dish_id,rate,rev).catch(err=>{
                 console.log(err);
                 res.redirect('/prevOrders?status=invalid');
+            });
+            const order =  await user.getOrderDetails(order_id).catch(err=>{
+                console.log(err);
+            });
+            const dishes = await user.getDishesAndRatings(order_id).catch(err=>{
+                console.log(err);
+            });
+            res.render('reviewOrder.ejs',{
+                pageTitle:'Rating Orders',
+                isEmployee : isEmp,
+                userImage : req.oidc.user.picture,
+                displayName  : details.first_name,
+                order : order.rows[0],
+                dishes: dishes
             });
         }else{
             res.redirect('/prevOrders?status=invalid');
