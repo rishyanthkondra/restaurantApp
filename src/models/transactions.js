@@ -17,4 +17,9 @@ module.exports = class Transactions{
         return this.trans_id;        
     }
 
+    async update_paid_status(trans_id){
+        return pool.query("UPDATE transactions SET trans_status = 'successful' WHERE transaction_id=$1;",[trans_id]);
+        
+    }
+
 }

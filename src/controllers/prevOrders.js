@@ -32,6 +32,9 @@ exports.get_previous_orders = async (req,res,next) => {
             if(status == 'hasactive'){
                 msg = "Have active order, cannot place order";
             }
+            if(status == 'payment'){
+                msg = "Your payment failed, please try again";
+            }
         }
 
         const onWayPresent = onWay.rowCount > 0;
