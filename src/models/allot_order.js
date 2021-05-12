@@ -8,7 +8,7 @@ module.exports = class Allot_order{
     get_orders(){
         return pool.query(`select * from orders INNER JOIN online_order
         ON orders.order_id = online_order.order_id 
-        and online_order.order_status = 'confirmed'`);
+        and online_order.order_status = 'paid'`);
     }
 
     get_porders(){
@@ -32,7 +32,7 @@ module.exports = class Allot_order{
         where employee_id = $1`,[employee_id]);
         var dt = new Date();
         dt.setHours( dt.getHours() + 1 );
-        var emp = await pool.query(`Update online_order set delivery_boy_employee_id = $2, estimated_time = $3, order_status = 'On way' where online_order.order_id = $1`,[order_id, employee_id, dt]);
+        var emp = await pool.query(`Update online_order set delivery_boy_employee_id = $2, estimated_time = $3, order_status = 'on_way' where online_order.order_id = $1`,[order_id, employee_id, dt]);
    }
 
 };

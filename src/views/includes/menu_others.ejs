@@ -66,6 +66,7 @@
             			    Menu
             		    </a>
             	    </li>
+                    <% if (isManager) {%>
                 	<li class="nav-item">
                 	    <a class="nav-link link text-primary display-4" href="http://localhost:3000/transactions">
             			    Transactions
@@ -91,6 +92,13 @@
             			    Employees
                 		</a>
                 	</li>
+                    <%} else {%>
+                        <li class="nav-item">
+                            <a class="nav-link link text-primary display-4" href="http://localhost:3000/all_bookings">
+                                Bookings
+                            </a>
+                        </li>
+                    <% } %>
                     <% if (isEmployee) {%>
                 	<li class="nav-item dropdown">
                 		<a class="nav-link link text-primary dropdown-toggle display-4" href="#" data-toggle="dropdown-submenu" aria-expanded="false">

@@ -46,6 +46,17 @@ exports.route_emp = async (req,res,next) => {
         });
     }
 
+    if(role[0].role_name == 'Receptionist'){
+        res.render('rec_home.ejs', {
+            pageTitle: 'Receptionist home',
+            path: '/emp_home',
+            isEmployee : true,
+            userImage : req.oidc.user.picture,
+            email : req.oidc.user.email,
+            displayName : details.first_name
+        });
+    }
+
     }
 
     else{

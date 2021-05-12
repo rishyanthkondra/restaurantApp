@@ -9,27 +9,24 @@ exports.get_menu = async (req,res,next) => {
         const user = new User(req.oidc.user.email);
         const detailRows = await user.getDetails().catch(err=>console.log(err));
         const details = detailRows.rows[0];
-        const isEmp = await user.checkIsEmployee().catch(err=> console.log(err));
-        if(isEmp){
-            const isChef = await user.checkIsRequiredRole('Chef').catch(err=> console.log(err));
-            const dishlist = await Menu.get_dishes();
-            if(isChef){
-                res.redirect('/home');
-            }
-            else{
-                res.render('includes/menu_others.ejs', {
+        const isChef = await user.checkIsRequiredRole('Manager').catch(err=> console.log(err));
+        const isrec = await user.checkIsRequiredRole('Receptionist').catch(err=> console.log(err));
+        const dishlist = await Menu.get_dishes();
+        if(isChef || isrec){                
+                    res.render('includes/menu_others.ejs', {
                     pageTitle: 'Menu',
                     path: '/menu_others',
-                    isEmployee : isEmp,
+                    isEmployee : true,
                     userImage : req.oidc.user.picture,
                     displayName : details.first_name,
-                    dishes: dishlist.rows
+                    dishes: dishlist.rows,
+                    isManager: isChef
                 });
             }
-        }
-        else{
-            res.redirect('/home');
-        }
+            else{
+                res.redirect('/home');
+            }
+
     }
     else{
         res.redirect('/home');

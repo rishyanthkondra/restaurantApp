@@ -37,6 +37,7 @@ const userHomeRoute = require('./routes/userHome');
 const userDetailsRoute = require('./routes/userDetails');
 const bookingsRoute = require('./routes/bookings');
 const prevOrdersRoute = require('./routes/prevOrders');
+const reviewOrderRoute = require('./routes/reviewOrder');
 const data_screen = require('./routes/data_screen');
 const purchases = require('./routes/purchases');
 const transactions = require('./routes/transactions');
@@ -52,6 +53,8 @@ const allot = require('./routes/allot_order');
 const deli = require('./routes/delboys');
 const conf = require('./routes/confirm');
 const Emphome = require('./routes/emp_home');
+const delo = require('./routes/del_orders');
+const recep = require('./routes/rec_book');
 
 //---------------------- Endpoint Baseurls ---------------------//
 
@@ -62,7 +65,10 @@ app.use('/userHome',userHomeRoute);
 app.use('/userDetails',userDetailsRoute);
 app.use('/bookings',bookingsRoute);
 app.use('/prevOrders',prevOrdersRoute);
+app.use('/reviewOrder',reviewOrderRoute);
 app.use('/emp_home',Emphome);
+app.use('/del_orders',delo);
+app.use('/all_bookings',recep);
 
 app.use('/statistics',data_screen);
 app.use('/purchases',purchases);
