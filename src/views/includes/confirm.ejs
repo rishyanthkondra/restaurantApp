@@ -174,7 +174,7 @@
           <% for(var i=0; i < orders.length; i++) { dishes = (orders[i].dish_names).split(","); servings = (orders[i].dish_servings).split(","); %>
               <tr>
                   <td> <%= i+1 %>. </td>
-                  <td> <%= (orders[i].od).split(",")[0] %> </td>
+                  <td> <%=(orders[i].od==null)? '': (orders[i].od).split(",")[0]%> </td>
                   <td> <%= orders[i].amount %> Rupees </td>
                   <td> <% for(var j=0; j < dishes.length; j++) { %> <%= dishes[j] %> - <%= servings[j] %>, <% } %> </td>
                   <td> <a href="http://localhost:3000/pending_orders/confirmed?order_id=<%= orders[i].order_id %>"> <button class="button button1">Confirm</button> </a> 
