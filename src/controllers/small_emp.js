@@ -44,11 +44,11 @@ exports.get_all_orders= async (req,res,next)=>{
         var order_id = req._parsedOriginalUrl.query;
 
         const user = new User(req.oidc.user.email);
-        
+
         if(order_id){
         
         order_id = parseInt(order_id.split("=")[1]);
-        const x = user.update_order_status('delivered');
+        const x = user.update_order_status(order_id,'delivered');
         res.redirect('/del_orders');
         
     }
