@@ -60,8 +60,13 @@ module.exports = class Data_screen{
         var emp = await pool.query("UPDATE employee SET work_status=$1,work_type=$2,current_wage=$3,role_id=$4 WHERE employee_id=$5",[work_status,work_type,wage,role,empid]);
    }
 
-   async updatedel(empid){
+   async updatedel(empid,insert){
+       if(insert){
     var emp = await pool.query("INSERT INTO delivery_boy VALUES($1,$2,$3,$4)",['Free',1,2,empid]);
+       }
+       else{
+        var emp = await pool.query("DELETE FROM delivery_boy WHERE employee_id=$1",[empid]);
+       }
 }
 
 

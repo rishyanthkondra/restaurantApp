@@ -98,7 +98,10 @@ exports.post_emp = async (req,res,next) => {
     const isdel = await user.checkIsRequiredRole('Delivery').catch(err=> console.log(err));
     await recitem.update_employee(emp_id,first_name,last_name,phone,email,dob,role,wage,gender,work_type,work_status);
     if(parseInt(role)==4&&!isdel){
-        await recitem.updatedel(emp_id);
+        await recitem.updatedel(emp_id,true);
+    }
+    if(parseInt(role)!=4&&isdel){
+        await recitem.updatedel(emp_id,false);
     }
     res.redirect('/employees');
 }
