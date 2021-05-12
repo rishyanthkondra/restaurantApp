@@ -110,67 +110,124 @@
 
     <div class="mbr-overlay" style="opacity: 0.3; background-color: rgb(0, 0, 0);"></div>
 
-    <% if(onWayPresent){%>
         <div class="container">
+            <% if(onWayPresent){%>
             <p class="mbr-text mbr-fonts-style display-7" align="top"><strong>On the way orders</strong></p>
+            <%for(var i=0;i<onWay.rowCount;i++){%>
             <div class="row justify-content-center">
                 <div class="col" align="center">
                     <div align="center" style="background-color:rgba(0, 0, 0, 0.5);border-radius: 1vw;width: 70%;">
                         <br>
-                        <div class="text-wrapper text-center">
-                            <p class="mbr-text mbr-fonts-style display-7">
-                                Booking id : 
-                            </p>
-                            <p class="mbr-text mbr-fonts-style display-7">
-                                Booked on :
-                            </p>
-                            <p class="mbr-text mbr-fonts-style display-7">
-                                Start time :
-                            </p>
-                            <p class="mbr-text mbr-fonts-style display-7">
-                                Tables booked :
-                            </p>
-                        </div>
-                        <form method="POST" action="/bookings?cancel=true">
-                            <div class="col-sm-10">
-                                <button class="btn btn-primary btn-block" type="submit"
-                                onclick="return confirm('Cancelling booking')">Cancel</button>
-                            </div>
-                        </form>
+                        <table class="table" style="color: white;">
+                            <tbody>
+                                <tr>
+                                    <td>Order id </td><td> <%=onWay.rows[i].order_id%></td>
+                                </tr>>
+                                <tr>
+                                    <td>Ordered at </td><td> <%=onWay.rows[i].order_time.toLocaleString({month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit' });%></td>
+                                </tr>
+                                <tr>
+                                    <td>Delivering to </td><td> <%=onWay.rows[i].alias + ' '+onWay.rows[i].house_num%></td>
+                                </tr>
+                                <tr>
+                                    <td>Delivery by </td><td> <%=onWay.rows[i].first_name%></td>
+                                </tr>
+                                <tr>
+                                    <td>Contact </td><td> <%=onWay.rows[i].phone_number%></td>>
+                                </tr>
+                                <tr style="background-color: teal;">
+                                    <td>Status </td><td> on the way</td>>
+                                </tr>>
+                                <tr>
+                                    <td>Cost </td><td> <%=onWay.rows[i].cost%></td>>
+                                </tr>>
+                                <tr>
+                                    <td>Delivery Charges </td><td> <%=onWay.rows[i].delivery_charges%></td>>
+                                </tr>>
+                            </tbody>
+                        </table>
                         <br>
                     </div>
                 </div>
-            </div><br>
+            </div>
+            <%}%>
+            <%}%>
+            <% if(confmPresent){%>
+            <p class="mbr-text mbr-fonts-style display-7" align="top"><strong>Confirmed orders</strong></p>
+            <%for(var i=0;i<confm.rowCount;i++){%>
             <div class="row justify-content-center">
                 <div class="col" align="center">
                     <div align="center" style="background-color:rgba(0, 0, 0, 0.5);border-radius: 1vw;width: 70%;">
                         <br>
-                        <div class="text-wrapper text-center">
-                            <p class="mbr-text mbr-fonts-style display-7">
-                                Booking id : 
-                            </p>
-                            <p class="mbr-text mbr-fonts-style display-7">
-                                Booked on :
-                            </p>
-                            <p class="mbr-text mbr-fonts-style display-7">
-                                Start time :
-                            </p>
-                            <p class="mbr-text mbr-fonts-style display-7">
-                                Tables booked :
-                            </p>
-                        </div>
-                        <form method="POST" action="/bookings?cancel=true">
-                            <div class="col-sm-10">
-                                <button class="btn btn-primary btn-block" type="submit"
-                                onclick="return confirm('Cancelling booking')">Cancel</button>
-                            </div>
-                        </form>
+                        <table class="table" style="color: white;">
+                            <tbody>
+                                <tr>
+                                    <td>Order id </td><td> <%=confm.rows[i].order_id%></td>
+                                </tr>
+                                <tr>
+                                    <td>Ordered at </td><td> <%=confm.rows[i].order_time.toLocaleString({month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit' });%></td>
+                                </tr>
+                                <tr>
+                                    <td>Delivery to </td><td> <%=confm.rows[i].alias + ' '+onWay.rows[i].house_num%></td>
+                                </tr>
+                                <tr style="background-color:violet;">
+                                    <td>Status </td><td> "Confirmed, waiting for payment "</td>
+                                </tr>
+                                <tr>
+                                    <td>Cost </td><td> <%=confm.rows[i].cost%></td>>
+                                </tr>
+                                <tr>
+                                    <td>Delivery Charges </td><td> <%=confm.rows[i].delivery_charges%></td>>
+                                </tr>
+                                    <!-- put pay button here <tr>
+                                        <td>
+                                        
+                                        </td>
+                                    </tr> -->
+                            </tbody>
+                        </table>
                         <br>
                     </div>
                 </div>
-            </div><br>
+            </div>
+            <%}%>
+            <%}%>
+            <% if(pendPresent){%>
+                <p class="mbr-text mbr-fonts-style display-7" align="top"><strong>Pending orders</strong></p>
+                <%for(var i=0;i<pend.rowCount;i++){%>
+                <div class="row justify-content-center">
+                    <div class="col" align="center">
+                        <div align="center" style="background-color:rgba(0, 0, 0, 0.5);border-radius: 1vw;width: 70%;">
+                            <br>
+                            <table class="table" style="color: white;">
+                                <tbody>
+                                    <tr>
+                                        <td>Order id </td><td> <%=pend.rows[i].order_id%></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Ordered at </td><td> <%=pend.rows[i].order_time.toLocaleString({month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit' });%></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Delivey to </td><td> <%=pend.rows[i].alias + ' '+pend.rows[i].house_num%></td>
+                                    </tr>
+                                    <tr style="background-color: rebeccapurple;">
+                                        <td>Status </td><td>pending waiting for chefs approval</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Cost </td><td> <%=pend.rows[i].cost%></td>>
+                                    </tr>
+                                    <tr>
+                                        <td>Delivery Charges </td><td> <%=pend.rows[i].delivery_charges%></td>>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+            <%}%>
+            <%}%>
         </div>
-    <%}%>
 </section>
 
 <!--Footer-->

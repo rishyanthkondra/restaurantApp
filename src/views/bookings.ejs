@@ -119,28 +119,32 @@
                 <p class="mbr-text mbr-fonts-style display-7" align="top"><strong>Active Booking</strong></p>
                 <div align="center" style="background-color:rgba(0, 0, 0, 0.5);border-radius: 1vw;width: 70%;">
                     <br>
-                    <div class="text-wrapper text-center">
-                        <p class="mbr-text mbr-fonts-style display-7">
-                            Booking id : <%=actBook.booking_id%>
-                        </p>
-                        <p class="mbr-text mbr-fonts-style display-7">
-                            Booked on : <%=actBook.booking_time%>
-                        </p>
-                        <p class="mbr-text mbr-fonts-style display-7">
-                            Start time : <%=actBook.start_time%>
-                        </p>
-                        <p class="mbr-text mbr-fonts-style display-7">
-                            Tables booked : <%for (var i=0; i<actBook.tables.rowCount;i++){%>
-                                &nbsp Table <%=actBook.tables.rows[i].table_id%> 
-                            <%}%>
-                        </p>
-                    </div>
-                    <form method="POST" action="/bookings?cancel=true">
-                        <div class="col-sm-10">
-                            <button class="btn btn-primary btn-block" type="submit"
-                            onclick="return confirm('Cancelling booking')">Cancel</button>
-                        </div>
-                    </form>
+                    <table class="table" style="color: white;">
+                        <tbody>
+                            <tr>
+                                <td>Booking id </td><td> <%=actBook.booking_id%></td>
+                            </tr>>
+                            <tr>
+                                <td>Booked on </td><td> <%=actBook.booking_time.toLocaleString({month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit' });%></td>
+                            </tr>
+                            <tr>
+                                <td>Start time </td><td> <%=actBook.start_time.toLocaleString({month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit' });%></td>
+                            </tr>
+                            <tr >
+                                <td>Tables booked </td><td> <%for (var i=0; i<actBook.tables.rowCount;i++){%>
+                                    &nbsp Table <%=actBook.tables.rows[i].table_id%> 
+                                <%}%></td>>
+                            </tr>
+                            <tr >
+                                <td>
+                                    <form method="POST" action="/bookings?cancel=true">
+                                            <button class="btn btn-primary btn-block" type="submit"
+                                            onclick="return confirm('Cancelling booking')">Cancel</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                     <br>
                 </div>
             </div>

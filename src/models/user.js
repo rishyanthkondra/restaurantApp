@@ -103,7 +103,7 @@ module.exports = class User{
     async getPendingOrders(){
         const details_id = await this.getDetailsId().catch(err=>console.log(err));
         return pool.query(
-            "SELECT o.order_id,o.rating,o.review,o.order_time,o.cost,oo.delivery_charges,oo.order_status, "+
+            "SELECT o.order_id,o.order_time,o.cost,oo.delivery_charges,oo.order_status, "+
             "ad.alias,ad.house_num "+
             "FROM "+
             "orders o INNER JOIN "+
@@ -115,7 +115,7 @@ module.exports = class User{
     async getOnWayOrders(){
         const details_id = await this.getDetailsId().catch(err=>console.log(err));
         return pool.query(
-            "SELECT o.order_id,o.rating,o.review,o.order_time,o.cost,oo.delivery_charges,oo.order_status, "+
+            "SELECT o.order_id,o.order_time,o.cost,oo.delivery_charges,oo.order_status, "+
             "ad.alias,ad.house_num,d.first_name,d.phone_number "+
             "FROM "+
             "orders o INNER JOIN "+
@@ -128,7 +128,7 @@ module.exports = class User{
     async getConfirmedOrders(){
         const details_id = await this.getDetailsId().catch(err=>console.log(err));
         return pool.query(
-            "SELECT o.order_id,o.rating,o.review,o.order_time,o.cost,oo.delivery_charges,oo.order_status, "+
+            "SELECT o.order_id,o.order_time,o.cost,oo.delivery_charges,oo.order_status, "+
             "ad.alias,ad.house_num "+
             "FROM "+
             "orders o INNER JOIN "+
