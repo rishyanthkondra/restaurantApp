@@ -5,6 +5,8 @@ def insert(insert_file,data_file,columns,name):
 	output = open(insert_file,'w+')
 	reader = csv.reader(csvfile)
 	for row in reader:
+		for i in range(len(columns)):
+            		row[i] = row[i].strip("'")  
 		myrow = ["'"+row[i]+"'" for i in range(len(columns))]
 		output.write(f"INSERT INTO {name}({','.join(columns)}) VALUES({','.join(myrow)});\n")
 
