@@ -1,3 +1,4 @@
 *.bak
 config.py
 .env
+node_modules
